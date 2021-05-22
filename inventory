@@ -1,7 +1,8 @@
-192.168.0.65
-192.168.0.66
+#192.168.0.65 ansible_user=root
+192.168.0.66 ansible_user=vagrant
 [pi]
-#192.168.0.93
-#192.168.0.94
-#192.168.0.147
-
+#192.168.0.93 ansible_user=pi
+#192.168.0.91  ansible_user=pi
+#192.168.0.94  ansible_user=pi
+#192.168.0.147 ansible_user=toto
+#192.168.0.42 ansible_user=toto

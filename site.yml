@@ -2,9 +2,36 @@
 
 - hosts: all
   become: true
+  vars_files:
+  - ~/ansible/info.yml
   tasks:
 
-  - name: update and upgrade
+#  - debug:
+#      var: ansible_facts["cmdline"]
+#  - debug:
+#      var: ansible_facts["machine"]
+#  - debug:
+#      var: ansible_facts["machine"]|type_debug
+#  - debug:
+#      var: ansible_distribution
+
+# my comment
+
+  - name: update and {{ title }}upgrade
     apt:
       update_cache: true
+    when: ansible_distribution in ["Ubuntu!!","Debian"] # and ansible_distribution_version == "20.04"
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+      state: latest
+    when: ansible_distribution == "Ubuntu!!"
+
+  - name: add php support for apache
+    apt:
+      name: libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Ubuntu!!"
+
 

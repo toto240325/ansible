@@ -1,10 +1,11 @@
 ---
+#ansible-playbook site.yml --vault-password-file  ~/.ssh/vault-key
 
 - hosts: all
   become: true
   vars_files:
   - ~/ansible/info.yml
-  tasks:
+  pre_tasks:
 
 #  - debug:
 #      var: ansible_facts["cmdline"]
@@ -15,23 +16,44 @@
 #  - debug:
 #      var: ansible_distribution
 
-# my comment
 
-  - name: update and {{ title }}upgrade
+  - name: install updates (Ubuntu) (and this is my {{ title }}
+    tags: always
     apt:
-      update_cache: true
-    when: ansible_distribution in ["Ubuntu!!","Debian"] # and ansible_distribution_version == "20.04"
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
 
-  - name: install apache2 package
+
+- hosts: web_servers
+  become: true
+  tasks:
+
+  - name: install apache2 package (Ubuntu)
+    tags: apache
     apt:
-      name: apache2
+      name:
+        - apache2
+        - libapache2-mod-php
       state: latest
-    when: ansible_distribution == "Ubuntu!!"
+    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
 
-  - name: add php support for apache
+- hosts: db_servers
+  become: true
+  tasks:
+
+  - name: install mariadb server
+    tags: db
     apt:
-      name: libapache2-mod-php
+      name: mariadb-server
       state: latest
-    when: ansible_distribution == "Ubuntu!!"
+    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
 
+- hosts: file_servers
+  become: true
+  tasks:
 
+  - name: install samba package
+    package:
+      name: samba
+      state: latest

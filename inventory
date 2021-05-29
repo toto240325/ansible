@@ -1,13 +1,16 @@
 192.168.0.64 ansible_user=vagrant
 #192.168.0.65 ansible_user=root
 #192.168.0.66 ansible_user=vagrant
-[pi]
-#192.168.0.93 ansible_user=pi
-#192.168.0.91  ansible_user=pi
-#192.168.0.94  ansible_user=pi
 
-[dbmysql]
+[web_servers]
+#192.168.0.91 ansible_user=pi
+#192.168.0.93 ansible_user=pi
+#192.168.0.94 ansible_user=pi
+192.168.0.64 ansible_user=vagrant
+
+[db_servers]
 192.168.0.91 ansible_user=pi
+192.168.0.64 ansible_user=vagrant
 
 [others]
 #192.168.0.147 ansible_user=toto

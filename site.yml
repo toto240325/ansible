@@ -70,7 +70,7 @@
       name: p7zip-full
       state: latest
 
-- hosts: adduser
+- hosts: addtoto
   become: true
   tasks:
 

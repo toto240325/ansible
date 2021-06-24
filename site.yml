@@ -1,5 +1,8 @@
 ---
-#ansible-playbook site.yml --vault-password-file  ~/.ssh/vault-key
+# ansible-playbook site.yml --vault-password-file  ~/.ssh/vault-key
+# ansible-playbook site.yml --tags apache
+# ansible-playbook site.yml --limit ubuntu0
+
 
 - hosts: all
   become: true
@@ -57,3 +60,22 @@
     package:
       name: samba
       state: latest
+
+- hosts: ubuntu0
+  become: true
+  tasks:
+
+  - name: install 7z
+    package:
+      name: p7zip-full
+      state: latest
+
+- hosts: adduser
+  become: true
+  tasks:
+
+  - name: create toto2 user
+    user: 
+      name: toto2
+      groups: root
+      

@@ -2,6 +2,9 @@
 #192.168.0.65 ansible_user=root
 #192.168.0.66 ansible_user=vagrant
 
+#192.168.0.60
+#192.168.0.80
+
 [web_servers]
 #192.168.0.91 ansible_user=pi
 #192.168.0.93 ansible_user=pi
@@ -12,6 +15,9 @@
 #192.168.0.81 ansible_user=pi
 #192.168.0.64 ansible_user=vagrant
 
+[file_servers]
+
+
 [others]
 #192.168.0.147 ansible_user=toto
 #192.168.0.42 ansible_user=toto
@@ -20,7 +26,19 @@
 #192.168.0.50
 
 [ubuntu0]
-192.168.0.60 ansible_user=vagrant
+#192.168.0.60 ansible_user=vagrant
 
-[addtoto]
-192.168.0.60 ansible_user=vagrant
+[ansible_servers]
+#192.168.0.60 
+
+[to_bootstrap]
+# in this group, ansible_user is not yet always ansible, 
+# but could be pi or toto or vagrant
+# ansible-playbook bootstrap.yml --limit to_bootstrap
+#192.168.0.60 ansible_user=vagrant
+192.168.0.80 ansible_user=pi 
+
+[toto_user]
+192.168.0.60
+192.168.0.80
+

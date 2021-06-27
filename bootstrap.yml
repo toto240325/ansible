@@ -1,8 +1,12 @@
 ---
- 
+# bootstrap.yml
+# this playbook makes sure all targets get the ansible user and can be sshed into
+# ansible-playbook bootstrap.yml --limit to-bootstrap --become --ask-become-pass
+#
  - hosts: all
    become: true
-   pre_tasks:
+   #   pre_tasks:
+   tasks:
  
    - name: install updates (CentOS)
      tags: always
@@ -18,24 +22,24 @@
        update_cache: yes
      when: ansible_distribution == "Ubuntu"
  
- - hosts: all
-   become: true
-   tasks:
+     #- hosts: all
+     #   become: true
+     #   tasks:
  
-   - name: create simone user
+   - name: create ansible user
      user:
-       name: simone
+       name: ansible
        groups: root
  
-   - name: add ssh key for simone
+   - name: add ssh key for ansible
      authorized_key:
-       user: simone
+       user: ansible
        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com"
       
-   - name: add sudoers file for simone
+   - name: add sudoers file for ansible
      copy:
-       src: sudoer_simone
-       dest: /etc/sudoers.d/simone
+       src: sudoer_ansible
+       dest: /etc/sudoers.d/ansible
        owner: root
        group: root
        mode: 0440

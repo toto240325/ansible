@@ -29,6 +29,16 @@
       update_cache: yes
     when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
 
+  tasks:
+  - name: install basic packages
+    package:
+      name:
+        - vim
+        - 7z
+        - tmux
+        
+      state: latest
+    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
 
 - hosts: toto_user
   vars_files:
@@ -88,7 +98,6 @@
        group: toto
        mode: 0644
 
-
   - name: copy my bash aliases
     tags: always
     copy:
@@ -97,9 +106,6 @@
        owner: toto
        group: toto
        mode: 0644
-
-
-
 
 - hosts: web_servers
   become: true

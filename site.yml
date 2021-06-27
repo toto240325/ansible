@@ -8,6 +8,7 @@
   become: true
   vars_files:
   - ~/ansible/info.yml
+
   pre_tasks:
 
 #  - debug:
@@ -34,9 +35,10 @@
     package:
       name:
         - vim
-        - 7z
+        - unzip
         - tmux
-        
+        - p7zip-full        
+        - git
       state: latest
     when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
 
@@ -106,6 +108,13 @@
        owner: toto
        group: toto
        mode: 0644
+
+  - name : git clone utils
+    ansible.builtin.git:
+      #repo: git@github.com:toto240325/utils.git
+      repo: https://github.com/toto240325/utils.git
+      dest: /home/toto/utils
+      #key_file: /home/toto/.ssh/id_ed25519_toto
 
 - hosts: web_servers
   become: true

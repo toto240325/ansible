@@ -6,155 +6,210 @@
 
 - hosts: all
   become: true
-  vars_files:
-  - ~/ansible/info.yml
-
   pre_tasks:
 
-#  - debug:
-#      var: ansible_facts["cmdline"]
-#  - debug:
-#      var: ansible_facts["machine"]
-#  - debug:
-#      var: ansible_facts["machine"]|type_debug
-#  - debug:
-#      var: ansible_distribution
+  - name: update repository index (CentOS)
+    tags: always
+    dnf:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "CentOS"
 
-# gather_facts: no
-#
-
-  - name: install updates (Ubuntu) (and this is my {{ title }}
+  - name: update repository index (Ubuntu)
     tags: always
     apt:
-      upgrade: dist
       update_cache: yes
-    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
 
-  tasks:
-  - name: install basic packages
-    package:
-      name:
-        - vim
-        - unzip
-        - tmux
-        - p7zip-full        
-        - git
-      state: latest
-    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
-
-- hosts: toto_user
-  vars_files:
-  - ~/ansible/info.yml
+- hosts: all
   become: true
-  gather_facts: no
-  tasks:
+  roles:
+    - base
+   
+- hosts: bootstrap
+  become: true
+  roles:
+    - bootstrap
 
-  - name: create toto user 
-    user:
-      name: toto
-      password: "{{ toto_password | password_hash('sha512') }}"
-      #password: "{{ 'password' | password_hash('sha512') }}"
-      shell: /bin/bash
-      state: present
-      groups: root
-      append: yes
+- hosts: ansible_servers
+  become: true
+  roles:
+    - ansible_servers
 
-  - name: copy id_ed25519_toto
-    #tags: always
-    copy:
-       src: ~/.ssh/id_ed25519_toto
-       dest: /home/toto/.ssh/ 
-       owner: toto
-       group: toto
-       mode: 0600
-
-  - name: copy id_ed25519_toto.pub
-    #tags: always
-    copy:
-       src: ~/.ssh/id_ed25519_toto.pub
-       dest: /home/toto/.ssh/ 
-       owner: toto
-       group: toto
-       mode: 0644
-
-  - name: add ssh key for toto
-    authorized_key:
-      user: toto
-      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com"
-
-  - name: copy .vimrc
-    tags: always
-    copy:
-       src: .vimrc
-       dest: /home/toto/ 
-       owner: toto
-       group: toto
-       mode: 0644
-
-  - name: copy .tmux.conf
-    tags: always
-    copy:
-       src: .tmux.conf
-       dest: /home/toto/ 
-       owner: toto
-       group: toto
-       mode: 0644
-
-  - name: copy my bash aliases
-    tags: always
-    copy:
-       src: my-bash-aliases
-       dest: /home/toto/.bash_aliases 
-       owner: toto
-       group: toto
-       mode: 0644
-
-  - name : git clone utils
-    ansible.builtin.git:
-      #repo: git@github.com:toto240325/utils.git
-      repo: https://github.com/toto240325/utils.git
-      dest: /home/toto/utils
-      #key_file: /home/toto/.ssh/id_ed25519_toto
+- hosts: workstations
+  become: true
+  roles:
+    - workstations
 
 - hosts: web_servers
   become: true
-  tasks:
-
-  - name: install apache2 package (Ubuntu)
-    tags: apache
-    apt:
-      name:
-        - apache2
-        - libapache2-mod-php
-      state: latest
-    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+  roles:
+    - web_servers
 
 - hosts: db_servers
   become: true
-  tasks:
-
-  - name: install mariadb server
-    tags: db
-    apt:
-      name: mariadb-server
-      state: latest
-    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+  roles:
+    - db_servers
 
 - hosts: file_servers
   become: true
-  tasks:
+  roles:
+    - file_servers
 
-  - name: install samba package
-    package:
-      name: samba
-      state: latest
 
-- hosts: ubuntu0
-  become: true
-  tasks:
-
-  - name: install 7z
-    package:
-      name: p7zip-full
-      state: latest
+##-------------------------------------------------
+#- hosts: all
+#  become: true
+#  vars_files:
+#  - ~/ansible/info.yml
+#
+#  pre_tasks:
+#
+##  - debug:
+##      var: ansible_facts["cmdline"]
+##  - debug:
+##      var: ansible_facts["machine"]
+##  - debug:
+##      var: ansible_facts["machine"]|type_debug
+##  - debug:
+##      var: ansible_distribution
+#
+## gather_facts: no
+##
+#
+#  - name: install updates (Ubuntu) (and this is my {{ title }}
+#    tags: always
+#    apt:
+#      upgrade: dist
+#      update_cache: yes
+#    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+#
+#  tasks:
+#  - name: install basic packages
+#    package:
+#      name:
+#        - vim
+#        - unzip
+#        - tmux
+#        - p7zip-full        
+#        - git
+#      state: latest
+#    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+#
+#- hosts: toto_user
+#  vars_files:
+#  - ~/ansible/info.yml
+#  become: true
+#  gather_facts: no
+#  tasks:
+#
+#  - name: create toto user 
+#    user:
+#      name: toto
+#      password: "{{ toto_password | password_hash('sha512') }}"
+#      #password: "{{ 'password' | password_hash('sha512') }}"
+#      shell: /bin/bash
+#      state: present
+#      groups: root
+#      append: yes
+#
+#  - name: copy id_ed25519_toto
+#    #tags: always
+#    copy:
+#       src: ~/.ssh/id_ed25519_toto
+#       dest: /home/toto/.ssh/ 
+#       owner: toto
+#       group: toto
+#       mode: 0600
+#
+#  - name: copy id_ed25519_toto.pub
+#    #tags: always
+#    copy:
+#       src: ~/.ssh/id_ed25519_toto.pub
+#       dest: /home/toto/.ssh/ 
+#       owner: toto
+#       group: toto
+#       mode: 0644
+#
+#  - name: add ssh key for toto
+#    authorized_key:
+#      user: toto
+#      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com"
+#
+#  - name: copy .vimrc
+#    tags: always
+#    copy:
+#       src: .vimrc
+#       dest: /home/toto/ 
+#       owner: toto
+#       group: toto
+#       mode: 0644
+#
+#  - name: copy .tmux.conf
+#    tags: always
+#    copy:
+#       src: .tmux.conf
+#       dest: /home/toto/ 
+#       owner: toto
+#       group: toto
+#       mode: 0644
+#
+#  - name: copy my bash aliases
+#    tags: always
+#    copy:
+#       src: my-bash-aliases
+#       dest: /home/toto/.bash_aliases 
+#       owner: toto
+#       group: toto
+#       mode: 0644
+#
+#  - name : git clone utils
+#    ansible.builtin.git:
+#      #repo: git@github.com:toto240325/utils.git
+#      repo: https://github.com/toto240325/utils.git
+#      dest: /home/toto/utils
+#      #key_file: /home/toto/.ssh/id_ed25519_toto
+#
+#- hosts: web_servers
+#  become: true
+#  tasks:
+#
+#  - name: install apache2 package (Ubuntu)
+#    tags: apache
+#    apt:
+#      name:
+#        - apache2
+#        - libapache2-mod-php
+#      state: latest
+#    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+#
+#- hosts: db_servers
+#  become: true
+#  tasks:
+#
+#  - name: install mariadb server
+#    tags: db
+#    apt:
+#      name: mariadb-server
+#      state: latest
+#    when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+#
+#- hosts: file_servers
+#  become: true
+#  tasks:
+#
+#  - name: install samba package
+#    package:
+#      name: samba
+#      state: latest
+#
+#- hosts: ubuntu0
+#  become: true
+#  tasks:
+#
+#  - name: install 7z
+#    package:
+#      name: p7zip-full
+#      state: latest
 

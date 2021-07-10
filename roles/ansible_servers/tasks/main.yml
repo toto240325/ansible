@@ -1,0 +1,6 @@
+- name: Install ansible
+  apt: 
+    name: ansible
+    state: latest
+
+

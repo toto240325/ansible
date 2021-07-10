@@ -1,0 +1,43 @@
+---
+- name: install basic packages
+  package:
+    name:
+      - vim
+      - unzip
+      - tmux
+      - p7zip-full
+      - git
+    state: latest
+  when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+
+- name: create toto user
+  user:
+    name: toto
+    password: "{{ toto_password | password_hash('sha512') }}"
+    #password: "{{ 'password' | password_hash('sha512') }}"
+    shell: /bin/bash
+    state: present
+    groups: root
+    append: yes
+
+- name: copy id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
+  #tags: always
+  copy: 
+    src=id_ed25519_toto.pub dest=/home/toto/.ssh/ owner=toto group=toto mode=0644
+    src=~/.ssh/id_ed25519_toto dest=/home/toto/.ssh/ owner=toto group=toto mode=0600
+    src=.vimrc dest=/home/toto/ owner=toto group=toto mode=0644
+    src=.tmux.conf dest=/home/toto/ owner=toto group=toto mode=0644
+    src=.bash_aliases dest=/home/toto/.bash_aliases owner=toto group=toto mode=0644
+
+- name: add ssh key for toto
+  authorized_key:
+    user: toto
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com"
+
+#- name : git clone utils
+#  ansible.builtin.git:
+#    #repo: git@github.com:toto240325/utils.git
+#    repo: https://github.com/toto240325/utils.git
+#    dest: /home/toto/utils
+#    #key_file: /home/toto/.ssh/id_ed25519_toto
+

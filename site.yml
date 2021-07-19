@@ -2,7 +2,7 @@
 # ansible-playbook site.yml --vault-password-file  ~/.ssh/vault-key # until ansible user created on target and accessible via ssh key
 # ansible-playbook site.yml --tags apache
 # ansible-playbook site.yml --limit ubuntu0
-
+# ansible-playbook site.yml --limit bootstrap
 
 - hosts: all
   become: true

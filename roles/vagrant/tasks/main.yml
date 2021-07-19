@@ -1,7 +1,7 @@
 ---
  
 - name: copy basic files to user vagrant - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
-- copy: src=~/ansible/roles/base/files/.vimrc dest=/home/vagrant/ owner=vagrant group=vagrant mode=0644
+  copy: src=~/ansible/roles/base/files/.vimrc dest=/home/vagrant/ owner=vagrant group=vagrant mode=0644
 - copy: src=~/ansible/roles/base/files/.tmux.conf dest=/home/vagrant/ owner=vagrant group=vagrant mode=0644
-- copy: src=~/ansible/roels/base/files/.bash_aliases dest=/home/vagrant/.bash_aliases owner=vagrant group=vagrant mode=0644
+- copy: src=~/ansible/roles/base/files/.bash_aliases dest=/home/vagrant/.bash_aliases owner=vagrant group=vagrant mode=0644
 

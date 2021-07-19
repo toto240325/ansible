@@ -3,6 +3,10 @@
 # ansible-playbook site.yml --tags apache
 # ansible-playbook site.yml --limit ubuntu0
 # ansible-playbook site.yml --limit bootstrap
+# ansible-playbook site.yml  --tags=bootstrap --skip-tags=always
+# ansible-playbook site.yml  --tags=bootstrap --skip-tags=always --list-tasks
+# ansible-playbook --limit bootstrap site.yml --ask-become-pass --tags=bootstrap --skip-tags=always
+#
 
 - hosts: all
   become: true
@@ -38,6 +42,7 @@
     - vagrant
 
 - hosts: bootstrap
+  tags: bootstrap
   become: true
   roles:
     - bootstrap

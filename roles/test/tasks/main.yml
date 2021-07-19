@@ -1,0 +1,13 @@
+---
+
+- name: simple debug msg
+  debug: msg="this is a simple debug message"
+
+- name: simple shell command
+  shell: /usr/bin/uptime
+  register: myuptime
+
+- name: uptime debugging
+  debug: var=myuptime
+
+

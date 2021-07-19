@@ -19,16 +19,19 @@
      when: ansible_distribution == "Ubuntu"
  
    - name: create ansible user
+     tags: always
      user:
        name: ansible
        groups: root
  
    - name: add ssh key for ansible
+     tags: always
      authorized_key:
        user: ansible
        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com"
       
    - name: add sudoers file for ansible
+     tags: always
      copy:
        src: sudoer_ansible
        dest: /etc/sudoers.d/ansible

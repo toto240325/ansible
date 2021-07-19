@@ -33,11 +33,18 @@
 #192.168.0.60 
 #192.168.1.70 
 
+[vagrant]
+192.168.0.51
+
+[test]
+192.168.0.51
+
 [bootstrap]
 # in this group, ansible_user is not yet always ansible, 
 # but could be pi or toto or vagrant
 # ansible-playbook bootstrap.yml --limit to_bootstrap
-192.168.0.51 ansible_user=vagrant
+#192.168.0.51 ansible_user=vagrant
+192.168.0.23 ansible_user=toto
 #192.168.0.80 ansible_user=pi 
 #192.168.1.70 ansible_user=vagrant
 

@@ -27,6 +27,16 @@
   roles:
     - base
    
+- hosts: test
+  become: true
+  roles:
+    - test
+
+- hosts: vagrant
+  become: true
+  roles:
+    - vagrant
+
 - hosts: bootstrap
   become: true
   roles:

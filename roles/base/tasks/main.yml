@@ -2,6 +2,7 @@
 - name: install basic packages
   package:
     name:
+      - ansible
       - vim
       - unzip
       - tmux
@@ -11,55 +12,7 @@
     state: latest
   when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
 
-- include: toto.yml
+- include: user_toto.yml
 
-- name: create toto user
-  user:
-    name: toto
-    password: "{{ toto_password | password_hash('sha512') }}"
-    #password: "{{ 'password' | password_hash('sha512') }}"
-    shell: /bin/bash
-    state: present
-    groups: root
-    append: yes
-
-- name: add ssh key for toto
-  authorized_key:
-    user: toto
-    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com"
-
-- name: add sudoers file for toto
-  tags: always
-  copy:
-    src: sudoer_toto
-    dest: /etc/sudoers.d/toto
-    owner: root
-    group: root
-    mode: 0440
-
-- name: copy basic files to user toto - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
-  copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
-  with_items:
-  - { src: 'id_ed25519_toto.pub',    dest: '/home/toto/.ssh/', mode: '0644' }
-  - { src: '~/.ssh/id_ed25519_toto', dest: '/home/toto/.ssh/', mode: '0600' }
-  - { src: '.vimrc',                 dest: '/home/toto/.ssh/', mode: '0644' }
-  - { src: '.tmux.conf',             dest: '/home/toto/.ssh/', mode: '0644' }
-  - { src: '.bash_aliases',          dest: '/home/toto/.ssh/', mode: '0644' }
-
-- name: copy basic files to user ansible - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
-  copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
-  with_items:
-  - { src: 'id_ed25519_toto.pub',    dest: '/home/ansible/.ssh/', mode: '0644' }
-  - { src: '~/.ssh/id_ed25519_toto', dest: '/home/ansible/.ssh/', mode: '0600' }
-  - { src: '.vimrc',                 dest: '/home/ansible/.ssh/', mode: '0644' }
-  - { src: '.tmux.conf',             dest: '/home/ansible/.ssh/', mode: '0644' }
-  - { src: '.bash_aliases',          dest: '/home/ansible/.ssh/', mode: '0644' }
-
- 
-#- name : git clone utils
-#  ansible.builtin.git:
-#    #repo: git@github.com:toto240325/utils.git
-#    repo: https://github.com/toto240325/utils.git
-#    dest: /home/toto/utils
-#    #key_file: /home/toto/.ssh/id_ed25519_toto
+- include: user_ansible.yml
 

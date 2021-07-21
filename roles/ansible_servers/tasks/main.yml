@@ -3,25 +3,9 @@
     name: ansible
     state: latest
 
-- shell: pwd
-  register: mypwd
+#- shell: pwd
+#  register: mypwd
+#
+#- debug: var=mypwd
 
-- debug: var=mypwd
-
-- name: install ansible repo for toto
-  remote_user: toto
-  become: true
-  ansible.builtin.git:
-    repo: https://github.com/toto240325/ansible.git
-    dest: /home/toto/ansible_copy
-    clone: yes
-    update: yes
-
-- name: install ansible repo for ansible
-  remote_user: ansible
-  ansible.builtin.git:
-    repo: https://github.com/toto240325/ansible.git
-    dest: /home/ansible/ansible_copy
-    clone: yes
-    update: yes
 

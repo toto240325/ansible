@@ -1,0 +1,45 @@
+---
+
+#- debug: msg="debug test"
+#
+#- name: shell test
+#  shell: pwd
+#  register: myoutput
+#
+#- debug: var=myoutput
+
+- name: create toto user
+  user:
+    name: toto
+    password: "{{ toto_password | password_hash('sha512') }}"
+    #password: "{{ 'password' | password_hash('sha512') }}"
+    shell: /bin/bash
+    state: present
+    groups: root
+    append: yes
+
+- name: add ssh key for toto
+  authorized_key:
+    user: toto
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com"
+
+- name: add sudoers file for toto
+  tags: always
+  copy:
+    src: sudoer_toto
+    dest: /etc/sudoers.d/toto
+    owner: root
+    group: root
+    mode: 0440
+
+- name: copy basic files to user toto - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
+  copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
+  with_items:
+  - { src: 'id_ed25519_toto.pub',    dest: '/home/toto/.ssh/', mode: '0644' }
+  - { src: '~/.ssh/id_ed25519_toto', dest: '/home/toto/.ssh/', mode: '0600' }
+  - { src: '.vimrc',                 dest: '/home/toto/.ssh/', mode: '0644' }
+  - { src: '.tmux.conf',             dest: '/home/toto/.ssh/', mode: '0644' }
+  - { src: '.bash_aliases',          dest: '/home/toto/.ssh/', mode: '0644' }
+
+
+

@@ -65,6 +65,10 @@
     group: "toto"
     state: directory
     recurse: yes
+  register: myresult
+
+- name: debug change ownership result
+  debug: var=myresult
 
 #- name : git clone utils
 #  ansible.builtin.git:

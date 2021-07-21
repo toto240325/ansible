@@ -1,0 +1,22 @@
+---
+- hosts: ansible_servers_toto
+  remote_user: toto
+  become: true
+ 
+  tasks:
+  - debug: msg="this is a test 2"
+  
+  - shell: pwd
+    register: mypwd
+  
+  - debug: var=mypwd
+  
+  - name: install ansible repo for toto
+    become: true
+    ansible.builtin.git:
+      repo: https://github.com/toto240325/ansible.git
+      dest: /home/toto/ansible_copy
+      clone: yes
+      update: yes
+
+

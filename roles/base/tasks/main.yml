@@ -38,19 +38,24 @@
     mode: 0440
 
 - name: copy basic files to user toto - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
-  copy: src=id_ed25519_toto.pub dest=/home/toto/.ssh/ owner=toto group=toto mode=0644
-- copy: src=~/.ssh/id_ed25519_toto dest=/home/toto/.ssh/ owner=toto group=toto mode=0600
-- copy: src=.vimrc dest=/home/toto/ owner=toto group=toto mode=0644
-- copy: src=.tmux.conf dest=/home/toto/ owner=toto group=toto mode=0644
-- copy: src=.bash_aliases dest=/home/toto/.bash_aliases owner=toto group=toto mode=0644
-  
+  copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
+  with_items:
+  - { src: 'id_ed25519_toto.pub',    dest: '/home/toto/.ssh/', mode: '0644' }
+  - { src: '~/.ssh/id_ed25519_toto', dest: '/home/toto/.ssh/', mode: '0600' }
+  - { src: '.vimrc',                 dest: '/home/toto/.ssh/', mode: '0644' }
+  - { src: '.tmux.conf',             dest: '/home/toto/.ssh/', mode: '0644' }
+  - { src: '.bash_aliases',          dest: '/home/toto/.ssh/', mode: '0644' }
+
 - name: copy basic files to user ansible - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
-  copy: src=id_ed25519_toto.pub dest=/home/ansible/.ssh/ owner=ansible group=ansible mode=0644
-- copy: src=~/.ssh/id_ed25519_toto dest=/home/ansible/.ssh/ owner=ansible group=ansible mode=0600
-- copy: src=.vimrc dest=/home/ansible/ owner=ansible group=ansible mode=0644
-- copy: src=.tmux.conf dest=/home/ansible/ owner=ansible group=ansible mode=0644
-- copy: src=.bash_aliases dest=/home/ansible/.bash_aliases owner=ansible group=ansible mode=0644
-  
+  copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
+  with_items:
+  - { src: 'id_ed25519_toto.pub',    dest: '/home/ansible/.ssh/', mode: '0644' }
+  - { src: '~/.ssh/id_ed25519_toto', dest: '/home/ansible/.ssh/', mode: '0600' }
+  - { src: '.vimrc',                 dest: '/home/ansible/.ssh/', mode: '0644' }
+  - { src: '.tmux.conf',             dest: '/home/ansible/.ssh/', mode: '0644' }
+  - { src: '.bash_aliases',          dest: '/home/ansible/.ssh/', mode: '0644' }
+
+ 
 #- name : git clone utils
 #  ansible.builtin.git:
 #    #repo: git@github.com:toto240325/utils.git

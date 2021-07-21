@@ -43,14 +43,19 @@
 - name: install repo utils for toto
   #become_user: toto
   become: true
+  tags: debug1
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes
   with_items:
   - { repo: 'https://github.com/toto240325/utils.git',              dest: '/home/toto/utils'}
   - { repo: 'https://github.com/toto240325/ansible.git',            dest: '/home/toto/ansible'}
   - { repo: 'https://github.com/toto240325/whos-on-my-network.git', dest: '/home/toto/whos-on-my-network'}
+  register: output_git
 
+- debug: var=output_git
+  tags: debug1
 
 - name: change ownership
+  tags: debug1
   file:
     path: "/home/toto/utils" # this should be as same as `dest` above
     owner: "toto"

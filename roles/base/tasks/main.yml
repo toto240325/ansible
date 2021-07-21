@@ -11,6 +11,8 @@
     state: latest
   when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
 
+- include: toto.yml
+
 - name: create toto user
   user:
     name: toto

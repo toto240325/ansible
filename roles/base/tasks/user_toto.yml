@@ -40,7 +40,10 @@
   - { src: '.tmux.conf',             dest: '/home/toto/',       mode: '0644' }
   - { src: '.bash_aliases',          dest: '/home/toto/',       mode: '0644' }
 
-- name: install repo utils for toto
+- debug: msg="before debug"
+  tags: debug1
+
+- name: install repo utils for toto 2
   #become_user: toto
   become: true
   tags: debug1
@@ -51,10 +54,14 @@
   - { repo: 'https://github.com/toto240325/whos-on-my-network.git', dest: '/home/toto/whos-on-my-network'}
   register: output_git
 
+- debug: msg="after debug"
+  tags: debug1
+
 - debug: var=output_git
   tags: debug1
 
 - name: change ownership
+  become: true
   tags: debug1
   file:
     path: "/home/toto/utils" # this should be as same as `dest` above

@@ -43,49 +43,33 @@
 - debug: msg="before debug"
   tags: debug1
 
-- name: install repo utils for toto 2
-  #become_user: toto
+- name: install repo utils for toto 
   become: true
   tags: debug1
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes
   with_items:
-  - { repo: 'https://github.com/toto240325/utils.git',              dest: '/home/toto/utils'}
-  - { repo: 'https://github.com/toto240325/ansible.git',            dest: '/home/toto/ansible'}
-  - { repo: 'https://github.com/toto240325/whos-on-my-network.git', dest: '/home/toto/whos-on-my-network'}
+  - { repo: 'https://github.com/toto240325/utils.git',              dest: '/home/toto/utils' }
+  #- { repo: 'https://github.com/toto240325/ansible.git',           dest: '/home/toto/ansible' }
+  - { repo: 'https://github.com/toto240325/whos-on-my-network.git', dest: '/home/toto/whos-on-my-network' }
+  - { repo: 'https://github.com/toto240325/monitor.git',            dest: '/home/toto/monitor' }
   register: output_git
 
 - debug: msg="after debug"
   tags: debug1
 
-- debug: var=output_git
-  tags: debug1
+#- debug: var=output_git
+#  tags: debug1
 
 - name: change ownership
-  become: true
   tags: debug1
-  file:
-    path: "/home/toto/utils" # this should be as same as `dest` above
-    owner: "toto"
-    group: "toto"
-    state: directory
-    recurse: yes
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+  with_items:
+  - { path: "/home/toto/utils" }
+  - { path: "/home/toto/ansible" }
+  - { path: "/home/toto/whos-on-my-network" }
+  - { path: "/home/toto/monitor" }
+#  register: output_chown
 
-- name: change ownership
-  file:
-    path: "/home/toto/whos-on-my-network" # this should be as same as `dest` above
-    owner: "toto"
-    group: "toto"
-    state: directory
-    recurse: yes
-  register: myresult
-
-- name: debug change ownership result
-  debug: var=myresult
-
-#- name : git clone utils
-#  ansible.builtin.git:
-#    #repo: git@github.com:toto240325/utils.git
-#    repo: https://github.com/toto240325/utils.git
-#    dest: /home/toto/utils
-#    #key_file: /home/toto/.ssh/id_ed25519_toto
+#- debug: var=output_chown
+#  tags: debug1
 

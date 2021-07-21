@@ -31,8 +31,12 @@
 #192.168.0.60 ansible_user=vagrant
 
 [ansible_servers]
-#192.168.0.60 
-#192.168.1.70 
+192.168.0.51
+#192.168.0.23
+
+[ansible_servers_toto]
+192.168.0.51
+#192.168.0.23
 
 [vagrant]
 192.168.0.51
@@ -49,7 +53,4 @@
 #192.168.0.80 ansible_user=pi 
 #192.168.1.70 ansible_user=vagrant
 
-[toto_user]
-#192.168.0.60
-#192.168.0.80
 

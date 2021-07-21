@@ -1,4 +1,5 @@
 ---
+# ansible all --limit 192.168.0.51 -u vagrant -m "shell" -a "ls -al"
 # ansible-playbook site.yml --vault-password-file  ~/.ssh/vault-key # until ansible user created on target and accessible via ssh key
 # ansible-playbook site.yml --tags apache
 # ansible-playbook site.yml --limit ubuntu0
@@ -6,7 +7,7 @@
 # ansible-playbook site.yml  --tags=bootstrap --skip-tags=always
 # ansible-playbook site.yml  --tags=bootstrap --skip-tags=always --list-tasks
 # ansible-playbook --limit bootstrap site.yml --ask-become-pass --tags=bootstrap --skip-tags=always
-#
+
 
 - hosts: all
   become: true
@@ -48,9 +49,17 @@
     - bootstrap
 
 - hosts: ansible_servers
+  tags: ansible_servers
   become: true
   roles:
     - ansible_servers
+
+- hosts: ansible_servers_toto
+  remote_user: toto
+  tags: ansible_servers_toto
+  become: true
+  roles:
+    - ansible_servers_toto
 
 - hosts: workstations
   become: true

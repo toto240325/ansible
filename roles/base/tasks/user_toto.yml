@@ -41,7 +41,7 @@
   - { src: '.bash_aliases',          dest: '/home/toto/.ssh/', mode: '0644' }
 
 - name: install repo utils for toto
-  remote_user: toto
+  #become_user: toto
   become: true
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes
   with_items:
@@ -49,6 +49,14 @@
   - { repo: 'https://github.com/toto240325/ansible.git', dest: '/home/toto/ansible'}
   - { repo: 'https://github.com/toto240325/whos-on-my-network.git', dest: '/home/toto/whos-on-my-network'}
 
+
+- name: change ownership
+  file:
+    path: "/home/toto/utils" # this should be as same as `dest` above
+    owner: "toto"
+    group: "toto"
+    state: directory
+    recurse: yes
 
 #- name : git clone utils
 #  ansible.builtin.git:

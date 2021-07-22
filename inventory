@@ -36,9 +36,14 @@
 # in this group, ansible_user is not yet always ansible, 
 # but could be pi or toto or vagrant
 # ansible-playbook site.yml --limit bootstrap --tags=bootstrap --skip-tags=always
-#192.168.0.51 ansible_user=vagrant
+192.168.0.51 ansible_user=vagrant
 #192.168.0.23 ansible_user=toto
 #192.168.0.80 ansible_user=pi 
 #192.168.1.70 ansible_user=vagrant
 
+[toshiba_nb250]
+192.168.0.148
+
+[whos_on_my_network]
+192.168.0.148
 

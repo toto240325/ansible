@@ -82,8 +82,22 @@
   gather_facts: false
   tags: web_servers
   become: true
-  roles:
+  roles: 
     - web_servers
+
+- hosts: toshiba_nb250
+  gather_facts: false
+  tags: nb250
+  become: true
+  roles: 
+    - toshiba_nb250
+
+- hosts: whos_on_my_network
+  gather_facts: false
+  tags: whos-on-my-network
+  become: true
+  roles: 
+    - whos-on-my-network
 
 - hosts: db_servers
   gather_facts: false

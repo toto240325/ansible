@@ -1,0 +1,10 @@
+---
+- name: install some xterm utilities
+  apt:
+    name: x11-apps
+    state: latest
+  #when: ansible_distribution == "Ubuntu"
+  register: myoutput
+
+#- debug: var=myoutput
+

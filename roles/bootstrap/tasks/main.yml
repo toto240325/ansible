@@ -4,19 +4,19 @@
 # ansible-playbook bootstrap.yml --limit to-bootstrap --become --ask-become-pass
 #
  
-   - name: install updates (CentOS)
-     tags: always
-     dnf:
-       update_only: yes
-       update_cache: yes
-     when: ansible_distribution == "CentOS"
+#   - name: install updates (CentOS)
+#     tags: always
+#     dnf:
+#       update_only: yes
+#       update_cache: yes
+#     when: ansible_distribution == "CentOS"
  
    - name: install updates (Ubuntu)
      tags: always
      apt:
        upgrade: dist
        update_cache: yes
-     when: ansible_distribution == "Ubuntu"
+     #when: ansible_distribution == "Ubuntu"
  
    - name: create ansible user
      tags: always

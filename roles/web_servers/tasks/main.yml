@@ -33,7 +33,18 @@
       - phpmyadmin 
       # - php-mbstring php-zip php-gd php-json php-curl
     state: latest
-  when: ansible_distribution == "Ubuntu"
+  #when: ansible_distribution == "Ubuntu"
+
+#- name: "open firewall if needed"
+#  firewalld: 
+#    service: "{{ item }}"
+#    permanent: yes
+#    state: enabled
+#    immedidae: yes
+#  loop:
+#    - http
+#    - https
+
 
 #- name: change e-mail address for admin
 #  tags: apache,centos,httpd

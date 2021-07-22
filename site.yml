@@ -13,6 +13,7 @@
 # create mysql schemas
 
 - hosts: all
+  gather_facts: false
   become: true
   pre_tasks:
 
@@ -28,27 +29,31 @@
     apt:
       update_cache: yes
     changed_when: false
-    when: ansible_distribution == "Ubuntu"
+    #when: ansible_distribution == "Ubuntu"
 
 - hosts: all
+  gather_facts: false
   tags: all
   become: true
   roles:
     - base
    
 - hosts: vagrant
+  gather_facts: false
   tags: vagrant
   become: true
   roles:
     - vagrant
 
 - hosts: x_servers
+  gather_facts: false
   tags: x_servers
   become: true
   roles:
     - x_servers
 
 #- hosts: test
+#  gather_facts: false
 #  tags: test
 #  become: true
 #  roles:
@@ -61,6 +66,7 @@
 #    - bootstrap
 #
 - hosts: ansible_servers
+  gather_facts: false
   tags: ansible_servers
   become: true
   roles:
@@ -73,12 +79,14 @@
 #    - workstations
 #
 - hosts: web_servers
+  gather_facts: false
   tags: web_servers
   become: true
   roles:
     - web_servers
 
 - hosts: db_servers
+  gather_facts: false
   tags: db_servers
   become: true
   roles:

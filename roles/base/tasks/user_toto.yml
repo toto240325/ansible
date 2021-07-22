@@ -73,3 +73,10 @@
 #- debug: var=output_chown
 #  tags: debug1
 
+#- name: install cron job for toto
+#  cron:
+#    user: toto
+#    name: "test toto cron"
+#    minute: "*/10"
+#    job: "/usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible_pull_tutorial.git > /dev/null"
+

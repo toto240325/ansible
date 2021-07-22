@@ -4,18 +4,16 @@
 
 [base]
 192.168.0.51
-#192.168.0.23
+192.168.0.148
 #192.168.0.80
 
 [web_servers]
-#192.168.0.91 ansible_user=pi
-#192.168.0.93 ansible_user=pi
-#192.168.0.94 ansible_user=pi
-#192.168.0.64 ansible_user=vagrant
+192.168.0.51
+192.168.0.148
 
 [db_servers]
-#192.168.0.81 ansible_user=pi
-#192.168.0.64 ansible_user=vagrant
+192.168.0.51
+192.168.0.148
 
 [file_servers]
 
@@ -30,6 +28,9 @@
 
 [test]
 192.168.0.51
+
+[x_servers]
+192.168.0.148
 
 [bootstrap]
 # in this group, ansible_user is not yet always ansible, 

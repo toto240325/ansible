@@ -23,7 +23,6 @@
     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com"
 
 - name: add sudoers file for toto
-  tags: always
   copy:
     src: sudoer_toto
     dest: /etc/sudoers.d/toto
@@ -40,8 +39,18 @@
   - { src: '.tmux.conf',             dest: '/home/toto/',       mode: '0644' }
   - { src: '.bash_aliases',          dest: '/home/toto/',       mode: '0644' }
 
-- debug: msg="before debug"
-  tags: debug1
+- name: setup some git global variables
+  tags: debug2
+  #remote_user: toto
+  community.general.git_config: repo="/home/toto/test12" scope=global list_all=yes
+  #community.general.git_config: name={{ item.name }} value={{ item.value }} repo="/home/toto/test12" scope=global list_all=yes
+  with_items:
+    - { name: 'user.name',  value: 'toto240325' }
+    - { name: 'user.email', value: 'toto240325@gmail.com' }
+  register: myoutput
+
+- debug: var=myoutput
+  tags: debug2
 
 - name: install repo utils for toto 
   become: true

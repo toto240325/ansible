@@ -22,5 +22,6 @@
     link: /usr/local/bin/python
 
 - include: toto_user.yml
+  tags: toto
 
 - include: ansible_user.yml

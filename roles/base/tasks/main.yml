@@ -1,18 +1,27 @@
 ---
 - name: install basic packages
   package:
-    name:
-      - ansible
-      - vim
-      - unzip
-      - tmux
-      - p7zip-full
-      - git
-      - htop
+    name: "{{ item }}"
     state: latest
-  when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+  with_items:
+    - ansible
+    - ansible-lint
+    - vim
+    - unzip
+    - tmux
+    - p7zip-full
+    - git
+    - htop
+    - python3-pip
+  #when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
 
-- include: user_toto.yml
+- name: python3 by defaut
+  community.general.alternatives:
+    name: python
+    path: /usr/bin/python3
+    link: /usr/local/bin/python
 
-- include: user_ansible.yml
+- include: toto_user.yml
+  tags: toto
 
+- include: ansible_user.yml

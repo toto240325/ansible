@@ -1,13 +1,36 @@
-- name: install mariadb server package (CentOS)
-  tags: centos,db,mariadb
-  dnf:
-    name: mariadb
-    state: latest
-  when: ansible_distribution == "CentOS"
+---
+#- name: install mariadb server package (CentOS)
+#  tags: centos,db,mariadb
+#  dnf:
+#    name: mariadb
+#    state: latest
+#  when: ansible_distribution == "CentOS"
 
-- name: install mariadb server
-  tags: db,mariadb,ubuntu
+#- name: install mariadb server
+#  tags: db,mariadb,ubuntu
+#  apt:
+#    name: mariadb-server
+#    state: absent
+#  when: ansible_distribution == "Ubuntu"
+
+- name: "install mysql-server"
+  #gather_facts: false
   apt:
-    name: mariadb-server
+    name: mysql-server
     state: latest
-  when: ansible_distribution == "Ubuntu"
+
+- name: "start and enable mysql server"
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: "install pymysql"
+  pip:
+    name: pymysql
+    state: latest
+
+- name: "create mysql db"
+  mysql_db:
+    name: "{{ mysql_db }}"
+

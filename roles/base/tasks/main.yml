@@ -18,6 +18,6 @@
     path: /usr/bin/python3
     link: /usr/local/bin/python
 
-- include: user_toto.yml
+- include: toto_user.yml
 
-- include: user_ansible.yml
+- include: ansible_user.yml

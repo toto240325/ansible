@@ -29,17 +29,20 @@
     name:
       - apache2
       - libapache2-mod-php
+      - php 
+      - phpmyadmin 
+      # - php-mbstring php-zip php-gd php-json php-curl
     state: latest
   when: ansible_distribution == "Ubuntu"
 
-- name: change e-mail address for admin
-  tags: apache,centos,httpd
-  lineinfile:
-    path: /etc/httpd/conf/httpd.conf
-    regexp: '^ServerAdmin'
-    line: ServerAdmin somebody@somewhere.net
-  when: ansible_distribution == "CentOS"
-  register: httpd
+#- name: change e-mail address for admin
+#  tags: apache,centos,httpd
+#  lineinfile:
+#    path: /etc/httpd/conf/httpd.conf
+#    regexp: '^ServerAdmin'
+#    line: ServerAdmin somebody@somewhere.net
+#  when: ansible_distribution == "CentOS"
+#  register: httpd
 
 #- name: copy html file for site
 #  tags: apache,apache,apache2,httpd

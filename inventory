@@ -19,7 +19,7 @@
 
 [workstations]
 
-#[ansible_servers]
+[ansible_servers]
 #192.168.0.51
 #192.168.0.23
 

@@ -60,29 +60,29 @@
 #  roles:
 #    - bootstrap
 #
-#- hosts: ansible_servers
-#  tags: ansible_servers
-#  become: true
-#  roles:
-#    - ansible_servers
-#
+- hosts: ansible_servers
+  tags: ansible_servers
+  become: true
+  roles:
+    - ansible_servers
+
 #- hosts: workstations
 #  tags: workstations
 #  become: true
 #  roles:
 #    - workstations
 #
-#- hosts: web_servers
-#  tags: web_servers
-#  become: true
-#  roles:
-#    - web_servers
-#
-#- hosts: db_servers
-#  tags: db_servers
-#  become: true
-#  roles:
-#    - db_servers
+- hosts: web_servers
+  tags: web_servers
+  become: true
+  roles:
+    - web_servers
+
+- hosts: db_servers
+  tags: db_servers
+  become: true
+  roles:
+    - db_servers
 #
 #- hosts: file_servers
 #  tags: file_servers

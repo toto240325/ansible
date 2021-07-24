@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  become: true
+  pre_tasks:
+    - name: update repositories
+      apt:
+        update_cache: yes
+      changed_when: False
+
+  tasks:
+  - name: "debug msg"
+    debug: msg="this is a debug message"
+
+  - name: "shell test"
+    shell: "ls -la"
+    register: shelloutput
+
+  - name: "debug shell output"
+    debug: var=shelloutput
+
+
+#    - include: tasks/users.yml
+#    - include: tasks/cron.yml
+#    - include: tasks/packages.yml
+

@@ -1,0 +1,30 @@
+---
+- name: "install some packages"
+  package:
+    name: npm
+    state: latest
+
+- name: install repo whos-on-my-network for toto
+  #become: true
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes force=yes
+  with_items:
+  - { repo: 'https://github.com/toto240325/whos-on-my-network.git', dest: '/home/toto/whos-on-my-network' }
+  register: repo_whos
+
+- name: "install pip flask (for whos-on-my-network)"
+  pip:
+    name: Flask
+    state: latest
+    #virtualenv: /my_app/venv
+
+- name: "after-install of repo of whos-on-my-network (pip requirements)"
+  pip:
+    requirements: /home/toto/whos-on-my-network/requirements.txt
+  
+- name: "ad hoc shell : cd webapp && npm i && npm run build"
+  remote_user: toto
+  shell: "cd /home/toto/whos-on-my-network/webapp && npm i && npm run build"
+  register: shell_output
+
+- debug: var=shell_output
+

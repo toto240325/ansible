@@ -21,9 +21,17 @@
     name: "{{ item }}"
     state: latest
   with_items:
-    - htop
+    - sqlite3
   when: yes
   #when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+
+- name: sqlite3 by defaut
+  #prerequisite:
+  #ansible-galaxy collection install community.general
+  community.general.alternatives:
+    name: sqlite
+    path: /usr/bin/pip3
+    link: /usr/local/bin/sqlite
 
 - name: python3 by defaut
   #prerequisite:

@@ -39,6 +39,7 @@
   - { src: '.tmux.conf',             dest: '/home/toto/',       mode: '0644' }
   - { src: '.bash_aliases',          dest: '/home/toto/',       mode: '0644' }
 
+#this one doesn't work !!!!!
 - name: setup some git global variables
   tags: debug2
   #remote_user: toto

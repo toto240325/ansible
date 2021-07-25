@@ -5,11 +5,30 @@
     state: latest
 
 - name: install repo whos_on_my_network for toto
-  #become: true
+  tags: repoonly
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes force=no
   with_items:
-  - { repo: 'https://github.com/toto240325/whos_on_my_network.git', dest: '/home/toto/whos_on_my_network' }
+  - { repo: 'https://github.com/toto240325/fork_of_whos_on_my_network.git', dest: '/home/toto/whos_on_my_network6' }
   register: repo_whos
+
+- name: change ownership
+  file: 
+    path: "/home/toto/whos_on_my_network5"
+    owner: "toto" 
+    group: "toto"
+    state: directory 
+    recurse: yes 
+    mode: u=rwX,g=rX,o=rX
+  #register: output_chown
+
+- name: change ownership
+  tags: repoonly
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
+  with_items:
+  - { path: "/home/toto/whos_on_my_network6" }
+  #register: output_chown
+
+- debug: var=output_chown
 
 - name: "install pip flask (for whos_on_my_network)"
   pip:
@@ -30,7 +49,8 @@
 #- debug: var=shell_output
 
 - name: "initialise DB in separate location"
-  file: /home/toto/db
-  state: directory
+  file: 
+    path: /home/toto/db
+    state: directory
 
 

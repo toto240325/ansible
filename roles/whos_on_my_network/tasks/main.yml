@@ -29,3 +29,8 @@
 
 #- debug: var=shell_output
 
+- name: "initialise DB in separate location"
+  file: /home/toto/db
+  state: directory
+
+

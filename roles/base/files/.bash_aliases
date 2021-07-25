@@ -49,7 +49,8 @@ alias sshgit='sed -i "s#https://github.com/#git@github.com:#" config'
 export XAUTHORITY=~/.Xauthority
 
 alias ap="ansible-playbook site.yml"
-alias cf="cp -vu ~/{.tmux.conf,.bash_aliases,.bash_aliases} ~/ansible/roles/base/files/"
+alias aps="ansible-playbook site.yml --skip-tags=always"
+alias cf="cp -vu ~/{.tmux.conf,.bash_aliases,.vimrc} ~/ansible/roles/base/files/"
 
 if [ -f ~/.my_aliases ]; then
   . ~/.my_aliases

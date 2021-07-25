@@ -8,14 +8,14 @@
   tags: repoonly
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes force=no
   with_items:
-  - { repo: 'https://github.com/toto240325/fork_of_whos_on_my_network.git', dest: '/home/toto/whos_on_my_network6' }
+  - { repo: 'https://github.com/toto240325/fork_of_whos_on_my_network.git', dest: '/home/toto/whos_on_my_network' }
   register: repo_whos
 
 - name: change ownership
   tags: repoonly
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
   with_items:
-  - { path: "/home/toto/whos_on_my_network6" }
+  - { path: "/home/toto/whos_on_my_network" }
   #register: output_chown
   when: repo_whos.changed
 

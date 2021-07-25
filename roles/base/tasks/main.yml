@@ -14,12 +14,28 @@
     - htop
     - python3-pip
   #when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+  when: no
+
+- name: install new packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - htop
+  #when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+  when: yes
 
 - name: python3 by defaut
   community.general.alternatives:
     name: python
     path: /usr/bin/python3
     link: /usr/local/bin/python
+
+- name: "install pip virtualenv"
+  pip:
+    name: virtualenv
+    state: latest
+    #virtualenv: /my_app/venv
 
 - include: toto_user.yml
   tags: toto

@@ -12,23 +12,12 @@
   register: repo_whos
 
 - name: change ownership
-  file: 
-    path: "/home/toto/whos_on_my_network5"
-    owner: "toto" 
-    group: "toto"
-    state: directory 
-    recurse: yes 
-    mode: u=rwX,g=rX,o=rX
-  #register: output_chown
-
-- name: change ownership
   tags: repoonly
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
   with_items:
   - { path: "/home/toto/whos_on_my_network6" }
   #register: output_chown
-
-- debug: var=output_chown
+  when: repo_whos.changed
 
 - name: "install pip flask (for whos_on_my_network)"
   pip:
@@ -40,11 +29,13 @@
   pip:
     requirements: /home/toto/whos_on_my_network/requirements.txt
     virtualenv: /home/toto/Envs/whos_on_my_network
-  
+  when: repo_whos.changed
+
 - name: "ad hoc shell : cd webapp && npm i && npm run build"
   remote_user: toto
-  shell: "cd /home/toto/whos_on_my_network/webapp && npm i && npm run build"
+  shell: ". ~/Envs/whos_on_my_network/bin/activate && cd /home/toto/whos_on_my_network/webapp && npm i && npm run build"
   register: shell_output
+  when: repo_whos.changed
 
 #- debug: var=shell_output
 
@@ -52,5 +43,6 @@
   file: 
     path: /home/toto/db
     state: directory
+  when: repo_whos.changed
 
 

@@ -94,10 +94,10 @@
 
 - hosts: whos_on_my_network
   gather_facts: false
-  tags: whos-on-my-network
+  tags: whos_on_my_network
   become: true
   roles: 
-    - whos-on-my-network
+    - whos_on_my_network
 
 - hosts: db_servers
   gather_facts: false

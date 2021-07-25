@@ -33,6 +33,20 @@
     path: /usr/bin/python3
     link: /usr/local/bin/python
 
+- name: pip3 by defaut
+  #prerequisite:
+  #ansible-galaxy collection install community.general
+  community.general.alternatives:
+    name: pip
+    path: /usr/bin/pip3
+    link: /usr/local/bin/pip
+
+- name: upgrade pip to latest version
+  pip:
+    name: pip
+    executable: pip3
+    state: latest
+
 - name: "install pip virtualenv"
   pip:
     name: virtualenv

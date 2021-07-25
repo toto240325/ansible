@@ -49,8 +49,8 @@
     - { name: 'user.email', value: 'toto240325@gmail.com' }
   register: myoutput
 
-- debug: var=myoutput
-  tags: debug2
+#- debug: var=myoutput
+#  tags: debug2
 
 - name: install repo utils for toto 
   become: true
@@ -59,12 +59,23 @@
   with_items:
   - { repo: 'https://github.com/toto240325/utils.git',              dest: '/home/toto/utils' }
   #- { repo: 'https://github.com/toto240325/ansible.git',           dest: '/home/toto/ansible' }
-  - { repo: 'https://github.com/toto240325/whos-on-my-network.git', dest: '/home/toto/whos-on-my-network' }
+  #- { repo: 'https://github.com/toto240325/whos_on_my_network.git', dest: '/home/toto/whos_on_my_network' }
   - { repo: 'https://github.com/toto240325/monitor.git',            dest: '/home/toto/monitor' }
+  - { repo: 'https://github.com/toto240325/watchdog.git',            dest: '/home/toto/watchdog' }
   register: output_git
 
-- debug: msg="after debug"
-  tags: debug1
+#- name: install repo utils for toto (git method)
+#  become: true
+#  remote_user: toto
+#  tags: gitmethod
+#  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes key_file='/home/toto/.ssh/id_ed25519_toto'
+#  with_items:
+#  - { repo: 'git@github.com:toto240325/watchdog.git', dest: '/home/toto/watchdog' }
+#  #register: output_git
+
+
+#- debug: msg="after debug"
+#  tags: debug1
 
 #- debug: var=output_git
 #  tags: debug1
@@ -75,9 +86,17 @@
   with_items:
   - { path: "/home/toto/utils" }
   - { path: "/home/toto/ansible" }
-  - { path: "/home/toto/whos-on-my-network" }
+  #- { path: "/home/toto/whos_on_my_network" }
   - { path: "/home/toto/monitor" }
 #  register: output_chown
+
+- name: install cron job for toto (ansible-pull)
+  cron:
+    user: toto
+    name: "ansible provision"
+    minute: "*/10"
+    job: "/usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git > ~/ansible-pull.log"
+
 
 #- debug: var=output_chown
 #  tags: debug1

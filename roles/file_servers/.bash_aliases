@@ -46,10 +46,3 @@ alias lsys="less /var/log/syslog"
 
 export XAUTHORITY=~/.Xauthority
 
-alias ap="ansible-playbook site.yml"
-alias cf="cp -vu ~/{.tmux.conf,.bash_aliases,.bash_aliases} ~/ansible/roles/base/files/"
-
-if [ -f ~/.my_aliases ]; then
-  . ~/.my_aliases
-fi
-

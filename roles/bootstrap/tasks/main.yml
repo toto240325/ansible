@@ -1,7 +1,7 @@
 ---
 # bootstrap.yml
 # this playbook makes sure all targets get the ansible user and can be sshed into
-# ansible-playbook bootstrap.yml --limit to-bootstrap --become --ask-become-pass
+# ansible-playbook bootstrap.yml --limit bootstrap --become --ask-become-pass
 #
  
 #   - name: install updates (CentOS)
@@ -12,26 +12,25 @@
 #     when: ansible_distribution == "CentOS"
  
    - name: install updates (Ubuntu)
-     tags: always
      apt:
        upgrade: dist
        update_cache: yes
      #when: ansible_distribution == "Ubuntu"
  
    - name: create ansible user
-     tags: always
      user:
        name: ansible
-       groups: root
+       groups: ansible
+       shell: /bin/bash
+       state: present
+
  
    - name: add ssh key for ansible
-     tags: always
      authorized_key:
        user: ansible
        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com"
       
    - name: add sudoers file for ansible
-     tags: always
      copy:
        src: sudoer_ansible
        dest: /etc/sudoers.d/ansible

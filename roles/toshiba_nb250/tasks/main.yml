@@ -1,0 +1,8 @@
+---
+
+- name: Disable suspend on laptop lid close
+  lineinfile:
+    path: "/etc/systemd/logind.conf"
+    state: present
+    regexp: "^HandleLidSwitch="
+    line: "HandleLidSwitch=ignore"

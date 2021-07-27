@@ -99,6 +99,13 @@
   roles: 
     - whos_on_my_network
 
+- hosts: monitor
+  gather_facts: false
+  tags: monitor
+  become: true
+  roles: 
+    - monitor
+
 - hosts: db_servers
   gather_facts: false
   tags: db_servers

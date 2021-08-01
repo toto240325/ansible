@@ -8,7 +8,7 @@
   tags: repomon
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no force=no
   with_items:
-  - { repo: 'https://github.com/toto240325/monitor.git', dest: '/home/toto/monitor' }
+  - { repo: 'https://github.com/toto240325/monitor.git', dest: '/var/www//monitor' }
   register: repo_monitor
 
 - name: change ownership
@@ -26,6 +26,38 @@
     owner: toto
     group: toto
   when: repo_monitor.changed
+
+- name: Create document root
+  file:
+    path: "/var/www/{{ http_host }}"
+    state: directory
+    owner: "{{ app_user }}"
+    mode: '0755'
+
+- name: Copy index test page
+  template:
+    src: "files/index.html.j2"
+    dest: "/var/www/{{ http_host }}/index.html"
+
+- name: Set up Apache virtualhost
+  template:
+    src: "files/apache.conf.j2"
+    dest: "/etc/apache2/sites-available/{{ http_conf }}"
+
+- name: Enable new site
+  shell: /usr/sbin/a2ensite {{ http_conf }}
+  notify: Reload Apache
+
+- name: Disable default Apache site
+  shell: /usr/sbin/a2dissite 000-default.conf
+  when: disable_default
+  notify: Reload Apache
+
+- name: "UFW - Allow HTTP on port {{ http_port }}"
+  ufw:
+    rule: allow
+    port: "{{ http_port }}"
+    proto: tcp
 
 #- name: cron job to launch whos_on_my_network watcher under root
 #  cron:

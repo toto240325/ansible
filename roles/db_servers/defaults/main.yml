@@ -3,7 +3,7 @@
 # variables for my-sql
 mysql_db: "myDB"
 mysql_user: toto
-mysql_password: "{{ toto_password | password_hash('sha512','myOwnSalt') }}"
+mysql_pass: "{{ toto_password | password_hash('sha512','myOwnSalt') }}"
 
 
 

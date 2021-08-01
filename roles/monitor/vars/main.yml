@@ -1,0 +1,6 @@
+---
+app_user: "toto"
+http_host: "monitor"
+http_conf: "monitor.conf"
+http_port: "80"
+disable_default: true

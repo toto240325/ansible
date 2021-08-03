@@ -11,9 +11,9 @@
   - name: "debug msg"
     debug: msg="this is a debug message"
 
-  - name: "shell test"
-    shell: "ls -la"
-    register: shelloutput
+  # - name: "shell test"
+  #   shell: "ls -la"
+  #   register: shelloutput
 
   - name: "debug shell output"
     debug: var=shelloutput

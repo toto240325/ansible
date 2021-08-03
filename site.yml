@@ -17,6 +17,16 @@
   become: true
   pre_tasks:
 
+
+  - name: "debug inventory"
+    debug: var=inventory_hostname
+
+  - name: "test echo commmand"
+    command: echo "this is a test of the echo command"
+
+  # - name: "test autocomplete"
+  #   include_role: r
+      
 #  - name: update repository index (CentOS)
 #    tags: always
 #    dnf:
@@ -30,6 +40,7 @@
       update_cache: yes
     changed_when: false
     #when: ansible_distribution == "Ubuntu"
+  
 
 - hosts: all
   gather_facts: false
@@ -112,6 +123,14 @@
   become: true
   roles:
     - db_servers
+
+- hosts: windows
+  gather_facts: true
+  tags: windows
+  become: true
+  roles:
+    - windows
+
 #
 #- hosts: file_servers
 #  tags: file_servers

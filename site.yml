@@ -1,5 +1,6 @@
 ---
 # ansible all --limit 192.168.0.51 -u vagrant -m "shell" -a "ls -al"
+# ansible webservers -m copy -a "src=dist/ dest=/var/www/html" -i inventory --become
 # ansible-playbook site.yml --vault-password-file  ~/.ssh/vault-key # until ansible user created on target and accessible via ssh key
 # ansible-playbook site.yml --tags apache
 # ansible-playbook site.yml --limit ubuntu0

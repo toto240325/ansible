@@ -9,11 +9,11 @@
 
 [web_servers]
 192.168.0.51
-#192.168.0.148
+192.168.0.148
 
 [db_servers]
 192.168.0.51
-#192.168.0.148
+192.168.0.148
 
 [file_servers]
 
@@ -50,6 +50,7 @@
 
 [monitor]
 192.168.0.51
+192.168.0.148
 
 [windows]
 192.168.0.99 ansible_connection=ssh ansible_shell_type=cmd ansible_user=toto

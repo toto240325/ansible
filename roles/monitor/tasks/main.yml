@@ -8,24 +8,24 @@
   tags: repomon
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no force=no
   with_items:
-  - { repo: 'https://github.com/toto240325/monitor.git', dest: '/var/www//monitor' }
+  - { repo: 'https://github.com/toto240325/monitor.git', dest: '/var/www//{{ http_host }}' }
   register: repo_monitor
 
 - name: change ownership
   tags: repomon
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
   with_items:
-  - { path: "/home/toto/monitor" }
+  - { path: "/var/www/{{ http_host }}" }
   #register: output_chown
   when: repo_monitor.changed
 
-- name: "initialise DB in separate location"
-  file: 
-    path: /home/toto/db
-    state: directory
-    owner: toto
-    group: toto
-  when: repo_monitor.changed
+# - name: "initialise DB in separate location (makes sense only for sqlite, note mysql)"
+#   file: 
+#     path: /home/toto/db
+#     state: directory
+#     owner: toto
+#     group: toto
+#   when: repo_monitor.changed
 
 - name: Create document root
   file:
@@ -34,10 +34,10 @@
     owner: "{{ app_user }}"
     mode: '0755'
 
-- name: Copy index test page
-  template:
-    src: "files/index.html.j2"
-    dest: "/var/www/{{ http_host }}/index.html"
+# - name: Copy index test page
+#   template:
+#     src: "files/index.html.j2"
+#     dest: "/var/www/{{ http_host }}/index.html"
 
 - name: Set up Apache virtualhost
   template:

@@ -52,6 +52,10 @@
 192.168.0.51
 #192.168.0.148
 
+[watchdog]
+192.168.0.51
+#192.168.0.148
+
 [windows]
 192.168.0.99 ansible_connection=ssh ansible_shell_type=cmd ansible_user=toto
 

@@ -13,20 +13,21 @@
 #    state: absent
 #  when: ansible_distribution == "Ubuntu"
 
+- name: "register facts"
+  command: echo "test"
+  register: allfacts
 
-- name: What is my inventory_hostname
-  debug: var={{inventory_hostname}}
+# - name: "check allfacts"
+#   debug: var=ansible_facts
 
-- name: What is my ansible_hostname
-  debug: var={{ansible_hostname}}
- 
+- debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
 
 - name: "install mysql-server"
   #gather_facts: false
   package: name={{ item }} state=latest
   with_items:
     - mysql-server
-  when: ansible.hostname != "192.168.0.148"
+  when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] != "192.168.0.148"
  #   - mysql
 
 - name: "start and enable mysql server"

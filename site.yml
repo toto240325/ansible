@@ -117,6 +117,13 @@
   roles: 
     - monitor
 
+- hosts: watchdog
+  gather_facts: false
+  tags: watchdog
+  become: true
+  roles: 
+    - watchdog
+
 - hosts: db_servers
   #gather_facts: false
   tags: db_servers

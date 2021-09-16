@@ -27,6 +27,12 @@
   package: name={{ item }} state=latest
   with_items:
     - mysql-server
+    # - phpmyadmin
+    # - php-mbstring
+    # - php-zip
+    # - php-gd
+    # - php-json
+    # - php-curl
   when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] != "192.168.0.148"
  #   - mysql
 
@@ -53,7 +59,7 @@
     password: "{{ mysql_root_password | password_hash('sha512','myOwnSalt') }}"
     state: present
 
-- name: "create user toto"
+- name: "create user toto@localhost"
   tags: db_servers1
   no_log: false
   mysql_user:
@@ -62,6 +68,36 @@
     login_user: 'root'
     login_password: "{{ mysql_root_password | password_hash('sha512','myOwnSalt') }}"
     name: 'toto'
+    #password: "{{ mysql_toto_password | password_hash('sha512','myOwnSalt') }}"
+    password: 'Toto!'
+    priv: "*.*:ALL"
+    state: present
+
+- name: "create user toto@192.168.0.99"
+  tags: db_servers1
+  no_log: false
+  mysql_user:
+#    login_host: 'localhost'
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_user: 'root'
+    login_password: "{{ mysql_root_password | password_hash('sha512','myOwnSalt') }}"
+    name: 'toto'
+    host: '192.168.0.99'
+    #password: "{{ mysql_toto_password | password_hash('sha512','myOwnSalt') }}"
+    password: 'Toto!'
+    priv: "*.*:ALL"
+    state: present
+
+- name: "create user toto@192.168.0.148"
+  tags: db_servers1
+  no_log: false
+  mysql_user:
+#    login_host: 'localhost'
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_user: 'root'
+    login_password: "{{ mysql_root_password | password_hash('sha512','myOwnSalt') }}"
+    name: 'toto'
+    host: '192.168.0.148'
     #password: "{{ mysql_toto_password | password_hash('sha512','myOwnSalt') }}"
     password: 'Toto!'
     priv: "*.*:ALL"

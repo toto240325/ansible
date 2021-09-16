@@ -15,7 +15,7 @@
   tags: repomon
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes force=yes
   with_items:
-  - { repo: 'https://github.com/toto240325/monitor.git', dest: '/var/www//{{ http_host }}' }
+  - { repo: 'https://github.com/toto240325/monitor.git', dest: '/var/www/{{ http_host }}' }
   register: repo_monitor
 
 - name: "Copy params.php"

@@ -13,6 +13,7 @@
     - git
     - htop
     - python3-pip
+    - sqlite3
   #when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
   when: no
 
@@ -21,7 +22,7 @@
     name: "{{ item }}"
     state: latest
   with_items:
-    - sqlite3
+    - curl
   when: yes
   #when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
 

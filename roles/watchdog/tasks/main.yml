@@ -4,27 +4,27 @@
 #    name: npm
 #    state: latest
 
-- name: install repo monitor for toto
-  tags: repowatch
+- name: install repo watchdog for toto
+  tags: repowatchdog
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes force=yes
   with_items:
   - { repo: 'https://github.com/toto240325/watchdog.git', dest: '/home/toto/watchdog' }
-  register: repo_monitor
+  register: repo_watchdog
 
-- name: "Copy params.php"
+- name: "Copy params.py"
   template:
-    src: "files/params.php"
-    dest: "/var/www/{{ http_host }}/"
+    src: "files/params.py.j2"
+    dest: "/home/toto/watchdog/params.py"
 
 - name: change ownership
-  tags: repomon
+  tags: repowatchdog
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
   with_items:
-  - { path: "/var/www/{{ http_host }}" }
+  - { path: "/home/toto/watchdog" }
   #register: output_chown
-  when: repo_monitor.changed
+  when: repo_watchdog.changed
 
-# - name: "initialise DB in separate location (makes sense only for sqlite, note mysql)"
+# - name: "initialise DB in separate location (makes sense only for sqlite, not mysql)"
 #   file: 
 #     path: /home/toto/db
 #     state: directory
@@ -32,25 +32,6 @@
 #     group: toto
 #   when: repo_monitor.changed
 
-- name: Set up Apache virtualhost
-  template:
-    src: "files/apache.conf.j2"
-    dest: "/etc/apache2/sites-available/{{ http_conf }}"
-
-- name: Enable new site
-  shell: /usr/sbin/a2ensite {{ http_conf }}
-  notify: Reload Apache
-
-- name: Disable default Apache site
-  shell: /usr/sbin/a2dissite 000-default.conf
-  when: disable_default
-  notify: Reload Apache
-
-- name: "UFW - Allow HTTP on port {{ http_port }}"
-  ufw:
-    rule: allow
-    port: "{{ http_port }}"
-    proto: tcp
 
 #- name: cron job to launch whos_on_my_network watcher under root
 #  cron:
@@ -67,5 +48,3 @@
 #    special_time: reboot
 #    #minute: "*/10"
 #    job: ". /home/toto/whos_on_my_network/run_whos_webserver >> ~/whos_on_my_network_webserver.log"
-
-

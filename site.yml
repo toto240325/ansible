@@ -8,6 +8,9 @@
 # ansible-playbook site.yml  --tags=bootstrap --skip-tags=always
 # ansible-playbook site.yml  --tags=bootstrap --skip-tags=always --list-tasks
 # ansible-playbook --limit bootstrap site.yml --ask-become-pass --tags=bootstrap --skip-tags=always
+# ansible-vault edit ~/ansible/info.yml --vault-password-file  ~/.ssh/vault-key
+# ansible-vault edit ~/ansible/roles/watchdog/vars/main.yml --vault-password-file  ~/.ssh/vault-key
+
 
 # todo
 # fix IP address server

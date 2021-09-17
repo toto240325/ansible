@@ -1,8 +1,17 @@
 ---
+
+# ap --tags=monitor --skip-tags=always
 #- name: "install some packages"
 #  package:
 #    name: npm
 #    state: latest
+
+- name: Install a php package globally
+  community.general.composer:
+    command: require
+    #global_command: yes
+    arguments: phpunit/phpunit
+    working_dir: /home/toto/monitor
 
 - name: Create document root
   file:

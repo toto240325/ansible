@@ -6,7 +6,9 @@
   with_items:
     - ansible
     - ansible-lint
+    - curl
     - vim
+    - zip
     - unzip
     - tmux
     - p7zip-full
@@ -22,7 +24,7 @@
     name: "{{ item }}"
     state: latest
   with_items:
-    - curl
+    - zip
   when: yes
   #when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
 

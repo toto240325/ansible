@@ -68,3 +68,17 @@
   service:
     name: apache2
     state: restarted
+
+- name: Download php Composer
+  # https://symfonycasts.com/screencast/ansible/ansible-composer#installing-composer-with-script
+  script: scripts/install_composer.sh
+
+- name: Move php Composer
+  become: true
+  command: mv composer.phar /usr/local/bin/composer
+
+- name: Set permissions on Composer
+  become: true
+  file:
+    path: /usr/local/bin/composer
+    mode: "a+x"

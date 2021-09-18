@@ -6,7 +6,7 @@
 #    name: npm
 #    state: latest
 
-- name: Install a php package globally
+- name: Install a php package 
   community.general.composer:
     command: require
     #global_command: yes
@@ -67,6 +67,8 @@
     rule: allow
     port: "{{ http_port }}"
     proto: tcp
+
+
 
 #- name: cron job to launch whos_on_my_network watcher under root
 #  cron:

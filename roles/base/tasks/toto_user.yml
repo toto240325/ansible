@@ -65,6 +65,22 @@
   - { repo: 'https://github.com/toto240325/watchdog.git',            dest: '/home/toto/watchdog' }
   register: output_git
 
+
+# - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+#   tags: mygit
+#   replace:
+#       path: /home/toto/utils/.git/config
+#       regexp: "https://github.com/toto240325"
+#       replace: "git@github.com:toto240325"
+
+- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+  tags: mygit
+  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+  with_items:
+  - "/home/toto/utils"
+  - "/var/www/monitor"
+  - "/home/toto/watchdog"
+
 #- name: install repo utils for toto (git method)
 #  become: true
 #  remote_user: toto

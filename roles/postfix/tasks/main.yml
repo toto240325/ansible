@@ -1,0 +1,39 @@
+---
+#https://www.linkedin.com/pulse/configure-postfix-realyhost-send-e-mail-help-ansible-rahangdale/
+
+- name: adding required lines in /etc/postfix/main.cf file
+  tags: debugpostfix
+  template:
+    src: main.cf.j2
+    dest: /etc/postfix/main.cf
+    
+
+- name: configuring postfix sasl creds
+  #tags: debug999
+  copy:
+    content: '[smtp.gmail.com]:587 {{ vault_toto_mailer }}: {{ vault_toto_mailer_pw}}'
+    dest: /etc/postfix/sasl_passwd
+    owner: root
+    group: postfix
+    mode: 0640
+
+- name: generate postfix lookup table
+  command: postmap /etc/postfix/sasl_passwd
+
+- name: enabling and starting postfix service
+  service:
+    name: postfix
+    state: restarted
+
+- name: sending mail to test@gmail.com
+  tags: debugmail
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "{{ vault_toto_mailer }}@gmail.com"
+    password: "{{ vault_toto_mailer_pw }}"
+    to: "{{ vault_toto_email }}@gmail.com"
+    subject: System {{ ansible_hostname }} has been successfully provisioned.
+    body: System {{ ansible_hostname }} has been successfully provisioned.
+  #delegate_to: localhost
+

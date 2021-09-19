@@ -11,7 +11,7 @@
 - name: create toto user
   user:
     name: toto
-    password: "{{ toto_password | password_hash('sha512','myOwnSalt') }}"
+    password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
     #password: "{{ 'password' | password_hash('sha512') }}"
     update_password: on_create
     shell: /bin/bash
@@ -112,8 +112,8 @@
   cron:
     user: toto
     name: "ansible provision"
-    minute: "*/10"
-    job: "/usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> ~/ansible-pull.log"
+    minute: "*/60"
+    job: "/home/toto/testjinja/bin/activate; /usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> ~/ansible-pull.log"
 
 
 #- debug: var=output_chown

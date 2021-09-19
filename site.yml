@@ -19,12 +19,8 @@
 - hosts: all
   gather_facts: false
   become: true
+
   pre_tasks:
-  
-  # vars_files:
-  # - ~/ansible/info.yml
-
-
   - name: "debug inventory"
     debug: var=inventory_hostname
 
@@ -48,9 +44,10 @@
     changed_when: false
     #when: ansible_distribution == "Ubuntu"
   
-
 - hosts: all
   #gather_facts: false
+  vars_files:
+  - ~/ansible/vault.yml
   tags: all
   become: true
   roles:
@@ -65,8 +62,6 @@
   roles:
     - geerlingguy.postfix
     - postfix
-
-
    
 - hosts: vagrant
   gather_facts: false
@@ -130,6 +125,8 @@
     - whos_on_my_network
 
 - hosts: monitor
+  vars_files:
+  - ~/ansible/vault.yml
   gather_facts: false
   tags: monitor
   become: true
@@ -137,6 +134,8 @@
     - monitor
 
 - hosts: watchdog
+  vars_files:
+  - ~/ansible/vault.yml
   gather_facts: false
   tags: watchdog
   become: true
@@ -213,7 +212,7 @@
 #  - name: create toto user 
 #    user:
 #      name: toto
-#      password: "{{ toto_password | password_hash('sha512') }}"
+#      password: "{{ vault_toto_pw | password_hash('sha512') }}"
 #      #password: "{{ 'password' | password_hash('sha512') }}"
 #      shell: /bin/bash
 #      state: present

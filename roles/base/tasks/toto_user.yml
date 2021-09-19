@@ -113,7 +113,7 @@
     user: toto
     name: "ansible provision"
     minute: "*/10"
-    job: "/usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> /root/ansible-pull.log"
+    job: "/usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> ~/ansible-pull.log"
 
 
 #- debug: var=output_chown

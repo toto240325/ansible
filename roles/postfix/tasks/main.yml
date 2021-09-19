@@ -9,9 +9,10 @@
     
 
 - name: configuring postfix sasl creds
-  #tags: debug999
+  tags: debug999
   copy:
-    content: '[smtp.gmail.com]:587 {{ vault_toto_mailer }}: {{ vault_toto_mailer_pw}}'
+    content: '[smtp.gmail.com]:587 {{ vault_toto_mailer }}:{{ vault_toto_mailer_pw}}'
+#    content: 'smtp.gmail.com:587 {{ vault_toto_mailer }}:{{ vault_toto_mailer_pw}}'
     dest: /etc/postfix/sasl_passwd
     owner: root
     group: postfix
@@ -32,7 +33,9 @@
     port: 587
     username: "{{ vault_toto_mailer }}@gmail.com"
     password: "{{ vault_toto_mailer_pw }}"
-    to: "{{ vault_toto_email }}@gmail.com"
+    to: 
+    - "{{ vault_toto_email }}@gmail.com"
+    - "eric.derruine@ec.europa.eu"
     subject: System {{ ansible_hostname }} has been successfully provisioned.
     body: System {{ ansible_hostname }} has been successfully provisioned.
   #delegate_to: localhost

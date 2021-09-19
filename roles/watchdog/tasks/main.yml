@@ -39,7 +39,7 @@
     name: "watchdog"
     #special_time: reboot
     minute: "*/5"
-    job: "python /home/toto/watchdog/watchdog.py >> ~/watchdog.log"
+    job: "python /home/toto/watchdog/watchdog.py 2>&1 >> /root/watchdog.log"
 
 #- name: cron job to launch whos_on_my_network webserver under root
 #  cron:

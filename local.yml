@@ -1,5 +1,6 @@
 ---
 - hosts: localhost
+  connection: local
   become: true
   pre_tasks:
     - name: update repositories
@@ -15,8 +16,8 @@
   #   shell: "ls -la"
   #   register: shelloutput
 
-  - name: "debug shell output"
-    debug: var=shelloutput
+  # - name: "debug shell output"
+  #   debug: var=shelloutput
 
 #    - include: tasks/users.yml
 #    - include: tasks/cron.yml

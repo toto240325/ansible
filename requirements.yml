@@ -1,7 +1,10 @@
 ---
+#requirements
+#ansible-galaxy collection install community.general
 - src: geerlingguy.apache
 - src: geerlingguy.composer
 - src: geerlingguy.mysql
 - src: geerlingguy.php
 - src: geerlingguy.php-mysql
 - src: geerlingguy.postfix
+#- src: ansible-galaxy collection install community.general

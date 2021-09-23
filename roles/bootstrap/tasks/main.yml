@@ -29,7 +29,6 @@
     shell: /bin/bash
     state: present
 
-
 - name: add ssh key for ansible
   authorized_key: user=ansible key="{{ item }}" state=present
   with_items: 
@@ -43,4 +42,20 @@
     owner: root
     group: root
     mode: 0440
+
+- name: Set a hostname
+  tags: debug13
+  ansible.builtin.hostname:
+    name: "{{ newHostname }}"
+
+- name: Add an Ethernet connection with static IP configuration
+  tags: debug13
+  community.general.nmcli:
+    conn_name: my-eth1
+    ifname: eth0
+    #type: ethernet
+    ip4: 192.168.0.{{ newIP }}
+    gw4: 192.168.0.1
+    state: present
+
 

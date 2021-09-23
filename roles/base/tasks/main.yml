@@ -80,12 +80,14 @@
     name: pip
     path: /usr/bin/pip3
     link: /usr/local/bin/pip
+  when: ansible_facts["nodename"] != "raspberry"
 
 - name: upgrade pip to latest version
   pip:
     name: pip
     executable: pip3
     state: latest
+  when: ansible_facts["nodename"] != "raspberry"
 
 - name: "install pip virtualenv"
   pip:

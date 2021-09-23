@@ -41,7 +41,7 @@
 #192.168.0.23 ansible_user=toto
 #192.168.0.80 ansible_user=pi 
 #192.168.1.70 ansible_user=vagrant
-#192.168.0.10 ansible_user=pi
+192.168.0.10 ansible_user=pi newHostname=pi8 newIP=192.168.0.8
 
 [toshiba_nb250]
 192.168.0.148

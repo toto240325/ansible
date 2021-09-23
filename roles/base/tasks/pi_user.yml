@@ -1,0 +1,43 @@
+---
+
+#- debug: msg="debug test"
+#
+#- name: shell test
+#  shell: pwd
+#  register: myoutput
+#
+#- debug: var=myoutput
+
+- name: modify pw for pi
+  user:
+    name: pi
+    password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
+    #password: "{{ 'password' | password_hash('sha512') }}"
+    #update_password: on_create
+    shell: /bin/bash
+    state: present
+    # apparently not supported : no_log: true
+
+- name: add ssh key
+  authorized_key: user=pi key="{{ item }}" state=present
+  with_items: 
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPplB13Opukct+t9O1nbRskrsFSnHPIktMYLuDjilXSV toto@local
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com
+  
+- name: add sudoers file 
+  copy:
+    src: sudoer_pi
+    dest: /etc/sudoers.d/pi
+    owner: root
+    group: root
+    mode: 0440
+
+- name: copy basic files - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
+  copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
+  with_items:
+  - { src: 'id_ed25519_toto.pub',    dest: '/home/pi/.ssh/',  mode: '0644' }
+  - { src: '~/.ssh/id_ed25519_toto', dest: '/home/pi/.ssh/',  mode: '0600' }
+  - { src: '.vimrc',                 dest: '/home/pi/',       mode: '0644' }
+  - { src: '.tmux.conf',             dest: '/home/pi/',       mode: '0644' }
+  - { src: '.bash_aliases',          dest: '/home/pi/',       mode: '0644' }
+

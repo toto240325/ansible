@@ -1,7 +1,8 @@
 ---
 # bootstrap.yml
 # this playbook makes sure all targets get the ansible user and can be sshed into
-# ansible-playbook bootstrap.yml --limit bootstrap --become --ask-become-pass
+# ansible-playbook site.yml --limit bootstrap --tags=bootstrap --skip-tags=always --ask-become-pass 
+# 
 #
  
 #   - name: install updates (CentOS)
@@ -48,14 +49,43 @@
   ansible.builtin.hostname:
     name: "{{ newHostname }}"
 
-- name: Add an Ethernet connection with static IP configuration
-  tags: debug13
+- name: Unblock Wifi
+  shell: rfkill unblock 0
+  
+
+# - name: Add a wifi connection with static IP configuration
+#   community.general.nmcli:
+#     conn_name: my-wifi1
+#     ifname: wlan0
+#     type: wifi               
+#     #type: ethernet
+#     state: present
+
+
+- name: Create the wifi connection
+  tags: debug14
   community.general.nmcli:
-    conn_name: my-eth1
-    ifname: eth0
-    #type: ethernet
-    ip4: 192.168.0.{{ newIP }}
+    type: wifi
+    conn_name: myconnVoo
+    ifname: wlan1
+    ip4: 192.168.0.98    #{{ newIP }}
     gw4: 192.168.0.1
+    ssid: VOO-953522
+    wifi_sec:
+      key-mgmt: wpa-psk
+      psk: Mario060502!w
+    autoconnect: true
     state: present
+
+
+# - name: Add an Ethernet connection with static IP configuration
+#   tags: debug13
+#   community.general.nmcli:
+#     conn_name: my-eth1
+#     ifname: eth0
+#     #type: ethernet
+#     ip4: 192.168.0.{{ newIP }}
+#     gw4: 192.168.0.1
+#     state: present
 
 

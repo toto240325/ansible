@@ -11,30 +11,36 @@
 #       update_cache: yes
 #     when: ansible_distribution == "CentOS"
  
-   - name: install updates (Ubuntu)
-     apt:
-       upgrade: dist
-       update_cache: yes
-     #when: ansible_distribution == "Ubuntu"
- 
-   - name: create ansible user
-     user:
-       name: ansible
-       groups: ansible
-       shell: /bin/bash
-       state: present
+- name: install updates (Ubuntu)
+  apt:
+    update_cache: yes
+    upgrade: dist
+  #when: ansible_distribution == "Ubuntu"
 
- 
-   - name: add ssh key for ansible
-     authorized_key:
-       user: ansible
-       key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com"
-      
-   - name: add sudoers file for ansible
-     copy:
-       src: sudoer_ansible
-       dest: /etc/sudoers.d/ansible
-       owner: root
-       group: root
-       mode: 0440
+- name: Ensure group "ansible" exists
+  ansible.builtin.group:
+    name: ansible
+    state: present
+
+- name: create ansible user
+  user:
+    name: ansible
+    groups: ansible
+    shell: /bin/bash
+    state: present
+
+
+- name: add ssh key for ansible
+  authorized_key: user=ansible key="{{ item }}" state=present
+  with_items: 
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPplB13Opukct+t9O1nbRskrsFSnHPIktMYLuDjilXSV toto@local
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com
+  
+- name: add sudoers file for ansible
+  copy:
+    src: sudoer_ansible
+    dest: /etc/sudoers.d/ansible
+    owner: root
+    group: root
+    mode: 0440
 

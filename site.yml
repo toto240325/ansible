@@ -4,9 +4,9 @@
 # ansible-playbook site.yml --vault-password-file  ~/.ssh/vault-key # until ansible user created on target and accessible via ssh key
 # ansible-playbook site.yml --tags apache
 # ansible-playbook site.yml --limit ubuntu0
-# ansible-playbook site.yml --limit bootstrap
-# ansible-playbook site.yml  --tags=bootstrap --skip-tags=always
-# ansible-playbook site.yml  --tags=bootstrap --skip-tags=always --list-tasks
+# ansible-playbook site.yml --limit 
+# ansible-playbook site.yml  --tags=db_servers --skip-tags=always
+# ansible-playbook site.yml  --tags=db_servers --skip-tags=always --list-tasks
 # ansible-playbook --limit bootstrap site.yml --ask-become-pass --tags=bootstrap --skip-tags=always
 # ansible-vault edit ~/ansible/info.yml --vault-password-file  ~/.ssh/vault-key
 # ansible-vault edit ~/ansible/vault.yml --vault-password-file  ~/.ssh/vault-key
@@ -50,7 +50,8 @@
 #    when: ansible_distribution == "CentOS"
 #
  
-  # - debug:
+  # - tags: debug40
+  #   debug:
   #     var: ansible_facts
   #     #var: ansible_facts["cmdline"]
 
@@ -83,7 +84,7 @@
     - postfix
    
 - hosts: vagrant
-  gather_facts: false
+  #gather_facts: false
   tags: vagrant
   become: true
   roles:
@@ -103,12 +104,13 @@
 #  roles:
 #    - test
 #
-#- hosts: bootstrap
-#  tags: bootstrap
-#  become: true
-#  roles:
-#    - bootstrap
-#
+- hosts: bootstrap
+  gather_facts: true
+  tags: bootstrap
+  become: true
+  roles:
+  - bootstrap
+
 - hosts: ansible_servers
   gather_facts: false
   tags: ansible_servers

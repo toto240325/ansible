@@ -1,9 +1,13 @@
 ---
- 
+
 - name: copy basic files to user vagrant - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
-  copy: src=~/ansible/roles/base/files/.vimrc dest=/home/vagrant/ owner=vagrant group=vagrant mode=0644
-- copy: src=~/ansible/roles/base/files/.tmux.conf dest=/home/vagrant/ owner=vagrant group=vagrant mode=0644
-- copy: src=~/ansible/roles/base/files/.bash_aliases dest=/home/vagrant/.bash_aliases owner=vagrant group=vagrant mode=0644
+  copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=vagrant group=vagrant
+  with_items:
+  - { src: 'id_ed25519_toto.pub',    dest: '/home/vagrant/.ssh/', mode: '0644' }
+  - { src: '~/.ssh/id_ed25519_toto', dest: '/home/vagrant/.ssh/', mode: '0600' }
+  - { src: '.vimrc',                 dest: '/home/vagrant/.ssh/', mode: '0644' }
+  - { src: '.tmux.conf',             dest: '/home/vagrant/.ssh/', mode: '0644' }
+  - { src: '.bash_aliases',          dest: '/home/vagrant/.ssh/', mode: '0644' }
 
 - name: add ssh key for vagrant (ed_25519_toto_local)
   authorized_key:

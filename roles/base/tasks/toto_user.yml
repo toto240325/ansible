@@ -18,17 +18,12 @@
     state: present
     # apparently not supported : no_log: true
 
-- name: add ssh key for toto (ed_25519_toto)
-  authorized_key:
-    user: toto
-    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com"
-    #state: absent
-
-- name: add ssh key for toto (ed_25519_toto_local)
-  authorized_key:
-    user: toto
-    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPplB13Opukct+t9O1nbRskrsFSnHPIktMYLuDjilXSV toto@local"
-
+- name: add ssh key
+  authorized_key: user=toto key="{{ item }}" state=present
+  with_items: 
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPplB13Opukct+t9O1nbRskrsFSnHPIktMYLuDjilXSV toto@local
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com
+  
 - name: add sudoers file for toto
   copy:
     src: sudoer_toto

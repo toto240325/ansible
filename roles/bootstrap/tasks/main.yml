@@ -73,7 +73,7 @@
     ssid: VOO-953522
     wifi_sec:
       key-mgmt: wpa-psk
-      psk: Mario060502!w
+      psk: xxxxx
     autoconnect: true
     state: present
 

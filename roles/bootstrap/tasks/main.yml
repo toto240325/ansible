@@ -49,43 +49,78 @@
   ansible.builtin.hostname:
     name: "{{ newHostname }}"
 
+- name: Country Wifi
+  shell: iw reg set BE
+
 - name: Unblock Wifi
   shell: rfkill unblock 0
   
+- name: enable ssh on raspberry
+  service:
+    name: sshd
+    state: started
+    enabled: yes
+  when: ansible_facts["nodename"] != "raspberry"
 
-# - name: Add a wifi connection with static IP configuration
-#   community.general.nmcli:
-#     conn_name: my-wifi1
-#     ifname: wlan0
-#     type: wifi               
-#     #type: ethernet
-#     state: present
+- name: disable service dhcpcd (to avoid interference with network-manager static addresses)
+  tags: debug18
+  ansible.builtin.service:
+    name: dhcpcd
+    enabled: no
+    state: stopped
 
-
-- name: Create the wifi connection
-  tags: debug14
+- name: Add an Ethernet connection with static IP configuration
+  tags: debug17
   community.general.nmcli:
-    type: wifi
-    conn_name: myconnVoo
-    ifname: wlan1
-    ip4: 192.168.0.98    #{{ newIP }}
+    conn_name: my-eth0
+    ifname: eth0
+    type: ethernet
+    ip4: "{{ newEth0IP }}/24"
     gw4: 192.168.0.1
-    ssid: VOO-953522
-    wifi_sec:
-      key-mgmt: wpa-psk
-      psk: xxxxx
+    dns4:
+    - 8.8.4.4
+    - 1.1.1.1
     autoconnect: true
     state: present
 
+- name: Add a wifi connection with static IP configuration 1
+  tags: debug19
+  community.general.nmcli:
+    conn_name: linksysed
+    #ifname: wlan0
+    type: wifi
+    ssid: linksysed
+    wifi_sec:
+      key-mgmt: wpa-psk
+      psk: "{{ vault_linksysed_pw }}"
+    ip4: "{{ newWlan0IP }}/24"
+    gw4: 192.168.0.1
+    dns4:
+    - 8.8.4.4
+    - 1.1.1.1
+    autoconnect: true
+    state: present
 
-# - name: Add an Ethernet connection with static IP configuration
-#   tags: debug13
-#   community.general.nmcli:
-#     conn_name: my-eth1
-#     ifname: eth0
-#     #type: ethernet
-#     ip4: 192.168.0.{{ newIP }}
-#     gw4: 192.168.0.1
-#     state: present
+- name: Add a wifi connection with static IP configuration 2
+  tags: debug19
+  community.general.nmcli:
+    conn_name: my-wlan1
+    ifname: wlan1
+    type: wifi
+    ssid: linksysed
+    wifi_sec:
+      key-mgmt: wpa-psk
+      psk: my_password
+    ip4: "{{ newWlan1IP }}/24"
+    gw4: 192.168.0.1
+    dns4:
+    - 8.8.4.4
+    - 1.1.1.1
+    autoconnect: true
+    state: present
 
-
+- name: Remove an erroneously created connection
+  tags: debug20
+  community.general.nmcli:
+    conn_name: myconnVoo
+    state: absent

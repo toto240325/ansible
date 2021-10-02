@@ -1,4 +1,8 @@
 ---
+# - name: debug "nodename2"
+#   tags: debug21
+#   debug: var=ansible_facts["lsb"]["id"]
+  
 - name: make sure known hosts are in /etc/hosts
   tags: debug37
   lineinfile:
@@ -7,26 +11,47 @@
     line: "{{ item.line }}"
     state: "{{ item.state }}"
   loop:
-    - { regexp: '^192.168.0.1', line: '192.168.0.1 voo', state: 'present' }
-    - { regexp: '^192.168.0.4', line: '192.168.0.4 webcam_chalet', state: 'present' }
-    - { regexp: '^192.168.0.6', line: '192.168.0.6 hp5520', state: 'present' }
-    - { regexp: '^192.168.0.9', line: '192.168.0.9 alarm_system', state: 'present' }
+    - { regexp: '^192.168.0.1 ', line: '192.168.0.1 voo', state: 'present' }
+    - { regexp: '^192.168.0.4 ', line: '192.168.0.4 webcam_chalet', state: 'present' }
+    - { regexp: '^192.168.0.6 ', line: '192.168.0.6 hp5520', state: 'present' }
+    - { regexp: '^192.168.0.9 ', line: '192.168.0.9 alarm_system', state: 'present' }
     - { regexp: '^192.168.0.40', line: '192.168.0.40 ps4', state: 'present' }
     - { regexp: '^192.168.0.49', line: '192.168.0.49 webcam_jardin', state: 'present' }
     - { regexp: '^192.168.0.50', line: '192.168.0.50 linksysed', state: 'present' }
     - { regexp: '^192.168.0.51', line: '192.168.0.51 ubuntu1', state: 'present' }
-    - { regexp: '^192.168.0.81', line: '192.168.0.81 pi1_wifi', state: 'present' }
-    - { regexp: '^192.168.0.82', line: '192.168.0.82 pi2_wifi', state: 'present' }
-    - { regexp: '^192.168.0.83', line: '192.168.0.83 pi3_wifi', state: 'present' }
-    - { regexp: '^192.168.0.84', line: '192.168.0.84 pi4_wifi', state: 'present' }
-    - { regexp: '^192.168.0.91', line: '192.168.0.91 pi1_wifi', state: 'present' }
-    - { regexp: '^192.168.0.92', line: '192.168.0.92 pi2_wifi', state: 'present' }
-    - { regexp: '^192.168.0.93', line: '192.168.0.93 pi3_wifi', state: 'present' }
-    - { regexp: '^192.168.0.94', line: '192.168.0.94 pi4_wifi', state: 'present' }
+    
+    - { regexp: '^192.168.0.61', line: '192.168.0.61 pi1_eth0', state: 'present' }
+    - { regexp: '^192.168.0.71', line: '192.168.0.71 pi1_wlan0', state: 'present' }
+    - { regexp: '^192.168.0.81', line: '192.168.0.81 pi1_wlan1', state: 'present' }
+    
+    - { regexp: '^192.168.0.62', line: '192.168.0.62 pi1_eth0', state: 'present' }
+    - { regexp: '^192.168.0.72', line: '192.168.0.72 pi1_wlan0', state: 'present' }
+    - { regexp: '^192.168.0.82', line: '192.168.0.82 pi1_wlan1', state: 'present' }
+    
+    - { regexp: '^192.168.0.63', line: '192.168.0.63 pi1_eth0', state: 'present' }
+    - { regexp: '^192.168.0.73', line: '192.168.0.73 pi1_wlan0', state: 'present' }
+    - { regexp: '^192.168.0.83', line: '192.168.0.83 pi1_wlan1', state: 'present' }
+    
+    - { regexp: '^192.168.0.64', line: '192.168.0.64 pi1_eth0', state: 'present' }
+    - { regexp: '^192.168.0.74', line: '192.168.0.74 pi1_wlan0', state: 'present' }
+    - { regexp: '^192.168.0.84', line: '192.168.0.84 pi1_wlan1', state: 'present' }
+    
+    # - { regexp: '^192.168.0.65', line: '192.168.0.65 pi1_eth0', state: 'present' }
+    # - { regexp: '^192.168.0.75', line: '192.168.0.75 pi1_wlan0', state: 'present' }
+    # - { regexp: '^192.168.0.85', line: '192.168.0.85 pi1_wlan1', state: 'present' }
+    
+    # - { regexp: '^192.168.0.66', line: '192.168.0.66 pi1_eth0', state: 'present' }
+    # - { regexp: '^192.168.0.76', line: '192.168.0.76 pi1_wlan0', state: 'present' }
+    # - { regexp: '^192.168.0.86', line: '192.168.0.86 pi1_wlan1', state: 'present' }
+    
+    - { regexp: '^192.168.0.68', line: '192.168.0.68 pi1_eth0', state: 'present' }
+    - { regexp: '^192.168.0.78', line: '192.168.0.78 pi1_wlan0', state: 'present' }
+    - { regexp: '^192.168.0.88', line: '192.168.0.88 pi1_wlan1', state: 'present' }
+    
     - { regexp: '^192.168.0.97', line: '192.168.0.97 lenovo_orange', state: 'present' }
     - { regexp: '^192.168.0.99', line: '192.168.0.99 mypc3', state: 'present' }
     - { regexp: '^192.168.0.148', line: '192.168.0.148 nb2502', state: 'present' }
-
+  when: no
 
 - name: install basic packages
   package:
@@ -80,24 +105,21 @@
     name: pip
     path: /usr/bin/pip3
     link: /usr/local/bin/pip
-  when: ansible_facts["nodename"] != "raspberry"
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-
-- name: debug "nodename"
-  debug: var=ansible_facts["nodename"] 
-  
 - name: upgrade pip to latest version
   pip:
     name: pip
     executable: pip3
     state: latest
-  when: ansible_facts["nodename"] != "raspberry"
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: "install pip virtualenv"
   pip:
     name: virtualenv
     state: latest
     #virtualenv: /my_app/venv
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - include: toto_user.yml
   tags: toto

@@ -7,11 +7,13 @@
 #    state: latest
 
 - name: Install a php package 
+  tags: debug72
   community.general.composer:
+    #command: remove
     command: require
-    #global_command: yes
     arguments: phpunit/phpunit
-    working_dir: /home/toto/monitor
+    working_dir: "/var/www/{{ http_host }}"
+    #global_command: yes
 
 - name: Create document root
   file:
@@ -67,6 +69,19 @@
     rule: allow
     port: "{{ http_port }}"
     proto: tcp
+
+
+- name: Create mysql database
+  tags: db_servers5
+  mysql_db:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_user: 'toto'
+    login_password: "{{ vault_mysql_toto_pw }}"
+    name: "mydatabase"
+    state: import
+    #target: /home/toto/monitor/mydatabase.sql
+    target: "/var/www/{{ http_host }}/mydatabase.sql"
+
 
 
 

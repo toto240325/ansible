@@ -27,14 +27,15 @@
   package: name={{ item }} state=latest
   with_items:
     - mysql-server
-    # - phpmyadmin
-    # - php-mbstring
-    # - php-zip
-    # - php-gd
-    # - php-json
-    # - php-curl
+    - phpmyadmin
+    - php-mbstring
+    - php-zip
+    - php-gd
+    - php-json
+    - php-curl
   when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] != "192.168.0.148"
- #   - mysql
+  # if mariadb ??????
+  # - mysql
 
 - name: "start and enable mysql server"
   service:
@@ -47,16 +48,23 @@
     name: pymysql
     state: latest
 
-- name: Set MySQL root Password {{ toto_password }}
+- name: Set MySQL root Password
   tags: db_servers1
   no_log: true
   mysql_user:
 #    login_host: 'localhost'
     login_unix_socket: /var/run/mysqld/mysqld.sock
     login_user: 'root'
-    login_password: "{{ mysql_root_password | password_hash('sha512','myOwnSalt') }}"
+    #login_password: "{{ mysql_root_password | password_hash('sha512','myOwnSalt') }}"
+    # the very first time, login is blank
+    #login_password: ""
+    # then if pw of root has been set manually, it should be like this :
+    #login_password: "{{ vault_toto_pw }}"
+    # but when pw of root has been previously changed by this script, with password_hash, the pw should specify password_hash as well
+    login_password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
     name: 'root'
-    password: "{{ mysql_root_password | password_hash('sha512','myOwnSalt') }}"
+    #password: "{{ mysql_root_password | password_hash('sha512','myOwnSalt') }}"
+    password: "{{ vault_mysql_root_pw | password_hash('sha512','myOwnSalt') }}"
     state: present
 
 - name: "create user toto@localhost"
@@ -66,52 +74,56 @@
 #    login_host: 'localhost'
     login_unix_socket: /var/run/mysqld/mysqld.sock
     login_user: 'root'
-    login_password: "{{ mysql_root_password | password_hash('sha512','myOwnSalt') }}"
+    login_password: "{{ vault_mysql_root_pw | password_hash('sha512','myOwnSalt') }}"
     name: 'toto'
-    #password: "{{ mysql_toto_password | password_hash('sha512','myOwnSalt') }}"
-    password: 'Toto!'
+    # if we wanted a super secure pw for toto, we woudl do this :
+    #password: "{{ vault_mysql_toto_pw | password_hash('sha512','myOwnSalt') }}"
+    # but if we need to be able to access mysql for user toto manually with a simple pw, we have to do this:
+    password: "{{ vault_mysql_toto_pw }}"
     priv: "*.*:ALL"
     state: present
 
 - name: "create user toto@192.168.0.99"
-  tags: db_servers1
+  tags: db_servers2
   no_log: true
   mysql_user:
-#    login_host: 'localhost'
+  #  login_host: 'localhost'
     login_unix_socket: /var/run/mysqld/mysqld.sock
     login_user: 'root'
-    login_password: "{{ mysql_root_password | password_hash('sha512','myOwnSalt') }}"
+    login_password: "{{ vault_mysql_root_pw | password_hash('sha512','myOwnSalt') }}"
     name: 'toto'
     host: '192.168.0.99'
-    #password: "{{ mysql_toto_password | password_hash('sha512','myOwnSalt') }}"
-    password: 'Toto!'
+    # if we wanted a super secure pw for toto, we woudl do this :
+    #password: "{{ vault_mysql_toto_pw | password_hash('sha512','myOwnSalt') }}"
+    # but if we need to be able to access mysql for user toto manually with a simple pw, we have to do this:
+    password: "{{ vault_mysql_toto_pw }}"
     priv: "*.*:ALL"
     state: present
 
-- name: "create user toto@192.168.0.148"
-  tags: db_servers1
+- name: "create user toto@{{ monitor_db_host }}"
+  tags: db_servers4
   no_log: true
   mysql_user:
 #    login_host: 'localhost'
     login_unix_socket: /var/run/mysqld/mysqld.sock
     login_user: 'root'
-    login_password: "{{ mysql_root_password | password_hash('sha512','myOwnSalt') }}"
+    login_password: "{{ vault_mysql_root_pw | password_hash('sha512','myOwnSalt') }}"
     name: 'toto'
-    host: '192.168.0.148'
-    #password: "{{ mysql_toto_password | password_hash('sha512','myOwnSalt') }}"
-    password: 'Toto!'
+    host: "{{ monitor_db_host }}"
+    # if we wanted a super secure pw for toto, we woudl do this :
+    #password: "{{ vault_mysql_toto_pw | password_hash('sha512','myOwnSalt') }}"
+    # but if we need to be able to access mysql for user toto manually with a simple pw, we have to do this:
+    password: "{{ vault_mysql_toto_pw }}"
     priv: "*.*:ALL"
     state: present
 
-# - name: Create mysql database
-#   tags: db_servers2
-#   mysql_db:
-#     login_unix_socket: /var/run/mysqld/mysqld.sock
-#     login_user: 'toto'
-#     login_password: "{{ mysql_toto_password }}"
-#     name: "mydatabase"
-#     state: import
-#     target: /home/toto/monitor/mydatabase.sql
-
-
+- name: make sure the DB is accessible remotely, with its ip address
+  tags: debug70
+  lineinfile:
+    path: "/etc/mysql/mysql.conf.d/mysqld.cnf"
+    state: present
+    regexp: "bind-address"
+    line: "bind-address  = {{ monitor_db_host }}"
+  notify: restart mysql server  
+  
 

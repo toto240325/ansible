@@ -8,7 +8,7 @@
 # ansible-playbook site.yml --limit 
 # ansible-playbook site.yml  --tags=db_servers --skip-tags=always
 # ansible-playbook site.yml  --tags=db_servers --skip-tags=always --list-tasks
-# ansible-playbook site.yml --limit bootstrap --ask-become-pass --tags=bootstrap --skip-tags=always
+# ansible-playbook site.yml --limit bootstrap --tags=bootstrap --skip-tags=always --ask-become-pass 
 # ansible-vault edit ~/ansible/info.yml --vault-password-file  ~/.ssh/vault-key
 # ansible-vault edit ~/ansible/vault.yml --vault-password-file  ~/.ssh/vault-key
 # ansible-vault edit ~/ansible/roles/watchdog/vars/main.yml --vault-password-file  ~/.ssh/vault-key
@@ -33,11 +33,11 @@
   # - debug: var=ansible_facts["os_family"]
   #   tags: debugecho
 
-  - name: "test echo commmand"
-    tags: debugecho
-    command: echo "this is a test of the echo command"
-    register: cmdoutput
-    when: ansible_facts["os_family"] != "Windows"
+  # - name: "test echo commmand"
+  #   tags: debugecho
+  #   command: echo "this is a test of the echo command"
+  #   register: cmdoutput
+  #   when: ansible_facts["os_family"] != "Windows"
 
 
   # - debug: var=cmdoutput
@@ -57,7 +57,7 @@
   #     #var: ansible_facts["cmdline"]
 
   - name: update repository index (Ubuntu)
-    tags: always
+    tags: debug42
     apt:
       update_cache: yes
       upgrade: "yes"
@@ -66,14 +66,42 @@
     #when: ansible_os_family != "Windows"
   
 - hosts: all
-  #gather_facts: false
+  tags: base
+  gather_facts: true
   vars_files:
   - ~/ansible/vault.yml
-  tags: all
   become: true
   roles:
     - base
-   
+
+- hosts: bootstrap
+  gather_facts: true
+  vars_files:
+  - ~/ansible/vault.yml
+  tags: bootstrap
+  become: true
+  roles:
+  - bootstrap
+
+- hosts: conda
+  gather_facts: true
+  vars_files:
+  - ~/ansible/vault.yml
+  tags: conda
+  become: true
+  roles:
+  - conda
+
+- hosts: pi
+  gather_facts: true
+  vars_files:
+  - ~/ansible/vault.yml
+  tags: pi
+  become: true
+  roles:
+  - pi
+
+
 - hosts: postfix
   vars_files:
   - ~/ansible/vault.yml
@@ -98,20 +126,6 @@
   roles:
     - x_servers
 
-#- hosts: test
-#  gather_facts: false
-#  tags: test
-#  become: true
-#  roles:
-#    - test
-#
-- hosts: bootstrap
-  gather_facts: true
-  tags: bootstrap
-  become: true
-  roles:
-  - bootstrap
-
 - hosts: ansible_servers
   gather_facts: false
   tags: ansible_servers
@@ -132,12 +146,12 @@
   roles: 
     - web_servers
 
-- hosts: toshiba_nb250
+- hosts: laptops
   gather_facts: false
-  tags: nb250
+  tags: laptops
   become: true
   roles: 
-    - toshiba_nb250
+    - laptops
 
 - hosts: whos_on_my_network
   gather_facts: false
@@ -146,14 +160,6 @@
   roles: 
     - whos_on_my_network
 
-- hosts: monitor
-  vars_files:
-  - ~/ansible/vault.yml
-  gather_facts: false
-  tags: monitor
-  become: true
-  roles: 
-    - monitor
 
 - hosts: watchdog
   vars_files:
@@ -165,12 +171,23 @@
     - watchdog
 
 - hosts: db_servers
+  vars_files:
+  - ~/ansible/vault.yml
   #gather_facts: false
   tags: db_servers
   become: true
   roles:
-    - db_servers
+  - db_servers
 
+- hosts: monitor
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: false
+  tags: monitor
+  become: true
+  roles: 
+    - monitor
+    
 - hosts: windows
   gather_facts: true
   tags: windows

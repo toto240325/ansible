@@ -119,12 +119,21 @@
     group: toto
     mode: 0755
 
+- name: set the MAILTO cron variable
+  tags: debug67
+  community.general.cronvar:
+    user: toto
+    name: MAILTO
+    value: toto240325@gmail.com
+    
+
 - name: install cron job for toto (ansible-pull)
   tags: debug12
   cron:
     user: toto
     name: "ansible provision"
     hour: "21"
+    minute: "00"
     job: "/home/toto/run_ansible_pull.sh >> ~/ansible-pull.log"
     #job: "/home/toto/testjinja/bin/activate; /usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> ~/ansible-pull.log"
 

@@ -1,0 +1,65 @@
+---
+
+- name: install new packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    # - python-gpiozero
+    - htop
+
+- name: modify default pi password ("raspberry")
+  user:
+    name: pi
+    password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
+    update_password: always
+    shell: /bin/bash
+    state: present
+    # apparently not supported : no_log: true
+
+- name: install repos 
+  become: true
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no
+  with_items:
+  - { repo: 'https://github.com/toto240325/frigo.git',            dest: '/home/toto/frigo' }
+  register: output_git
+
+- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+  tags: mygit
+  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+  with_items:
+  - "/home/toto/frigo"
+
+
+- name: change ownership
+  tags: debug1
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+  with_items:
+  - { path: "/home/toto/frigo" }
+#  register: output_chown
+
+- name: set the MAILTO cron variable
+  community.general.cronvar:
+    user: root
+    name: MAILTO
+    value: toto240325@gmail.com
+    
+
+
+- name: cron job to launch piloop under root
+  cron:
+    user: root
+    name: "cron piloop"
+    special_time: reboot
+    #minute: "*/10"
+    job: "sleep 30; python /home/toto/utils/piloop.py"
+
+# - name: cron job to launch frigo under root
+#   cron:
+#     user: root
+#     name: "cron frigo"
+#     special_time: reboot
+#     #minute: "*/10"
+#     job: "sleep 30; python /home/toto/frigo.py"
+    
+

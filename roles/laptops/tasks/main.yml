@@ -1,0 +1,11 @@
+---
+
+- name: Disable suspend on laptop lid close
+  tags: debuglid
+  lineinfile:
+    path: "/etc/systemd/logind.conf"
+    state: present
+    regexp: "^HandleLidSwitch="
+    line: "HandleLidSwitch=ignore"
+  notify: restart logind
+  

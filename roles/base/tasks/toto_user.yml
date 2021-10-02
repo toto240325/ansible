@@ -61,7 +61,7 @@
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no
   with_items:
   - { repo: 'https://github.com/toto240325/utils.git',              dest: '/home/toto/utils' }
-  #- { repo: 'https://github.com/toto240325/ansible.git',           dest: '/home/toto/ansible' }
+  - { repo: 'https://github.com/toto240325/ansible.git',           dest: '/home/toto/ansible' }
   #- { repo: 'https://github.com/toto240325/whos_on_my_network.git', dest: '/home/toto/whos_on_my_network' }
   - { repo: 'https://github.com/toto240325/monitor.git',            dest: '/var/www/monitor' }
   - { repo: 'https://github.com/toto240325/watchdog.git',            dest: '/home/toto/watchdog' }
@@ -80,6 +80,7 @@
   replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
   with_items:
   - "/home/toto/utils"
+  - "/home/toto/ansible"
   - "/var/www/monitor"
   - "/home/toto/watchdog"
 
@@ -109,6 +110,13 @@
   #- { path: "/home/toto/monitor" }
   - { path: "/var/www/monitor" }
 #  register: output_chown
+
+# - name: "install ansible requirements"
+#   tags: debug75
+#   #become_user: toto
+#   command: sudo su toto; ansible-galaxy install -r ~/ansible/requirements.yml
+#   #when: ansible_facts["os_family"] != "Windows"
+
 
 - name: copy ansible-pull script
   tags: debug12

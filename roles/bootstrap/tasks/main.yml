@@ -133,7 +133,6 @@
   - { conn_name: linksysed-wlan0, ifname: wlan0, ip: "{{ newWlan0IP }}" }
   - { conn_name: linksysed-wlan1, ifname: wlan1, ip: "{{ newWlan1IP }}" }
 
-
 - name: Remove an erroneously created connection
   tags: debug19
   community.general.nmcli:

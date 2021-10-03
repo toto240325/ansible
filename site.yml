@@ -19,18 +19,18 @@
 # todo
 # fix IP address server
 
-- hosts: 192.168.0.51
-  gather_facts: true
-  tasks:
-  # - name: "display all ansible_facts"
-  #   debug: var=ansible_facts
-  #   tags: debugfacts
+# - hosts: 192.168.0.51
+#   gather_facts: true
+#   tasks:
+#   # - name: "display all ansible_facts"
+#   #   debug: var=ansible_facts
+#   #   tags: debugfacts
 
-  - name: "check allfacts"
-    tags: debugfacts
-    debug: var=ansible_facts
+#   - name: "check allfacts"
+#     tags: debugfacts
+#     debug: var=ansible_facts
 
-  - debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+#   - debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
 
 
 

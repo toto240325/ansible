@@ -123,7 +123,7 @@
     path: "/etc/mysql/mysql.conf.d/mysqld.cnf"
     state: present
     regexp: "bind-address"
-    line: "bind-address  = {{ ansible_facts["eth0"]["address"]["ipv4"] }}"
+    line: 'bind-address  = {{ ansible_facts["eth0"]["address"]["ipv4"] }}'
   notify: restart mysql  
   
 

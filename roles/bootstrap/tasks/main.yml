@@ -4,14 +4,14 @@
 # ansible-playbook site.yml --limit bootstrap --tags=bootstrap --skip-tags=always --ask-become-pass 
 # 
 #
- 
+
 #   - name: install updates (CentOS)
 #     tags: always
 #     dnf:
 #       update_only: yes
 #       update_cache: yes
 #     when: ansible_distribution == "CentOS"
- 
+
 - name: install updates (Ubuntu)
   apt:
     update_cache: yes
@@ -32,10 +32,10 @@
 
 - name: add ssh key for ansible
   authorized_key: user=ansible key="{{ item }}" state=present
-  with_items: 
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPplB13Opukct+t9O1nbRskrsFSnHPIktMYLuDjilXSV toto@local
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com
-  
+  with_items:
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPplB13Opukct+t9O1nbRskrsFSnHPIktMYLuDjilXSV toto@local
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com
+
 - name: add sudoers file for ansible
   copy:
     src: sudoer_ansible
@@ -49,12 +49,20 @@
   ansible.builtin.hostname:
     name: "{{ newHostname }}"
 
+- name: add hostname in /etc/hosts
+  lineinfile:
+    path: "/etc/hosts"
+    state: present
+    regexp: "^{{ newEthIP }}"
+    line: "{{ newEthIP }} {{ newHostname }}"
+
+
 - name: Country Wifi
   shell: iw reg set BE
 
 - name: Unblock Wifi
   shell: rfkill unblock 0
-  
+
 - name: enable ssh on raspberry
   service:
     name: sshd
@@ -69,7 +77,7 @@
     enabled: no
     state: stopped
 
-- name: Add an Ethernet connection with static IP configuration
+- name: "Add an Ethernet connection with static IP configuration {{ newEth0IP }}"
   tags: debug17
   community.general.nmcli:
     conn_name: my-eth0
@@ -83,44 +91,51 @@
     autoconnect: true
     state: present
 
-- name: Add a wifi connection with static IP configuration 1
-  tags: debug19
+- name: "Add a wifi connections with static IP configuration on VOO-953522"
+  tags: debug15
   community.general.nmcli:
-    conn_name: linksysed
-    #ifname: wlan0
+    conn_name: "{{ item.conn_name }}"
+    ifname: "{{ item.ifname }}"
+    ip4: "{{ item.ip }}/24"
+    type: wifi
+    ssid: VOO-953522
+    wifi_sec:
+      key-mgmt: wpa-psk
+      psk: "{{ vault_VOO953522_pw }}"
+    autoconnect: true
+    state: present
+    gw4: 192.168.0.1
+    dns4:
+    - 8.8.4.4
+    - 1.1.1.1
+  with_items:
+  - { conn_name: VOO-953522-wlan0, ifname: wlan0, ip: "{{ newWlan0IP }}" }
+  - { conn_name: VOO-953522-wlan1, ifname: wlan1, ip: "{{ newWlan1IP }}" }
+
+- name: "Add a wifi connections with static IP configuration on linksysed "
+  tags: debug15
+  community.general.nmcli:
+    conn_name: "{{ item.conn_name }}"
+    ifname: "{{ item.ifname }}"
+    ip4: "{{ item.ip }}/24"
     type: wifi
     ssid: linksysed
     wifi_sec:
       key-mgmt: wpa-psk
       psk: "{{ vault_linksysed_pw }}"
-    ip4: "{{ newWlan0IP }}/24"
+    autoconnect: true
+    state: present
     gw4: 192.168.0.1
     dns4:
     - 8.8.4.4
     - 1.1.1.1
-    autoconnect: true
-    state: present
+  with_items:
+  - { conn_name: linksysed-wlan0, ifname: wlan0, ip: "{{ newWlan0IP }}" }
+  - { conn_name: linksysed-wlan1, ifname: wlan1, ip: "{{ newWlan1IP }}" }
 
-- name: Add a wifi connection with static IP configuration 2
-  tags: debug19
-  community.general.nmcli:
-    conn_name: my-wlan1
-    ifname: wlan1
-    type: wifi
-    ssid: linksysed
-    wifi_sec:
-      key-mgmt: wpa-psk
-      psk: my_password
-    ip4: "{{ newWlan1IP }}/24"
-    gw4: 192.168.0.1
-    dns4:
-    - 8.8.4.4
-    - 1.1.1.1
-    autoconnect: true
-    state: present
 
 - name: Remove an erroneously created connection
-  tags: debug20
+  tags: debug19
   community.general.nmcli:
-    conn_name: myconnVoo
+    conn_name: linksysed
     state: absent

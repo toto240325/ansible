@@ -48,8 +48,9 @@
 #192.168.0.23 ansible_user=toto
 #192.168.0.80 ansible_user=pi 
 #192.168.1.70 ansible_user=vagrant
-192.168.0.68 ansible_user=pi newHostname=pi8 newEth0IP=192.168.0.68 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88 
+#192.168.0.68 ansible_user=pi newHostname=pi8 newEth0IP=192.168.0.68 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88 
 #192.168.0.43 ansible_user=toto newHostname=vayo newEth0IP=192.168.0.44 newWlan0IP=192.168.0.45 newWlan1IP=192.168.0.46 
+192.168.0.52 ansible_user=toto newHostname=ubuntu2 newEth0IP=192.168.0.52 newWlan0IP="" newWlan1IP="" 
 
 [pi]
 192.168.0.68

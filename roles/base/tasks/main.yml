@@ -2,7 +2,11 @@
 # - name: debug "nodename2"
 #   tags: debug21
 #   debug: var=ansible_facts["lsb"]["id"]
-  
+
+- name: Set timezone to Europe/Brussels
+  community.general.timezone:
+    name: Europe/Brussels
+
 - name: make sure known hosts are in /etc/hosts
   tags: debug37
   lineinfile:

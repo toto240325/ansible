@@ -53,8 +53,8 @@
   lineinfile:
     path: "/etc/hosts"
     state: present
-    regexp: "^{{ newEthIP }}"
-    line: "{{ newEthIP }} {{ newHostname }}"
+    regexp: "^{{ newEth0IP }}"
+    line: "{{ newEth0IP }} {{ newHostname }}"
 
 
 - name: Country Wifi

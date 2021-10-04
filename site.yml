@@ -33,6 +33,21 @@
 #   - debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
 
 
+# - hosts: 192.168.0.52
+#   tags: debug76
+#   gather_facts: true
+#   vars_files:
+#   - ~/ansible/vault.yml
+#   become: true
+#   tasks:
+#   - shell: "ls -al"
+#     register: myoutput
+#   - debug: var=myoutput
+
+# - name: "register facts"
+#   command: echo "test"
+#   register: allfacts
+
 
 - hosts: all
   tags: always

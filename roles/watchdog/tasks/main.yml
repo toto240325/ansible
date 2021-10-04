@@ -34,9 +34,11 @@
 
 
 - name: cron job to launch watchdog under root
+  tags: debug49
   cron:
     user: root
     name: "watchdog"
     #special_time: reboot
-    minute: "*/5"
+    #minute: "*/5"
+    minute: "5"
     job: "/usr/local/bin/python /home/toto/watchdog/watchdog.py 2>&1 >> /root/watchdog.log"

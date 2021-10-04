@@ -77,6 +77,25 @@
   #when: ansible_distribution in ["Ubuntu","Debian"] and ansible_distribution_version == "20.04"
   when: no
 
+
+- name: set the MAILTO cron variable
+  tags: debug67
+  community.general.cronvar:
+    user: root
+    name: MAILTO
+    value: toto240325@gmail.com
+
+- name: dummy weekly cron
+  tags: debugcron2
+  cron:
+    user: root
+    name: "dummy cron to check cron email is working"
+    job: "dummy job to check cron email still works"
+    # minute: "*/5"
+    day: "1"
+    hour: "09"
+    minute: "30"
+
 - name: install new packages
   package:
     name: "{{ item }}"

@@ -23,7 +23,7 @@
   with_items: 
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPplB13Opukct+t9O1nbRskrsFSnHPIktMYLuDjilXSV toto@local
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com
-  
+
 - name: add sudoers file for toto
   copy:
     src: sudoer_toto
@@ -42,18 +42,33 @@
   - { src: '.bash_aliases',          dest: '/home/toto/',       mode: '0644' }
 
 #this one doesn't work !!!!!
+# - name: setup some git global variables
+#   tags: debug2
+#   #remote_user: toto
+#   #community.general.git_config: repo="/home/toto/" scope=global list_all=yes
+#   community.general.git_config: repo="/home/toto/.gitconfig" name={{ item.name }} value={{ item.value }} #scope=global 
+#   with_items:
+#     - { name: 'user.name',  value: 'toto240325' }
+#     - { name: 'user.email', value: 'toto240325@gmail.com' }
+#   register: myoutput
+
 - name: setup some git global variables
   tags: debug2
-  #remote_user: toto
-  community.general.git_config: repo="/home/toto/test12" scope=global list_all=yes
-  #community.general.git_config: name={{ item.name }} value={{ item.value }} repo="/home/toto/test12" scope=global list_all=yes
-  with_items:
-    - { name: 'user.name',  value: 'toto240325' }
-    - { name: 'user.email', value: 'toto240325@gmail.com' }
+  lineinfile:
+    dest: /home/toto/.gitconfig
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    insertafter: "[user]"
+    state: "{{ item.state }}"
+  loop:
+    - { regexp: '^.*email', line: '  email = toto240325@gmail.com', state: 'present' }
+    - { regexp: '^.*name', line: '  name = toto240325', state: 'present' }
   register: myoutput
 
-#- debug: var=myoutput
-#  tags: debug2
+
+
+- debug: var=myoutput
+  tags: debug2
 
 - name: install repo utils for toto 
   become: true
@@ -133,7 +148,7 @@
     user: toto
     name: MAILTO
     value: toto240325@gmail.com
-    
+
 
 - name: install cron job for toto (ansible-pull)
   tags: debug12

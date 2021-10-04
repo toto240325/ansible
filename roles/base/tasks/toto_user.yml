@@ -33,10 +33,12 @@
     mode: 0440
 
 - name: copy basic files to user toto - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
+  tags: debugv
   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
   with_items:
   - { src: 'id_ed25519_toto.pub',    dest: '/home/toto/.ssh/',  mode: '0644' }
   - { src: '~/.ssh/id_ed25519_toto', dest: '/home/toto/.ssh/',  mode: '0600' }
+  - { src: '~/.ssh/vault-key',       dest: '/home/toto/.ssh/',  mode: '0600' }
   - { src: '.vimrc',                 dest: '/home/toto/',       mode: '0644' }
   - { src: '.tmux.conf',             dest: '/home/toto/',       mode: '0644' }
   - { src: '.bash_aliases',          dest: '/home/toto/',       mode: '0644' }
@@ -60,6 +62,7 @@
     line: "{{ item.line }}"
     insertafter: "[user]"
     state: "{{ item.state }}"
+    create: yes
   loop:
     - { regexp: '^.*email', line: '  email = toto240325@gmail.com', state: 'present' }
     - { regexp: '^.*name', line: '  name = toto240325', state: 'present' }

@@ -64,14 +64,15 @@
     state: "{{ item.state }}"
     create: yes
   loop:
+    - { regexp: '^[user]', line: '[user]', state: 'present' }
     - { regexp: '^.*email', line: '  email = toto240325@gmail.com', state: 'present' }
     - { regexp: '^.*name', line: '  name = toto240325', state: 'present' }
-  register: myoutput
+  # register: myoutput
 
 
 
-- debug: var=myoutput
-  tags: debug2
+# - debug: var=myoutput
+#   tags: debug2
 
 - name: install repo utils for toto 
   become: true

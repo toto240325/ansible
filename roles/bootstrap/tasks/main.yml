@@ -63,7 +63,9 @@
   shell: iw reg set BE
 
 - name: Unblock Wifi
+  tags: debugrf
   shell: rfkill unblock 0
+  when: ansible_facts["nodename"] == "raspberry"
 
 - name: enable ssh on raspberry
   service:
@@ -72,12 +74,21 @@
     enabled: yes
   when: ansible_facts["nodename"] != "raspberry"
 
+- name: "check if service dhcpd is present or not"
+  tags: debug_dhcpd3
+  shell: "systemctl status dhcpd 2>&1 | grep 'could not be found'"
+  register: dhcpd_output
+
+# - debug: var=dhcpd_output
+#   tags: debug_dhcpd3
+
 - name: disable service dhcpcd (to avoid interference with network-manager static addresses)
-  tags: debug18
+  tags: debug_dhcpd3
   ansible.builtin.service:
     name: dhcpcd
     enabled: no
     state: stopped
+  when: dhcpd_output.stdout != "Unit dhcpd.service could not be found."
 
 - name: "Add an Ethernet connection with static IP configuration {{ newEth0IP }}"
   tags: debug17
@@ -93,8 +104,17 @@
     autoconnect: true
     state: present
 
+- name: check if wlan0 exists
+  tags: debug_wlan0
+  shell: "ip a | grep wlan0"
+  register: wlan0_output
+  failed_when: wlan0_output.rc == 2  # grep returns 0 if kw found, 1 if not found, 2 if other error
+
+# - debug: var=wlan0_output
+#   tags: debug_wlan0
+  
 - name: "Add a wifi connections with static IP configuration on VOO-953522"
-  tags: debug15
+  tags: debug_wlan0
   community.general.nmcli:
     conn_name: "{{ item.conn_name }}"
     ifname: "{{ item.ifname }}"
@@ -112,10 +132,11 @@
     - 1.1.1.1
   with_items:
   - { conn_name: VOO-953522-wlan0, ifname: wlan0, ip: "{{ newWlan0IP }}" }
-  - { conn_name: VOO-953522-wlan1, ifname: wlan1, ip: "{{ newWlan1IP }}" }
+  when: wlan0_output.rc == 0
 
-- name: "Add a wifi connections with static IP configuration on linksysed "
-  tags: debug15
+
+- name: "Add a wifi connections with static IP configuration on linksysed"
+  tags: debug_wlan0
   community.general.nmcli:
     conn_name: "{{ item.conn_name }}"
     ifname: "{{ item.ifname }}"
@@ -133,7 +154,66 @@
     - 1.1.1.1
   with_items:
   - { conn_name: linksysed-wlan0, ifname: wlan0, ip: "{{ newWlan0IP }}" }
-  - { conn_name: linksysed-wlan1, ifname: wlan1, ip: "{{ newWlan1IP }}" }
+  when: wlan0_output.rc == 0
+
+
+- name: check if wlan1 exists
+  tags: debug_wlan1
+  shell: "ip a | grep wlan1"
+  register: wlan1_output
+  failed_when: wlan1_output.rc == 2  # grep returns 0 if kw found, 1 if not found, 2 if other error
+
+# - debug: var=wlan1_output
+#   tags: debug_wlan1
+  
+- name: "Add a wifi connections with static IP configuration on VOO-953522"
+  tags: debug_wlan1
+  community.general.nmcli:
+    conn_name: "{{ item.conn_name }}"
+    ifname: "{{ item.ifname }}"
+    ip4: "{{ item.ip }}/24"
+    type: wifi
+    ssid: VOO-953522
+    wifi_sec:
+      key-mgmt: wpa-psk
+      psk: "{{ vault_VOO953522_pw }}"
+    autoconnect: true
+    state: present
+    gw4: 192.168.0.1
+    dns4:
+    - 8.8.4.4
+    - 1.1.1.1
+  with_items:
+  - { conn_name: VOO-953522-wlan1, ifname: wlan1, ip: "{{ newwlan1IP }}" }
+  when: wlan1_output.rc == 0
+
+
+- name: "Add a wifi connections with static IP configuration on linksysed"
+  tags: debug_wlan1
+  community.general.nmcli:
+    conn_name: "{{ item.conn_name }}"
+    ifname: "{{ item.ifname }}"
+    ip4: "{{ item.ip }}/24"
+    type: wifi
+    ssid: linksysed
+    wifi_sec:
+      key-mgmt: wpa-psk
+      psk: "{{ vault_linksysed_pw }}"
+    autoconnect: true
+    state: present
+    gw4: 192.168.0.1
+    dns4:
+    - 8.8.4.4
+    - 1.1.1.1
+  with_items:
+  - { conn_name: linksysed-wlan1, ifname: wlan1, ip: "{{ newwlan1IP }}" }
+  when: wlan1_output.rc == 0
+
+
+
+
+
+
 
 - name: Remove an erroneously created connection
   tags: debug19

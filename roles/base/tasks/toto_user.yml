@@ -70,7 +70,6 @@
   # register: myoutput
 
 
-
 # - debug: var=myoutput
 #   tags: debug2
 

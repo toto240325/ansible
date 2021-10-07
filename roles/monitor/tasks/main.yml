@@ -88,7 +88,7 @@
     state: import
     #target: /home/toto/monitor/mydatabase.sql
     target: "/var/www/{{ http_host }}/mydatabase.sql"
-  when: mydatbase_exists = false
+  when: not mydatabase_exists
 
 
 

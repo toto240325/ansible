@@ -30,9 +30,10 @@
   register: repo_monitor
 
 - name: "Copy params.php"
+  tags: debug_copy_params_mon
   template:
-    src: "files/params.php"
-    dest: "/var/www/{{ http_host }}/"
+    src: "files/params.php.j2"
+    dest: "/var/www/{{ http_host }}/params.php"
 
 - name: change ownership
   tags: repomon

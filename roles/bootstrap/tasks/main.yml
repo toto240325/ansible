@@ -52,11 +52,12 @@
     name: "{{ newHostname }}"
 
 - name: add hostname in /etc/hosts
+  tags: debug_hosts
   lineinfile:
     path: "/etc/hosts"
     state: present
-    regexp: "^{{ newEth0IP }}"
-    line: "{{ newEth0IP }} {{ newHostname }}"
+    regexp: "^{{ newEthIP }}"
+    line: "{{ newEthIP }} {{ newHostname }}"
 
 
 - name: Country Wifi
@@ -90,13 +91,13 @@
     state: stopped
   when: dhcpd_output.stdout != "Unit dhcpd.service could not be found."
 
-- name: "Add an Ethernet connection with static IP configuration {{ newEth0IP }}"
+- name: "Add an Ethernet connection with static IP configuration {{ newEthIP }}"
   tags: debug17
   community.general.nmcli:
     conn_name: my-eth0
-    ifname: eth0
+    ifname: "{{ mainEthDev }}"
     type: ethernet
-    ip4: "{{ newEth0IP }}/24"
+    ip4: "{{ newEthIP }}/24"
     gw4: 192.168.0.1
     dns4:
     - 8.8.4.4

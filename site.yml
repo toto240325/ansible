@@ -49,6 +49,15 @@
 #   command: echo "test"
 #   register: allfacts
 
+- hosts: bootstrap
+  gather_facts: true
+  vars_files:
+  - ~/ansible/vault.yml
+  tags: bootstrap
+  become: true
+  roles:
+  - bootstrap
+
 
 - hosts: all
   tags: always
@@ -89,7 +98,6 @@
   #     var: ansible_facts
   #     #var: ansible_facts["cmdline"]
 
-
   - name: update repository index (Ubuntu)
     tags: debug42
     apt:
@@ -114,15 +122,6 @@
   become: true
   roles:
     - base
-
-- hosts: bootstrap
-  gather_facts: true
-  vars_files:
-  - ~/ansible/vault.yml
-  tags: bootstrap
-  become: true
-  roles:
-  - bootstrap
 
 - hosts: conda
   gather_facts: true
@@ -167,12 +166,12 @@
   roles:
     - x_servers
 
-- hosts: ansible_servers
-  gather_facts: false
-  tags: ansible_servers
-  become: true
-  roles:
-    - ansible_servers
+# - hosts: ansible_servers
+#   gather_facts: false
+#   tags: ansible_servers
+#   become: true
+#   roles:
+#     - ansible_servers
 
 #- hosts: workstations
 #  tags: workstations

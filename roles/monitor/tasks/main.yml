@@ -72,6 +72,12 @@
     proto: tcp
 
 
+- name: check if mydatabase already exists
+  tags: db_servers5
+  stat:
+    path: "/var/www/{{ http_host }}/mydatabase.sql"
+  register: mydatabase_exists
+
 - name: Create mysql database
   tags: db_servers5
   mysql_db:
@@ -82,7 +88,7 @@
     state: import
     #target: /home/toto/monitor/mydatabase.sql
     target: "/var/www/{{ http_host }}/mydatabase.sql"
-
+  when: mydatbase_exists = false
 
 
 

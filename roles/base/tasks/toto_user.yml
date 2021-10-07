@@ -24,6 +24,19 @@
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPplB13Opukct+t9O1nbRskrsFSnHPIktMYLuDjilXSV toto@local
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEa4zZ/C4s4rNNWk6raYFpLH3XVKh393wNX1iWTCcNG toto240325@gmail.com
 
+- name: ensure .bashrc is run if it exists (wheter interactive logon or not)
+  tags: debug_bashrc
+  blockinfile:
+    dest : /home/toto/.bash_profile
+    block: |
+      # if running bash
+      if [ -n "$BASH_VERSION" ]; then
+          # include .bashrc if it exists
+          if [ -f "$HOME/.bashrc" ]; then
+          . "$HOME/.bashrc"
+          fi
+      fi
+
 - name: add sudoers file for toto
   copy:
     src: sudoer_toto

@@ -9,9 +9,10 @@
 #- debug: var=myoutput
 
 - name: create toto user
+  tags: debug_create_toto
   user:
     name: toto
-    password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
+    #password: "{{ vault_toto_pw }}"
     password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
     #password: "{{ 'password' | password_hash('sha512') }}"
     update_password: on_create

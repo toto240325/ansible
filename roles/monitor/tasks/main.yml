@@ -90,8 +90,6 @@
     target: "/var/www/{{ http_host }}/mydatabase.sql"
   when: not mydatabase_exists
 
-
-
 #- name: cron job to launch whos_on_my_network watcher under root
 #  cron:
 #    user: root

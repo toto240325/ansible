@@ -33,12 +33,38 @@
 #   when: repo_monitor.changed
 
 
-- name: cron job to launch watchdog under root
+- name: make sure the cron watchdog job is first deleted and then recreated after the 2 cron variables
   tags: debug49
   cron:
-    user: root
+    user: toto
+    name: "watchdog"
+    state:absent     
+    #special_time: reboot
+    #minute: "*/5"
+    minute: "1"
+    job: "conda activate watchdog; /usr/local/bin/python /home/toto/watchdog/watchdog.py 2>&1 >> /home/toto/watchdog.log; conda deactivate"
+
+- name: set the SHELL cron variable
+  tags: debug49
+  community.general.cronvar:
+    user: toto
+    name: SHELL
+    value: /bin/bash
+    
+- name: set the BASH_ENV cron variable
+  tags: debug49
+  community.general.cronvar:
+    user: toto
+    name: BASH_ENV
+    value: /home/toto/.bashrc_conda
+    insertafter: SHELL
+    
+- name: cron job to launch watchdog under toto
+  tags: debug49
+  cron:
+    user: toto
     name: "watchdog"
     #special_time: reboot
     #minute: "*/5"
-    minute: "5"
-    job: "/usr/local/bin/python /home/toto/watchdog/watchdog.py 2>&1 >> /root/watchdog.log"
+    minute: "1"
+    job: "conda activate watchdog; /usr/local/bin/python /home/toto/watchdog/watchdog.py 2>&1 >> /home/toto/watchdog.log; conda deactivate"

@@ -55,5 +55,11 @@
     name: "watchdog"
     #special_time: reboot
     #minute: "*/5"
-    minute: "0"
-    job: "conda activate watchdog; /usr/local/bin/python /home/toto/watchdog/watchdog.py 2>&1 >> /home/toto/watchdog.log; conda deactivate"
+    minute: "30"
+    job: "conda activate /home/toto/.conda/envs/watchdog; /usr/local/bin/python /home/toto/watchdog/watchdog.py 2>&1 >> /home/toto/watchdog.log; conda deactivate"
+
+- name: change ownership to toto:toto
+  tags: debug111
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+  with_items:
+  - { path: "/home/toto/conda/" }

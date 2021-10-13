@@ -12,7 +12,7 @@
     - name: Create conda folder
       become: True
       file:
-        path: /opt/miniconda3
+        path: /opt/conda
         state: directory
         owner: root
         mode: 755
@@ -28,18 +28,18 @@
 
     - name: Add miniconda bin to path
       become: True
-      shell: echo 'export PATH=/opt/miniconda3/bin:$PATH' >> /etc/profile
+      shell: echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/profile
 
     - name: conda - read permission for all
       become: True
       file:
-        path: /opt/miniconda3
+        path: /opt/conda
         mode: 777
         recurse: yes
         
     - name: conda - execution permission for all
       become: True
       file:
-        path: /opt/miniconda3/bin
+        path: /opt/conda/bin
         mode: +x
         recurse: yes

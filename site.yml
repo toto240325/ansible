@@ -123,15 +123,6 @@
   roles:
     - base
 
-- hosts: conda
-  gather_facts: true
-  vars_files:
-  - ~/ansible/vault.yml
-  tags: conda
-  become: true
-  roles:
-  - conda
-
 - hosts: pi
   gather_facts: true
   vars_files:
@@ -201,14 +192,69 @@
     - whos_on_my_network
 
 
+# - hosts: conda
+#   gather_facts: true
+#   vars_files:
+#   - ~/ansible/vault.yml
+#   tags: conda
+#   become: true
+#   roles:
+#   - conda
+
 - hosts: watchdog
+  name: install watchdog
+  tags: watchdog, conda_watchdog
   vars_files:
   - ~/ansible/vault.yml
   gather_facts: false
-  tags: watchdog
   become: true
   roles: 
+    - evandam.conda
     - watchdog
+  tasks:
+  - name: Update conda
+    conda:
+      name: conda
+      state: latest
+      executable: /opt/conda/bin/conda
+
+  - name: Add miniconda bin to path
+    tags: debug_conda1
+    become: True
+    lineinfile:
+      path: "/etc/profile"
+      state: present
+      #regexp: "^export PATH=/opt/conda/bin:bind-address"
+      #line: 'bind-address  = {{ ansible_facts["eth0"]["address"]["ipv4"] }}'
+      line: 'export PATH=/opt/conda/bin:$PATH'
+
+
+  - name: Create a conda environment - watchdog
+    tags: conda_watchdog
+    conda:
+      name: python
+      version: "3.7"
+      environment: /home/toto/conda/envs/watchdog
+      state: present
+      executable: /opt/conda/bin/conda
+
+  - name: Install some packages in conda environment - watchdog
+    tags: conda_watchdog
+    conda:
+      name:
+        - numpy
+        - requests
+      environment: /home/toto/conda/envs/watchdog
+      executable: /opt/conda/bin/conda
+
+  # - name: Install R, using a versioned name
+  #   conda:
+  #     name: r-base=3.5.0
+
+
+
+
+
 
 - hosts: db_servers
   vars_files:

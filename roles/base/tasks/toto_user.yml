@@ -30,7 +30,7 @@
   tags: debug_bashrc
   stat:
     path: "/home/toto/.bash_profile"
-  register: bashrc_exists
+  register: bash_profile_exists
 
 - name: ensure .bashrc is run if it exists (wheter interactive logon or not)
   tags: debug_bashrc
@@ -44,7 +44,32 @@
           . "$HOME/.bashrc"
           fi
       fi
-  when: bashrc_exists == true
+  when: bash_profile_exists == true
+
+- name: Add miniconda bin to path (in .bash_profile)
+  tags: debug_bash_profile
+  become: True
+  lineinfile:
+    path: "/home/toto/.bash_profile"
+    state: present
+    #regexp: "^export PATH=/opt/conda/bin"
+    #line: '....'
+    line: 'export PATH=/opt/conda/bin:$PATH'
+  when: bash_profile_exists == true
+
+- name: Add miniconda bin to path (in .bash_profile)
+  tags: debug_bash_profile
+  become: True
+  lineinfile:
+    path: "/home/toto/.bashrc"
+    state: present
+    #regexp: "^export PATH=/opt/conda/bin"
+    #line: '....'
+    line: 'export PATH=/opt/conda/bin:$PATH'
+
+
+
+
 
 - name: add sudoers file for toto
   copy:
@@ -64,6 +89,7 @@
   - { src: '.vimrc',                 dest: '/home/toto/',       mode: '0644' }
   - { src: '.tmux.conf',             dest: '/home/toto/',       mode: '0644' }
   - { src: '.bash_aliases',          dest: '/home/toto/',       mode: '0644' }
+  - { src: '.bashrc_conda',          dest: '/home/toto/',       mode: '0644' }
 
 #this one doesn't work !!!!!
 # - name: setup some git global variables

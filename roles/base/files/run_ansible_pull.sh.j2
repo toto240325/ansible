@@ -1,6 +1,7 @@
 # script to run the ansible_pull script
 # not sure if this is a good idea : #!/bin/sh
 #
-. /home/toto/testjinja/bin/activate
+#. /home/toto/testjinja/bin/activate
+conda activate ansible_pull
 /usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git
 

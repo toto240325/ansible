@@ -39,9 +39,11 @@
 
 [workstations]
 
-#[ansible_servers]
+[ansible_servers]
 #192.168.0.51
-#192.168.0.53
+192.168.0.43
+192.168.0.52
+192.168.0.53
 #192.168.0.23
 
 [vagrant]

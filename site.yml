@@ -1,5 +1,7 @@
 ---
 # ansible all --limit 192.168.0.51 -u vagrant -m "shell" -a "ls -al"
+# ansible windows -m win_ping --ask-pass
+
 # ansible -v webservers -m copy -a "src=dist/ dest=/var/www/html" -i inventory --become
 # ansible-galaxy collection install community.general
 # ansible-galaxy install -r requirements.yml # apparently this doesn't install collections ??
@@ -157,12 +159,12 @@
   roles:
     - x_servers
 
-# - hosts: ansible_servers
-#   gather_facts: false
-#   tags: ansible_servers
-#   become: true
-#   roles:
-#     - ansible_servers
+- hosts: ansible_servers
+  gather_facts: false
+  tags: ansible_servers
+  become: true
+  roles:
+    - ansible_servers
 
 #- hosts: workstations
 #  tags: workstations
@@ -224,8 +226,8 @@
     lineinfile:
       path: "/etc/profile"
       state: present
-      #regexp: "^export PATH=/opt/conda/bin:bind-address"
-      #line: 'bind-address  = {{ ansible_facts["eth0"]["address"]["ipv4"] }}'
+      #regexp: "^export PATH=/opt/conda/bin"
+      #line: '.....'
       line: 'export PATH=/opt/conda/bin:$PATH'
 
 
@@ -234,7 +236,7 @@
     conda:
       name: python
       version: "3.7"
-      environment: /home/toto/conda/envs/watchdog
+      environment: /home/toto/.conda/envs/watchdog
       state: present
       executable: /opt/conda/bin/conda
 
@@ -244,12 +246,21 @@
       name:
         - numpy
         - requests
-      environment: /home/toto/conda/envs/watchdog
+      environment: /home/toto/.conda/envs/watchdog
       executable: /opt/conda/bin/conda
 
   # - name: Install R, using a versioned name
   #   conda:
   #     name: r-base=3.5.0
+
+  - name: Create a conda environment - ansible_pull
+    tags: conda_ansible_pull
+    conda:
+      name: python
+      version: "3.7"
+      environment: /home/toto/.conda/envs/ansible_pull
+      state: present
+      executable: /opt/conda/bin/conda
 
 
 

@@ -4,6 +4,7 @@
 
 collections:
 - name: community.general
+- name: ansible.windows
 
 roles:
 # Install a role from Ansible Galaxy.

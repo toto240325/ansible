@@ -68,9 +68,6 @@
     line: 'export PATH=/opt/conda/bin:$PATH'
 
 
-
-
-
 - name: add sudoers file for toto
   copy:
     src: sudoer_toto
@@ -184,14 +181,14 @@
 #   #when: ansible_facts["os_family"] != "Windows"
 
 
-- name: copy ansible-pull script
-  tags: debug12
-  template:
-    src: "files/run_ansible_pull.sh.j2"
-    dest: "/home/toto/run_ansible_pull.sh"
-    owner: toto
-    group: toto
-    mode: 0755
+# - name: copy ansible-pull script
+#   tags: debug12
+#   template:
+#     src: "files/run_ansible_pull.sh.j2"
+#     dest: "/home/toto/run_ansible_pull.sh"
+#     owner: toto
+#     group: toto
+#     mode: 0755
 
 - name: set the MAILTO cron variable
   tags: debug67
@@ -208,8 +205,8 @@
     name: "ansible provision"
     hour: "21"
     minute: "00"
-    job: "/home/toto/run_ansible_pull.sh >> ~/ansible-pull.log"
-    #job: "/home/toto/testjinja/bin/activate; /usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> ~/ansible-pull.log"
+    #job: "/home/toto/run_ansible_pull.sh >> ~/ansible-pull.log"
+    job: "/usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> ~/ansible-pull.log"
 
 
 #- debug: var=output_chown

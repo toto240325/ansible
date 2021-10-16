@@ -23,6 +23,9 @@
     - { regexp: '^192.168.0.49', line: '192.168.0.49 webcamJardin', state: 'present' }
     - { regexp: '^192.168.0.50', line: '192.168.0.50 linksysed', state: 'present' }
     - { regexp: '^192.168.0.51', line: '192.168.0.51 ubuntu1', state: 'present' }
+    - { regexp: '^192.168.0.52', line: '192.168.0.52 ubuntu2', state: 'present' }
+    - { regexp: '^192.168.0.53', line: '192.168.0.53 ubuntu3', state: 'present' }
+    - { regexp: '^192.168.0.54', line: '192.168.0.54 ubuntu4', state: 'present' }
     
     - { regexp: '^192.168.0.61', line: '192.168.0.61 pi1Eth0', state: 'present' }
     - { regexp: '^192.168.0.71', line: '192.168.0.71 pi1Wlan0', state: 'present' }
@@ -58,6 +61,7 @@
   when: yes
 
 - name: install basic packages
+  tags: debug_packages
   package:
     name: "{{ item }}"
     state: latest
@@ -71,6 +75,7 @@
     - tmux
     - p7zip-full
     - git
+    - nmap
     - htop
     - python3-pip
     - sqlite3
@@ -151,3 +156,11 @@
 
 - include: pi_user.yml
   when: ansible_facts["nodename"] == "raspberry"
+
+- name: Disable IPv6 with sysctl
+  tags: disable_ipv6
+  sysctl: name={{ item }} value=1 state=present reload=yes
+  with_items:
+    - net.ipv6.conf.all.disable_ipv6
+    - net.ipv6.conf.default.disable_ipv6
+    - net.ipv6.conf.lo.disable_ipv6

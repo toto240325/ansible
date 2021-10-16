@@ -21,6 +21,8 @@
 # todo
 # fix IP address server
 # ssh-keyscan github.com >> /home/vagrant/.ssh/known_hosts
+# ssh-keyscan 192.168.0.3 >> ~/.ssh/known_hosts
+
 
 # - hosts: 192.168.0.51
 #   gather_facts: true
@@ -60,6 +62,15 @@
   roles:
   - bootstrap
 
+
+- hosts: pi
+  tags: keyb
+  roles:
+    - role: gantsign.keyboard
+      # European keyboard model (pc105 is widely used outside Europe as well)
+      keyboard_model: pc105
+      # Layout for belgium (er, which Belgium ?)
+      keyboard_layout: be
 
 - hosts: all
   tags: always
@@ -252,20 +263,6 @@
   # - name: Install R, using a versioned name
   #   conda:
   #     name: r-base=3.5.0
-
-  - name: Create a conda environment - ansible_pull
-    tags: conda_ansible_pull
-    conda:
-      name: python
-      version: "3.7"
-      environment: /home/toto/.conda/envs/ansible_pull
-      state: present
-      executable: /opt/conda/bin/conda
-
-
-
-
-
 
 - hosts: db_servers
   vars_files:

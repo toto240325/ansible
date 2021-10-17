@@ -12,7 +12,10 @@
 #       update_cache: yes
 #     when: ansible_distribution == "CentOS"
 
-
+# - name: "debug facts"
+#   tags: openresolv
+#   debug: var=ansible_facts
+  
 - name: install updates (Ubuntu)
   apt:
     update_cache: yes
@@ -29,6 +32,7 @@
   #when: no
 
 - name: remove these 2 packages interfering with network-manager on raspbian
+  tags: openresolv
   package:
     name: "{{ item }}"
     state: absent
@@ -36,7 +40,8 @@
     - openresolv
     - dhcpcd5
   #when: ansible_distribution in ["Ubuntu","Debian"] and ansible_distribution_version == "20.04"
-  when: ansible_facts["nodename"] == "raspberry"
+  #when: ansible_facts["nodename"] == "raspberry"
+  when: ansible_facts["lsb"]["id"] == "Raspbian"
 
 
 - name: Ensure group "ansible" exists
@@ -87,14 +92,16 @@
 - name: Unblock Wifi
   tags: debugrf
   shell: rfkill unblock 0
-  when: ansible_facts["nodename"] == "raspberry"
+  #when: ansible_facts["nodename"] == "raspberry"
+  when: ansible_facts["lsb"]["id"] == "Raspbian"
 
 - name: enable ssh on raspberry
   service:
     name: sshd
     state: started
     enabled: yes
-  when: ansible_facts["nodename"] != "raspberry"
+  #when: ansible_facts["nodename"] != "raspberry"
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: "check if service dhcpd is present or not"
   tags: debug_dhcpd3

@@ -53,15 +53,31 @@
 #   command: echo "test"
 #   register: allfacts
 
+- hosts: all
+  tags: facts
+  gather_facts: true
+  vars_files:
+  - ~/ansible/vault.yml
+  become: true
+  tasks:
+  - debug: var=ansible_facts
+    
+
 - hosts: bootstrap
   gather_facts: true
   vars_files:
   - ~/ansible/vault.yml
   tags: bootstrap
   become: true
+  tasks:
+  - name: "debug facts"
+    tags: openresolv
+    debug: var=ansible_facts["machine"]
+  # - name: "debug facts"
+  #   tags: openresolv
+  #   debug: var=ansible_facts
   roles:
   - bootstrap
-
 
 - hosts: pi
   tags: keyb
@@ -120,13 +136,15 @@
     #when: ansible_distribution == "Ubuntu"
     #when: ansible_os_family != "Windows"
   
-- hosts: all
-  tags: facts
-  gather_facts: true
-  vars_files:
-  - ~/ansible/vault.yml
-  become: true
-
+# - hosts: all
+#   tags: facts
+#   gather_facts: true
+#   vars_files:
+#   - ~/ansible/vault.yml
+#   become: true
+#   tasks:
+#   - debug: var=ansible_facts
+    
 - hosts: all
   tags: base
   gather_facts: true
@@ -144,7 +162,6 @@
   become: true
   roles:
   - pi
-
 
 - hosts: postfix
   vars_files:

@@ -32,7 +32,6 @@
   - "/home/toto/frigo"
   - "/home/toto/utils"
 
-
 - name: change ownership
   tags: debug1
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes

@@ -31,29 +31,33 @@
     - { regexp: '^192.168.0.71', line: '192.168.0.71 pi1Wlan0', state: 'present' }
     - { regexp: '^192.168.0.81', line: '192.168.0.81 pi1Wlan1', state: 'present' }
     
-    - { regexp: '^192.168.0.62', line: '192.168.0.62 pi1Eth0', state: 'present' }
-    - { regexp: '^192.168.0.72', line: '192.168.0.72 pi1Wlan0', state: 'present' }
-    - { regexp: '^192.168.0.82', line: '192.168.0.82 pi1Wlan1', state: 'present' }
+    - { regexp: '^192.168.0.62', line: '192.168.0.62 pi2Eth0', state: 'present' }
+    - { regexp: '^192.168.0.72', line: '192.168.0.72 pi2Wlan0', state: 'present' }
+    - { regexp: '^192.168.0.82', line: '192.168.0.82 pi2Wlan1', state: 'present' }
     
-    - { regexp: '^192.168.0.63', line: '192.168.0.63 pi1Eth0', state: 'present' }
-    - { regexp: '^192.168.0.73', line: '192.168.0.73 pi1Wlan0', state: 'present' }
-    - { regexp: '^192.168.0.83', line: '192.168.0.83 pi1Wlan1', state: 'present' }
+    - { regexp: '^192.168.0.63', line: '192.168.0.63 pi3Eth0', state: 'present' }
+    - { regexp: '^192.168.0.73', line: '192.168.0.73 pi3Wlan0', state: 'present' }
+    - { regexp: '^192.168.0.83', line: '192.168.0.83 pi3Wlan1', state: 'present' }
     
-    - { regexp: '^192.168.0.64', line: '192.168.0.64 pi1Eth0', state: 'present' }
-    - { regexp: '^192.168.0.74', line: '192.168.0.74 pi1Wlan0', state: 'present' }
-    - { regexp: '^192.168.0.84', line: '192.168.0.84 pi1Wlan1', state: 'present' }
+    - { regexp: '^192.168.0.64', line: '192.168.0.64 pi4Eth0', state: 'present' }
+    - { regexp: '^192.168.0.74', line: '192.168.0.74 pi4Wlan0', state: 'present' }
+    - { regexp: '^192.168.0.84', line: '192.168.0.84 pi4Wlan1', state: 'present' }
     
-    # - { regexp: '^192.168.0.65', line: '192.168.0.65 pi1Eth0', state: 'present' }
-    # - { regexp: '^192.168.0.75', line: '192.168.0.75 pi1Wlan0', state: 'present' }
-    # - { regexp: '^192.168.0.85', line: '192.168.0.85 pi1Wlan1', state: 'present' }
+    - { regexp: '^192.168.0.65', line: '192.168.0.65 pi5Eth0', state: 'present' }
+    - { regexp: '^192.168.0.75', line: '192.168.0.75 pi5Wlan0', state: 'present' }
+    - { regexp: '^192.168.0.85', line: '192.168.0.85 pi5Wlan1', state: 'present' }
     
-    # - { regexp: '^192.168.0.66', line: '192.168.0.66 pi1Eth0', state: 'present' }
-    # - { regexp: '^192.168.0.76', line: '192.168.0.76 pi1Wlan0', state: 'present' }
-    # - { regexp: '^192.168.0.86', line: '192.168.0.86 pi1Wlan1', state: 'present' }
+    - { regexp: '^192.168.0.66', line: '192.168.0.66 pi6Eth0', state: 'present' }
+    - { regexp: '^192.168.0.76', line: '192.168.0.76 pi6Wlan0', state: 'present' }
+    - { regexp: '^192.168.0.86', line: '192.168.0.86 pi6Wlan1', state: 'present' }
     
-    - { regexp: '^192.168.0.68', line: '192.168.0.68 pi1Eth0', state: 'present' }
-    - { regexp: '^192.168.0.78', line: '192.168.0.78 pi1Wlan0', state: 'present' }
-    - { regexp: '^192.168.0.88', line: '192.168.0.88 pi1Wlan1', state: 'present' }
+    - { regexp: '^192.168.0.67', line: '192.168.0.66 pi7Eth0', state: 'present' }
+    - { regexp: '^192.168.0.77', line: '192.168.0.76 pi7Wlan0', state: 'present' }
+    - { regexp: '^192.168.0.87', line: '192.168.0.86 pi7Wlan1', state: 'present' }
+    
+    - { regexp: '^192.168.0.68', line: '192.168.0.68 pi8Eth0', state: 'present' }
+    - { regexp: '^192.168.0.78', line: '192.168.0.78 pi8Wlan0', state: 'present' }
+    - { regexp: '^192.168.0.88', line: '192.168.0.88 pi8Wlan1', state: 'present' }
     
     - { regexp: '^192.168.0.97', line: '192.168.0.97 lenovoOrange', state: 'present' }
     - { regexp: '^192.168.0.99', line: '192.168.0.99 mypc3', state: 'present' }
@@ -95,11 +99,14 @@
   cron:
     user: root
     name: "dummy cron to check cron email is working"
-    job: "dummy job to check cron email still works"
+    job: "dummy job to check cron email still works when an error occurs during a cron"
+    # sunday = 0
+    weekday: "0"
+    #day: "1"
+    hour: "11"
     # minute: "*/5"
-    day: "1"
-    hour: "09"
     minute: "30"
+
 
 - name: install new packages
   package:
@@ -155,7 +162,8 @@
 - include: ansible_user.yml
 
 - include: pi_user.yml
-  when: ansible_facts["nodename"] == "raspberry"
+  #when: ansible_facts["nodename"] == "raspberry"
+  when: ansible_facts["lsb"]["id"] == "Raspbian"
 
 - name: Disable IPv6 with sysctl
   tags: disable_ipv6

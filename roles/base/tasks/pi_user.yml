@@ -41,3 +41,6 @@
   - { src: '.tmux.conf',             dest: '/home/pi/',       mode: '0644' }
   - { src: '.bash_aliases',          dest: '/home/pi/',       mode: '0644' }
 
+
+
+  

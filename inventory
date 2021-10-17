@@ -11,6 +11,7 @@
 192.168.0.52
 192.168.0.53
 #192.168.0.54
+192.168.0.62
 192.168.0.65
 #192.168.0.148
 #192.168.0.80
@@ -67,11 +68,14 @@
 #192.168.0.53 ansible_user=toto newHostname=ubuntu3 mainEthDev=eth1 newEthIP=192.168.0.53 newWlan0IP="" newWlan1IP="" 
 #192.168.0.54 ansible_user=toto newHostname=ubuntu4 mainEthDev=eth1 newEthIP=192.168.0.54 newWlan0IP="" newWlan1IP="" 
 #192.168.0.65 ansible_user=pi ansible_ssh_pass=raspberry newHostname=pi5 mainEthDev=eth0 newEthIP=192.168.0.65 newWlan0IP=192.168.0.75 newWlan1IP=192.168.0.85
+192.168.0.61 ansible_user=pi ansible_ssh_pass=Toto! newHostname=pi1 mainEthDev=eth0 newEthIP=192.168.0.61 newWlan0IP=192.168.0.71 newWlan1IP=192.168.0.81
 
 [pi]
+192.168.0.62
 192.168.0.65
 192.168.0.68
 192.168.0.78
+
 
 [whos_on_my_network]
 #192.168.0.148
@@ -92,6 +96,7 @@
 192.168.0.53
 #192.168.0.54
 #192.168.0.148
+192.168.0.62
 192.168.0.65
 192.168.0.68
 
@@ -105,6 +110,7 @@
 192.168.0.53
 #192.168.0.54
 #192.168.0.148
+192.168.0.62
 192.168.0.65
 192.168.0.68
 

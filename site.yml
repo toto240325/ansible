@@ -20,9 +20,7 @@
 
 # todo
 # fix IP address server
-# ssh-keyscan github.com >> /home/vagrant/.ssh/known_hosts
-# ssh-keyscan 192.168.0.3 >> ~/.ssh/known_hosts
-
+# ssh-keyscan github.com >> /home/toto/.ssh/known_hosts
 
 # - hosts: 192.168.0.51
 #   gather_facts: true

@@ -59,8 +59,8 @@
   vars_files:
   - ~/ansible/vault.yml
   become: true
-  tasks:
-  - debug: var=ansible_facts
+  # tasks:
+  # - debug: var=ansible_facts
     
 
 - hosts: bootstrap

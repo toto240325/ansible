@@ -22,6 +22,7 @@
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no
   with_items:
   - { repo: 'https://github.com/toto240325/frigo.git',            dest: '/home/toto/frigo' }
+  - { repo: 'https://github.com/toto240325/utils.git',            dest: '/home/toto/utils' }
   register: output_git
 
 - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
@@ -29,14 +30,23 @@
   replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
   with_items:
   - "/home/toto/frigo"
-
+  - "/home/toto/utils"
 
 - name: change ownership
   tags: debug1
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
   with_items:
   - { path: "/home/toto/frigo" }
+  - { path: "/home/toto/utils" }
 #  register: output_chown
+
+- name: "install pip gpiozero"
+  tags: gpiozero
+  pip:
+    name: gpiozero
+    state: latest
+    #virtualenv: /my_app/venv
+  #when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: set the MAILTO cron variable
   community.general.cronvar:
@@ -44,8 +54,6 @@
     name: MAILTO
     value: toto240325@gmail.com
     
-
-
 - name: cron job to launch piloop under root
   cron:
     user: root

@@ -12,11 +12,37 @@
 #       update_cache: yes
 #     when: ansible_distribution == "CentOS"
 
+# - name: "debug facts"
+#   tags: openresolv
+#   debug: var=ansible_facts
+  
 - name: install updates (Ubuntu)
   apt:
     update_cache: yes
     upgrade: dist
   #when: ansible_distribution == "Ubuntu"
+
+- name: install basic packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - network-manager
+  #when: ansible_distribution in ["Ubuntu","Debian"] and ansible_distribution_version == "20.04"
+  #when: no
+
+- name: remove these 2 packages interfering with network-manager on raspbian
+  tags: openresolv
+  package:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - openresolv
+    - dhcpcd5
+  #when: ansible_distribution in ["Ubuntu","Debian"] and ansible_distribution_version == "20.04"
+  #when: ansible_facts["nodename"] == "raspberry"
+  when: ansible_facts["lsb"]["id"] == "Raspbian"
+
 
 - name: Ensure group "ansible" exists
   tags: debug90
@@ -66,14 +92,16 @@
 - name: Unblock Wifi
   tags: debugrf
   shell: rfkill unblock 0
-  when: ansible_facts["nodename"] == "raspberry"
+  #when: ansible_facts["nodename"] == "raspberry"
+  when: ansible_facts["lsb"]["id"] == "Raspbian"
 
 - name: enable ssh on raspberry
   service:
     name: sshd
     state: started
     enabled: yes
-  when: ansible_facts["nodename"] != "raspberry"
+  #when: ansible_facts["nodename"] != "raspberry"
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: "check if service dhcpd is present or not"
   tags: debug_dhcpd3
@@ -114,7 +142,7 @@
 # - debug: var=wlan0_output
 #   tags: debug_wlan0
   
-- name: "Add a wifi connections with static IP configuration on VOO-953522"
+- name: "Add a wifi connections to wlan0 with static IP configuration on VOO-953522"
   tags: debug_wlan0
   community.general.nmcli:
     conn_name: "{{ item.conn_name }}"
@@ -136,7 +164,7 @@
   when: wlan0_output.rc == 0
 
 
-- name: "Add a wifi connections with static IP configuration on linksysed"
+- name: "Add a wifi connections to wlan0 with static IP configuration on linksysed"
   tags: debug_wlan0
   community.general.nmcli:
     conn_name: "{{ item.conn_name }}"
@@ -167,7 +195,7 @@
 # - debug: var=wlan1_output
 #   tags: debug_wlan1
   
-- name: "Add a wifi connections with static IP configuration on VOO-953522"
+- name: "Add a wifi connections to wlan1 with static IP configuration on VOO-953522"
   tags: debug_wlan1
   community.general.nmcli:
     conn_name: "{{ item.conn_name }}"
@@ -185,11 +213,11 @@
     - 8.8.4.4
     - 1.1.1.1
   with_items:
-  - { conn_name: VOO-953522-wlan1, ifname: wlan1, ip: "{{ newwlan1IP }}" }
+  - { conn_name: VOO-953522-wlan1, ifname: wlan1, ip: "{{ newWlan1IP }}" }
   when: wlan1_output.rc == 0
 
 
-- name: "Add a wifi connections with static IP configuration on linksysed"
+- name: "Add a wifi connections to wlan1 with static IP configuration on linksysed"
   tags: debug_wlan1
   community.general.nmcli:
     conn_name: "{{ item.conn_name }}"
@@ -207,7 +235,7 @@
     - 8.8.4.4
     - 1.1.1.1
   with_items:
-  - { conn_name: linksysed-wlan1, ifname: wlan1, ip: "{{ newwlan1IP }}" }
+  - { conn_name: linksysed-wlan1, ifname: wlan1, ip: "{{ newWlan1IP }}" }
   when: wlan1_output.rc == 0
 
 

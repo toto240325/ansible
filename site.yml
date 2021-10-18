@@ -51,15 +51,40 @@
 #   command: echo "test"
 #   register: allfacts
 
+- hosts: all
+  tags: facts
+  gather_facts: true
+  vars_files:
+  - ~/ansible/vault.yml
+  become: true
+  tasks:
+  - debug: var=ansible_facts
+    
+
 - hosts: bootstrap
   gather_facts: true
   vars_files:
   - ~/ansible/vault.yml
   tags: bootstrap
   become: true
+  tasks:
+  - name: "debug facts"
+    tags: openresolv
+    debug: var=ansible_facts["machine"]
+  # - name: "debug facts"
+  #   tags: openresolv
+  #   debug: var=ansible_facts
   roles:
   - bootstrap
 
+- hosts: pi
+  tags: keyb
+  roles:
+    - role: gantsign.keyboard
+      # European keyboard model (pc105 is widely used outside Europe as well)
+      keyboard_model: pc105
+      # Layout for belgium (er, which Belgium ?)
+      keyboard_layout: be
 
 - hosts: all
   tags: always
@@ -109,13 +134,15 @@
     #when: ansible_distribution == "Ubuntu"
     #when: ansible_os_family != "Windows"
   
-- hosts: all
-  tags: facts
-  gather_facts: true
-  vars_files:
-  - ~/ansible/vault.yml
-  become: true
-
+# - hosts: all
+#   tags: facts
+#   gather_facts: true
+#   vars_files:
+#   - ~/ansible/vault.yml
+#   become: true
+#   tasks:
+#   - debug: var=ansible_facts
+    
 - hosts: all
   tags: base
   gather_facts: true
@@ -133,7 +160,6 @@
   become: true
   roles:
   - pi
-
 
 - hosts: postfix
   vars_files:
@@ -252,20 +278,6 @@
   # - name: Install R, using a versioned name
   #   conda:
   #     name: r-base=3.5.0
-
-  - name: Create a conda environment - ansible_pull
-    tags: conda_ansible_pull
-    conda:
-      name: python
-      version: "3.7"
-      environment: /home/toto/.conda/envs/ansible_pull
-      state: present
-      executable: /opt/conda/bin/conda
-
-
-
-
-
 
 - hosts: db_servers
   vars_files:

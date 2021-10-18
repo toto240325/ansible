@@ -17,7 +17,7 @@ roles:
 - name: geerlingguy.php-mysql
 - name: geerlingguy.postfix
 - name: evandam.conda
-
+- name: gantsign.keyboard
   
 # collections:
 #   # Install a collection from Ansible Galaxy.

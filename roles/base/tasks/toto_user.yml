@@ -76,6 +76,15 @@
     group: root
     mode: 0440
 
+- name: set ownership and acces rights .ssh
+  become: True
+  file:
+    path: /home/toto/.ssh
+    state: directory
+    owner: toto
+    mode: 700
+
+
 - name: copy basic files to user toto - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
   tags: debugv
   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
@@ -87,6 +96,9 @@
   - { src: '.tmux.conf',             dest: '/home/toto/',       mode: '0644' }
   - { src: '.bash_aliases',          dest: '/home/toto/',       mode: '0644' }
   - { src: '.bashrc_conda',          dest: '/home/toto/',       mode: '0644' }
+
+
+
 
 #this one doesn't work !!!!!
 # - name: setup some git global variables

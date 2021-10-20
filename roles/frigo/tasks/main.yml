@@ -33,6 +33,26 @@
 #   when: repo_monitor.changed
 
 
+
+- name: "pip install numpy for frigo"
+  pip:
+    name: numpy
+    state: latest
+    virtualenv: /home/toto/Envs/frigo
+
+# - name: "after-install of repo of whos_on_my_network (pip requirements)"
+#   pip:
+#     requirements: /home/toto/whos_on_my_network/requirements.txt
+#     virtualenv: /home/toto/Envs/whos_on_my_network
+#   when: repo_whos.changed
+
+# - name: "ad hoc shell : cd webapp && npm i && npm run build"
+#   remote_user: toto
+#   shell: ". ~/Envs/whos_on_my_network/bin/activate && cd /home/toto/whos_on_my_network/webapp && npm i && npm run build"
+#   register: shell_output
+#   when: repo_whos.changed
+
+
 - name: set the SHELL cron variable
   tags: debug49
   community.general.cronvar:
@@ -56,6 +76,6 @@
     special_time: reboot
     #minute: "*/5"
     #minute: "30"
-    job: "conda activate /home/toto/.conda/envs/frigo; /usr/local/bin/python /home/toto/frigo/frigo.py 2>&1 >> /home/toto/frigo.log; conda deactivate"
-  when: ansible_facts["lsb"]["id"] != "Raspbian"
+    job: "sleep 30 && . /home/toto/Envs/frigo/bin/activate && /usr/bin/python3 /user/home/toto/frigo  >> /home/toto/frigo.log"
+  # when: ansible_facts["lsb"]["id"] != "Raspbian"
 

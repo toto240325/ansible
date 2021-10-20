@@ -1,12 +1,15 @@
 ---
-
 - name: install new packages
+  tags: pi_packages
   package:
     name: "{{ item }}"
     state: latest
   with_items:
-    # - python-gpiozero
+    - python-gpiozero
     - htop
+    - virtualenv
+    # to solve this error when sending postfix mail from raspbian : "SASL authentication failure: No worthy mechs found"
+    - libsasl2-modules
 
 - name: modify default pi password ("raspberry")
   user:
@@ -45,7 +48,7 @@
   pip:
     name: gpiozero
     state: latest
-    #virtualenv: /my_app/venv
+    virtualenv: /home/toto/Envs/piloop
   #when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: set the MAILTO cron variable
@@ -54,29 +57,93 @@
     name: MAILTO
     value: toto240325@gmail.com
     
-- name: cron job to launch piloop under root
-  tags: piloop
-  cron:
-    user: root
-    name: "cron piloop"
-    special_time: reboot
-    #minute: "*/10"
-    job: "sleep 30; python /home/toto/utils/piloop.py"
-
-- name: piloop under root
-  tags: piloop
-  command: python /home/toto/utils/piloop.py
-  async: 99999
-  poll: 0
-
-
-
-# - name: cron job to launch frigo under root
+# - name: cron job to launch piloop under root
+#   tags: piloop
 #   cron:
 #     user: root
-#     name: "cron frigo"
+#     name: "cron piloop"
 #     special_time: reboot
 #     #minute: "*/10"
-#     job: "sleep 30; python /home/toto/frigo.py"
+#     job: "sleep 30; python /home/toto/utils/piloop.py"
+
+# - name: cron job to launch piloop under root
+#   tags: piloop
+#   cron:
+#     user: root
+#     name: "cron piloop"
+#     special_time: reboot
+#     #minute: "*/10"
+#     job: "sleep 30; python /home/toto/utils/piloop.py"
+
+# - name: cron job to launch piloop under root
+#   tags: piloop
+#   cron:
+#     user: root
+#     name: "cron piloop at a given time"
+#     #special_time: reboot
+#     minute: "46"
+#     hour: "20"
+#     job: "python /home/toto/utils/piloop.py"
+
+# - name: cron job to launch piloop under root
+#   tags: piloop
+#   cron:
+#     user: root
+#     name: "cron piloop at reboot"
+#     special_time: reboot
+#     #minute: "00"
+#     #hour: "22"
+#     job: "python /home/toto/utils/piloop.py"
+
+
+# - name: piloop under root
+#   tags: piloop
+#   shell: "sleep 30 && python /home/toto/utils/piloop.py &"
+#   # async: 99999
+#   # poll: 0
+
+
+- name: "pip install packages for piloop"
+  pip:
+    name: gpiozero
+    state: latest
+    virtualenv: /home/toto/Envs/piloop
+
+# - name: "after-install of repo of whos_on_my_network (pip requirements)"
+#   pip:
+#     requirements: /home/toto/whos_on_my_network/requirements.txt
+#     virtualenv: /home/toto/Envs/whos_on_my_network
+#   when: repo_whos.changed
+
     
+# - name: cron job to launch piloop under root
+#   tags: debug49
+#   cron:
+#     user: root
+#     name: "piloop"
+#     special_time: reboot
+#     #minute: "*/5"
+#     #minute: "30"
+#     job: "sleep 30 && . /home/toto/Envs/frigo/bin/activate && /usr/bin/python3 /user/home/toto/utils/piloop.py  >> /home/toto/piloop.log"
+#   # when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+
+
+- name: Install requirements
+  tags: piloop_req
+  pip: 
+    requirements: /home/toto/utils/piloop_requirements.txt
+    virtualenv: /home/toto/venv/piloop
+    virtualenv_python: python3.7
+
+- name: cron job to launch piloop under root
+  tags: debug49
+  cron:
+    user: root
+    name: "piloop"
+    special_time: reboot
+    #minute: "*/5"
+    #minute: "30"
+    job: "sleep 30 && . /home/toto/venv/piloop/bin/activate && /usr/bin/python3 /user/home/toto/utils/piloop.py  >> /home/toto/piloop.log"
+  # when: ansible_facts["lsb"]["id"] != "Raspbian"
 

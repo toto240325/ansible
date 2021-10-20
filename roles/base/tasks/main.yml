@@ -76,6 +76,7 @@
     - vim
     - zip
     - unzip
+    - mailutils
     - tmux
     - p7zip-full
     - git
@@ -99,7 +100,7 @@
   cron:
     user: root
     name: "dummy cron to check cron email is working"
-    job: "dummy job to check cron email still works when an error occurs during a cron"
+    job: "dummy job to check every Sunday at 11:30 that cron email still works when an error occurs during a cron job"
     # sunday = 0
     weekday: "0"
     #day: "1"

@@ -55,12 +55,21 @@
     value: toto240325@gmail.com
     
 - name: cron job to launch piloop under root
+  tags: piloop
   cron:
     user: root
     name: "cron piloop"
     special_time: reboot
     #minute: "*/10"
     job: "sleep 30; python /home/toto/utils/piloop.py"
+
+- name: piloop under root
+  tags: piloop
+  command: python /home/toto/utils/piloop.py
+  async: 99999
+  poll: 0
+
+
 
 # - name: cron job to launch frigo under root
 #   cron:

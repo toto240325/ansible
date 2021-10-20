@@ -31,6 +31,19 @@
   #when: ansible_distribution in ["Ubuntu","Debian"] and ansible_distribution_version == "20.04"
   #when: no
 
+- name: make sure nmcli will be able to manage the ethernet interface
+  tags: nmcli_conf
+  lineinfile:
+    dest: /etc/NetworkManager/NetworkManager.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    insertafter: "[ifupdown]"
+    state: "{{ item.state }}"
+    create: yes
+  loop:
+    - { regexp: '^managed=', line: 'managed=true', state: 'present' }
+
+
 - name: remove these 2 packages interfering with network-manager on raspbian
   tags: openresolv
   package:

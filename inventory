@@ -23,6 +23,7 @@
 192.168.0.51
 192.168.0.52
 192.168.0.53
+192.168.0.60
 #192.168.0.54
 #192.168.0.148
 
@@ -35,6 +36,7 @@
 192.168.0.51
 192.168.0.52
 192.168.0.53
+192.168.0.60
 #192.168.0.54
 #192.168.0.148
 
@@ -70,9 +72,9 @@
 #192.168.0.54 ansible_user=toto newHostname=ubuntu4 mainEthDev=eth1 newEthIP=192.168.0.54 newWlan0IP="" newWlan1IP="" 
 #192.168.0.65 ansible_user=pi ansible_ssh_pass=raspberry newHostname=pi5 mainEthDev=eth0 newEthIP=192.168.0.65 newWlan0IP=192.168.0.75 newWlan1IP=192.168.0.85
 #192.168.0.61 ansible_user=pi ansible_ssh_pass=xxxx newHostname=pi1 mainEthDev=eth0 newEthIP=192.168.0.61 newWlan0IP=192.168.0.71 newWlan1IP=192.168.0.81
-#192.168.0.3 ansible_user=pi ansible_ssh_pass=raspberry newHostname=pi0 mainEthDev=eth0 newEthIP=192.168.0.60 newWlan0IP=192.168.0.70 newWlan1IP=192.168.0.80
 192.168.0.45 newHostname=vayo mainEthDev=enp1s0 newEthIP=192.168.0.45 mainWifiDev=wlp2s0 newWlan0IP=192.168.0.46 newWlan1IP=192.168.0.47
 #192.168.0.52 ansible_user=toto newHostname=ubuntu2 mainEthDev=eth0 newEthIP=192.168.0.52 mainWifiDev=wlan0 newWlan0IP=192.168.0.152 newWlan1IP=192.168.0.162
+#192.168.0.60 ansible_user=pi ansible_ssh_pass=raspberry newHostname=pi0 mainEthDev=eth0 newEthIP=192.168.0.60 mainWifiDev=wlan0 newWlan0IP=192.168.0.70 newWlan1IP=192.168.0.80
 
 [pi]
 192.168.0.60
@@ -95,6 +97,10 @@
 #192.168.0.148
 192.168.0.45
 
+[frigo]
+192.168.0.45
+192.168.0.60
+
 [postfix]
 192.168.0.45
 192.168.0.51
@@ -108,8 +114,9 @@
 192.168.0.65
 192.168.0.68
 
-#[conda]
-#192.168.0.148
+[conda]
+192.168.0.45
+192.168.0.148
 
 [watchdog]
 192.168.0.45

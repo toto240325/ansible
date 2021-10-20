@@ -1,45 +1,72 @@
 ---
+- name: Update conda
+  conda:
+    name: conda
+    state: latest
+    executable: /opt/conda/bin/conda
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-- name: Install Conda
-  block:
-    - name: Download Miniconda
-      get_url:
-        url: https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh
-        dest: /tmp/install-miniconda.sh
-        checksum: sha256:1ea2f885b4dbc3098662845560bc64271eb17085387a70c2ba3f29fff6f8d52f
-        mode: 0550
+- name: Add miniconda bin to path
+  tags: debug_conda1
+  become: True
+  lineinfile:
+    path: "/etc/profile"
+    state: present
+    #regexp: "^export PATH=/opt/conda/bin"
+    #line: '.....'
+    line: 'export PATH=/opt/conda/bin:$PATH'
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-    - name: Create conda folder
-      become: True
-      file:
-        path: /opt/conda
-        state: directory
-        owner: root
-        mode: 755
-        recurse: yes
 
-    - name: Run the installer
-      shell: /tmp/install-miniconda.sh -b -u -p /opt/miniconda3
+# - name: change ownership to toto:toto
+#   tags: debug111
+#   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+#   with_items:
+#   - { path: "/home/toto/conda/" }
+#   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-    - name: Remove the installer
-      file:
-        state: absent
-        path: /tmp/install-miniconda.sh
 
-    - name: Add miniconda bin to path
-      become: True
-      shell: echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/profile
 
-    - name: conda - read permission for all
-      become: True
-      file:
-        path: /opt/conda
-        mode: 777
-        recurse: yes
+# - name: Install Conda
+#   block:
+#     - name: Download Miniconda
+#       get_url:
+#         url: https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh
+#         dest: /tmp/install-miniconda.sh
+#         checksum: sha256:1ea2f885b4dbc3098662845560bc64271eb17085387a70c2ba3f29fff6f8d52f
+#         mode: 0550
+
+#     - name: Create conda folder
+#       become: True
+#       file:
+#         path: /opt/conda
+#         state: directory
+#         owner: root
+#         mode: 755
+#         recurse: yes
+
+#     - name: Run the installer
+#       shell: /tmp/install-miniconda.sh -b -u -p /opt/miniconda3
+
+#     - name: Remove the installer
+#       file:
+#         state: absent
+#         path: /tmp/install-miniconda.sh
+
+#     - name: Add miniconda bin to path
+#       become: True
+#       shell: echo 'export PATH=/opt/conda/bin:$PATH' >> /etc/profile
+
+#     - name: conda - read permission for all
+#       become: True
+#       file:
+#         path: /opt/conda
+#         mode: 777
+#         recurse: yes
         
-    - name: conda - execution permission for all
-      become: True
-      file:
-        path: /opt/conda/bin
-        mode: +x
-        recurse: yes
+#     - name: conda - execution permission for all
+#       become: True
+#       file:
+#         path: /opt/conda/bin
+#         mode: +x
+#         recurse: yes

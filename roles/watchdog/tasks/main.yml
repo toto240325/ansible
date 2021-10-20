@@ -57,9 +57,11 @@
     #minute: "*/5"
     minute: "30"
     job: "conda activate /home/toto/.conda/envs/watchdog; /usr/local/bin/python /home/toto/watchdog/watchdog.py 2>&1 >> /home/toto/watchdog.log; conda deactivate"
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: change ownership to toto:toto
   tags: debug111
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
   with_items:
   - { path: "/home/toto/conda/" }
+  when: ansible_facts["lsb"]["id"] != "Raspbian"

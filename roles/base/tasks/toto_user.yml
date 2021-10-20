@@ -46,6 +46,17 @@
       fi
   when: bash_profile_exists == true
 
+
+- name: ensure .bashrc_conda is run (wheter interactive logon or not)
+  tags: debug_bashrc
+  blockinfile:
+    dest : /home/toto/.bashrc
+    block: |
+      # this is not the proper way to do this I guess; to be fixed
+      . /home/toto/.bashrc_conda
+    insertbefore: BOF
+
+
 - name: Add miniconda bin to path (in .bash_profile)
   tags: debug_bash_profile
   become: True

@@ -1,0 +1,61 @@
+---
+#- name: "install some packages"
+#  package:
+#    name: npm
+#    state: latest
+
+- name: install repo frigo for toto
+  tags: repofrigo
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes force=yes
+  with_items:
+  - { repo: 'https://github.com/toto240325/frigo.git', dest: '/home/toto/frigo' }
+  register: repo_frigo
+
+- name: "Copy params.py"
+  template:
+    src: "files/params.py.j2"
+    dest: "/home/toto/frigo/params.py"
+
+- name: change ownership
+  tags: repofrigo
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
+  with_items:
+  - { path: "/home/toto/frigo" }
+  #register: output_chown
+  when: repo_frigo.changed
+
+# - name: "initialise DB in separate location (makes sense only for sqlite, not mysql)"
+#   file: 
+#     path: /home/toto/db
+#     state: directory
+#     owner: toto
+#     group: toto
+#   when: repo_monitor.changed
+
+
+- name: set the SHELL cron variable
+  tags: debug49
+  community.general.cronvar:
+    user: toto
+    name: SHELL
+    value: /bin/bash
+    
+- name: set the BASH_ENV cron variable
+  tags: debug49
+  community.general.cronvar:
+    user: toto
+    name: BASH_ENV
+    value: /home/toto/.bashrc_conda
+    insertafter: SHELL
+    
+- name: cron job to launch frigo under root
+  tags: debug49
+  cron:
+    user: root
+    name: "frigo"
+    special_time: reboot
+    #minute: "*/5"
+    #minute: "30"
+    job: "conda activate /home/toto/.conda/envs/frigo; /usr/local/bin/python /home/toto/frigo/frigo.py 2>&1 >> /home/toto/frigo.log; conda deactivate"
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
+

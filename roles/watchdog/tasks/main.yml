@@ -16,6 +16,19 @@
     src: "files/params.py.j2"
     dest: "/home/toto/watchdog/params.py"
 
+- name: cron job to update the git repository
+  tags: pull_watchdog
+  cron:
+    user: toto
+    name: "pull_watchdog"
+    special_time: reboot
+    # minute: "24"
+    # hour: "21"
+    job: "cd ~/watchdog && git pull >> /home/toto/misc.log"
+  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+
+
 
 # - name: copy requirementsbasic files to user toto - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
 #   tags: copy_req_w

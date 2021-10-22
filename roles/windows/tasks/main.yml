@@ -1,4 +1,18 @@
 ---
-- name: test
-  debug: msg="test windows"
+# - name: test
+#   debug: msg="test windows"
 
+- name: Save the result of 'whoami' in 'whoami_out'
+  ansible.windows.win_command: whoami
+  register: whoami_out
+
+- name: Run command that only runs if folder exists and runs from a specific folder
+  ansible.windows.win_command: wbadmin -backupTarget:d:\projects\tests-backup\
+  args:
+    chdir: d:\projects\tests\
+    creates: d:\projects\tests-backup\
+
+- name: Run an executable and send data to the stdin for the executable
+  ansible.windows.win_command: powershell.exe -
+  args:
+    stdin: Write-Host test

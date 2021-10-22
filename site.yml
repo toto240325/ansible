@@ -6,6 +6,7 @@
 # ansible-galaxy collection install community.general
 # ansible-galaxy install -r requirements.yml # apparently this doesn't install collections ??
 # ansible-galaxy collection install community.general
+# ansible-galaxy collection install ansible.utils
 # ansible-playbook site.yml --vault-password-file  ~/.ssh/vault-key # until ansible user created on target and accessible via ssh key
 # ansible-playbook site.yml --tags apache
 # ansible-playbook site.yml --limit ubuntu0
@@ -55,8 +56,7 @@
   - ~/ansible/vault.yml
   become: true
   # tasks:
-  # - debug: var=ansible_facts
-    
+  # - debug: var=ansible_facts 
 
 - hosts: bootstrap
   gather_facts: true
@@ -79,8 +79,6 @@
       # Layout for belgium (er, which Belgium ?)
       keyboard_layout: be
   - bootstrap
-
-
 
 - hosts: all
   tags: always
@@ -157,6 +155,13 @@
   roles:
   - pi
 
+- hosts: laptops
+  gather_facts: false
+  tags: laptops
+  become: true
+  roles: 
+    - laptops
+
 - hosts: postfix
   vars_files:
   - ~/ansible/vault.yml
@@ -166,64 +171,6 @@
   roles:
     - geerlingguy.postfix
     - postfix
-   
-- hosts: vagrant
-  #gather_facts: false
-  tags: vagrant
-  become: true
-  roles:
-    - vagrant
-
-- hosts: x_servers
-  gather_facts: false
-  tags: x_servers
-  become: true
-  roles:
-    - x_servers
-
-- hosts: ansible_servers
-  gather_facts: false
-  tags: ansible_servers
-  become: true
-  roles:
-    - ansible_servers
-
-#- hosts: workstations
-#  tags: workstations
-#  become: true
-#  roles:
-#    - workstations
-#
-- hosts: web_servers
-  gather_facts: false
-  tags: web_servers
-  become: true
-  roles: 
-    - web_servers
-
-- hosts: laptops
-  gather_facts: false
-  tags: laptops
-  become: true
-  roles: 
-    - laptops
-
-- hosts: whos_on_my_network
-  gather_facts: false
-  tags: whos_on_my_network
-  become: true
-  roles: 
-    - whos_on_my_network
-
-- hosts: conda
-  gather_facts: true
-  vars_files:
-  - ~/ansible/vault.yml
-  tags: conda
-  become: true
-  roles: 
-    - evandam.conda
-    - conda
 
 - hosts: watchdog
   name: install watchdog
@@ -256,6 +203,44 @@
   #     executable: /opt/conda/bin/conda
   #   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
+
+- hosts: x_servers
+  gather_facts: false
+  tags: x_servers
+  become: true
+  roles:
+    - x_servers
+
+- hosts: web_servers
+  gather_facts: false
+  tags: web_servers
+  become: true
+  roles: 
+    - web_servers
+
+- hosts: monitor
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: false
+  tags: monitor
+  become: true
+  roles: 
+    - monitor
+    
+- hosts: windows
+  gather_facts: true
+  tags: windows
+  become: true
+  roles:
+    - windows
+
+- hosts: whos_on_my_network
+  gather_facts: false
+  tags: whos_on_my_network
+  become: true
+  roles: 
+    - whos_on_my_network
+
 - hosts: frigo
   name: install frigo
   tags: frigo
@@ -287,22 +272,6 @@
   roles:
   - db_servers
 
-- hosts: monitor
-  vars_files:
-  - ~/ansible/vault.yml
-  gather_facts: false
-  tags: monitor
-  become: true
-  roles: 
-    - monitor
-    
-- hosts: windows
-  gather_facts: true
-  tags: windows
-  become: true
-  roles:
-    - windows
-
 #
 #- hosts: file_servers
 #  tags: file_servers
@@ -326,3 +295,34 @@
 ##      var: ansible_facts["machine"]|type_debug
 ##  - debug:
 ##      var: ansible_distribution
+
+# - hosts: ansible_servers
+#   gather_facts: false
+#   tags: ansible_servers
+#   become: true
+#   roles:
+#     - ansible_servers
+
+#- hosts: workstations
+#  tags: workstations
+#  become: true
+#  roles:
+#    - workstations
+#
+
+# - hosts: conda
+#   gather_facts: true
+#   vars_files:
+#   - ~/ansible/vault.yml
+#   tags: conda
+#   become: true
+#   roles: 
+#     - evandam.conda
+#     - conda
+
+# - hosts: vagrant
+#   #gather_facts: false
+#   tags: vagrant
+#   become: true
+#   roles:
+#     - vagrant

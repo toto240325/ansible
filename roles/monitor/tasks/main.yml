@@ -43,6 +43,18 @@
   #register: output_chown
   when: repo_monitor.changed
 
+- name: cron job to update the git repository
+  tags: pull_monitor
+  cron:
+    user: root
+    name: "pull_monitor"
+    special_time: reboot
+    # minute: "24"
+    # hour: "21"
+    job: "cd /var/www/monitor && git pull >> /root/misc.log"
+  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+
 # - name: "initialise DB in separate location (makes sense only for sqlite, note mysql)"
 #   file: 
 #     path: /home/toto/db

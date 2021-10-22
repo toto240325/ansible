@@ -48,7 +48,7 @@
   pip:
     name: gpiozero
     state: latest
-    virtualenv: /home/toto/Envs/piloop
+    virtualenv: /home/toto/venv/piloop
   #when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: set the MAILTO cron variable
@@ -107,12 +107,12 @@
   pip:
     name: gpiozero
     state: latest
-    virtualenv: /home/toto/Envs/piloop
+    virtualenv: /home/toto/venv/piloop
 
 # - name: "after-install of repo of whos_on_my_network (pip requirements)"
 #   pip:
 #     requirements: /home/toto/whos_on_my_network/requirements.txt
-#     virtualenv: /home/toto/Envs/whos_on_my_network
+#     virtualenv: /home/toto/venv/whos_on_my_network
 #   when: repo_whos.changed
 
     
@@ -124,7 +124,7 @@
 #     special_time: reboot
 #     #minute: "*/5"
 #     #minute: "30"
-#     job: "sleep 30 && . /home/toto/Envs/frigo/bin/activate && /usr/bin/python3 /user/home/toto/utils/piloop.py  >> /home/toto/piloop.log"
+#     job: "sleep 30 && . /home/toto/venv/frigo/bin/activate && /usr/bin/python3 /user/home/toto/utils/piloop.py  >> /home/toto/piloop.log"
 #   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 
@@ -137,13 +137,13 @@
     virtualenv_python: python3.7
 
 - name: cron job to launch piloop under root
-  tags: debug49
+  tags: cron_piloop
   cron:
     user: root
-    name: "piloop"
+    name: "piloop at reboot"
     special_time: reboot
     #minute: "*/5"
     #minute: "30"
-    job: "sleep 30 && . /home/toto/venv/piloop/bin/activate && /usr/bin/python3 /user/home/toto/utils/piloop.py  >> /home/toto/piloop.log"
+    job: "sleep 20 && . /home/toto/venv/piloop/bin/activate && /usr/bin/python3 /home/toto/utils/piloop.py  >> /home/toto/piloop.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 

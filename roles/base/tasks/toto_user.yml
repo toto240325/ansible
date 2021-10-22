@@ -85,15 +85,16 @@
     dest: /etc/sudoers.d/toto
     owner: root
     group: root
-    mode: 0440
+    mode: '0440'
 
 - name: set ownership and acces rights .ssh
+  tags: fix_ownership_ssh
   become: True
   file:
     path: /home/toto/.ssh
     state: directory
     owner: toto
-    mode: 700
+    mode: '0700'
 
 
 - name: copy basic files to user toto - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
@@ -170,6 +171,19 @@
   - "/var/www/monitor"
   - "/home/toto/watchdog"
 
+- name: make sure the github hosts are known
+  tags: github_keys
+  shell: "ssh-keyscan github.com >> /home/toto/.ssh/known_hosts"
+
+- name: set ownership and acces rights known_hosts
+  tags: fix_ownership_knownhosts
+  become: True
+  file:
+    path: /home/toto/.ssh/known_hosts
+    owner: toto
+    group: toto
+    mode: '0600'
+
 #- name: install repo utils for toto (git method)
 #  become: true
 #  remote_user: toto
@@ -211,7 +225,7 @@
 #     dest: "/home/toto/run_ansible_pull.sh"
 #     owner: toto
 #     group: toto
-#     mode: 0755
+#     mode: '0755'
 
 - name: set the MAILTO cron variable
   tags: debug67

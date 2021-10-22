@@ -16,6 +16,14 @@
     src: "files/params.py.j2"
     dest: "/home/toto/watchdog/params.py"
 
+
+# - name: copy requirementsbasic files to user toto - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
+#   tags: copy_req_w
+#   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
+#   with_items:
+#   - { src: 'requirements.txt',    dest: '/home/toto/watchdog/',  mode: '0644' }
+
+
 - name: change ownership
   tags: repowatchdog
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
@@ -33,35 +41,55 @@
 #   when: repo_monitor.changed
 
 
-- name: set the SHELL cron variable
-  tags: debug49
-  community.general.cronvar:
-    user: toto
-    name: SHELL
-    value: /bin/bash
+# - name: set the SHELL cron variable
+#   tags: debug49
+#   community.general.cronvar:
+#     user: toto
+#     name: SHELL
+#     value: /bin/bash
     
-- name: set the BASH_ENV cron variable
-  tags: debug49
-  community.general.cronvar:
-    user: toto
-    name: BASH_ENV
-    value: /home/toto/.bashrc_conda
-    insertafter: SHELL
+# - name: set the BASH_ENV cron variable
+#   tags: debug49
+#   community.general.cronvar:
+#     user: toto
+#     name: BASH_ENV
+#     value: /home/toto/.bashrc_conda
+#     insertafter: SHELL
     
-- name: cron job to launch watchdog under toto
-  tags: debug49
+# - name: cron job to launch watchdog under toto
+#   tags: debug49
+#   cron:
+#     user: toto
+#     name: "watchdog"
+#     #special_time: reboot
+#     #minute: "*/5"
+#     minute: "30"
+#     job: "conda activate /home/toto/.conda/envs/watchdog; /usr/local/bin/python /home/toto/watchdog/watchdog.py 2>&1 >> /home/toto/watchdog.log; conda deactivate"
+#   when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+# - name: change ownership to toto:toto
+#   tags: debug111
+#   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+#   with_items:
+#   - { path: "/home/toto/conda/" }
+#   when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+- name: Install requirements
+  tags: watchdog_req
+  pip: 
+    requirements: /home/toto/watchdog/requirements.txt
+    virtualenv: /home/toto/venv/watchdog
+    virtualenv_python: python3.7
+  #when: ansible_facts["lsb"]["id"] == "Raspbian"
+
+- name: cron job to launch watchdog under root
+  tags: watchdog_cron
   cron:
-    user: toto
+    user: root
     name: "watchdog"
     #special_time: reboot
-    #minute: "*/5"
-    minute: "30"
-    job: "conda activate /home/toto/.conda/envs/watchdog; /usr/local/bin/python /home/toto/watchdog/watchdog.py 2>&1 >> /home/toto/watchdog.log; conda deactivate"
-  when: ansible_facts["lsb"]["id"] != "Raspbian"
+    minute: "*/5"
+    #minute: "30"
+    job: "sleep 20 && . /home/toto/venv/watchdog/bin/activate && /usr/bin/python3 /home/toto/watchdog/watchdog.py  >> /home/toto/watchdog.log"
+  #when: ansible_facts["lsb"]["id"] == "Raspbian"
 
-- name: change ownership to toto:toto
-  tags: debug111
-  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
-  with_items:
-  - { path: "/home/toto/conda/" }
-  when: ansible_facts["lsb"]["id"] != "Raspbian"

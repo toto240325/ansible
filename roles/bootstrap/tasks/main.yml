@@ -16,12 +16,6 @@
 #   tags: openresolv
 #   debug: var=ansible_facts
   
-- name: install updates (Ubuntu)
-  apt:
-    update_cache: yes
-    upgrade: dist
-  #when: ansible_distribution == "Ubuntu"
-
 - name: install basic packages
   package:
     name: "{{ item }}"
@@ -83,7 +77,7 @@
     dest: /etc/sudoers.d/ansible
     owner: root
     group: root
-    mode: 0440
+    mode: '0440'
 
 - name: Set a hostname
   tags: debug13
@@ -104,7 +98,7 @@
 
 - name: Unblock Wifi
   tags: debugrf
-  shell: rfkill unblock 0
+  shell: rfkill unblock all
   #when: ansible_facts["nodename"] == "raspberry"
   when: ansible_facts["lsb"]["id"] == "Raspbian"
 

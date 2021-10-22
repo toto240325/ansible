@@ -33,8 +33,9 @@
     - php-gd
     - php-json
     - php-curl
-  when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] != "192.168.0.148"
-  # if mariadb ??????
+  #when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] != "192.168.0.148"
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
+ # if mariadb ??????
   # - mysql
 
 - name: "start and enable mysql server"

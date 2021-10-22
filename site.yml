@@ -18,9 +18,6 @@
 # ansible-vault edit ~/ansible/roles/watchdog/vars/main.yml --vault-password-file  ~/.ssh/vault-key
 #
 
-# todo
-# fix IP address server
-# ssh-keyscan github.com >> /home/toto/.ssh/known_hosts
 
 # - hosts: 192.168.0.51
 #   gather_facts: true
@@ -75,16 +72,15 @@
   #   tags: openresolv
   #   debug: var=ansible_facts
   roles:
-  - bootstrap
-
-- hosts: pi
-  tags: keyb
-  roles:
-    - role: gantsign.keyboard
+  - role: gantsign.keyboard
+    vars: 
       # European keyboard model (pc105 is widely used outside Europe as well)
       keyboard_model: pc105
       # Layout for belgium (er, which Belgium ?)
       keyboard_layout: be
+  - bootstrap
+
+
 
 - hosts: all
   tags: always
@@ -239,26 +235,26 @@
   roles: 
     - evandam.conda
     - watchdog
-  tasks:
-  - name: Create a conda environment - watchdog
-    tags: conda_watchdog
-    conda:
-      name: python
-      version: "3.7"
-      environment: /home/toto/.conda/envs/watchdog
-      state: present
-      executable: /opt/conda/bin/conda
-    when: ansible_facts["lsb"]["id"] != "Raspbian"
+  # tasks:
+  # - name: Create a conda environment - watchdog
+  #   tags: conda_watchdog
+  #   conda:
+  #     name: python
+  #     version: "3.7"
+  #     environment: /home/toto/.conda/envs/watchdog
+  #     state: present
+  #     executable: /opt/conda/bin/conda
+  #   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-  - name: Install some packages in conda environment - watchdog
-    tags: conda_watchdog
-    conda:
-      name:
-        - numpy
-        - requests
-      environment: /home/toto/.conda/envs/watchdog
-      executable: /opt/conda/bin/conda
-    when: ansible_facts["lsb"]["id"] != "Raspbian"
+  # - name: Install some packages in conda environment - watchdog
+  #   tags: conda_watchdog
+  #   conda:
+  #     name:
+  #       - numpy
+  #       - requests
+  #     environment: /home/toto/.conda/envs/watchdog
+  #     executable: /opt/conda/bin/conda
+  #   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - hosts: frigo
   name: install frigo
@@ -270,13 +266,13 @@
   roles: 
     - evandam.conda
     - frigo
-  tasks:
-  - name: Update conda
-    conda:
-      name: conda
-      state : latest
-      executable: /opt/conda/bin/conda
-    when: ansible_facts["lsb"]["id"] != "Raspbian"
+  # tasks:
+  # - name: Update conda
+  #   conda:
+  #     name: conda
+  #     state : latest
+  #     executable: /opt/conda/bin/conda
+  #   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
   # - name: Install R, using a versioned name
   #   conda:

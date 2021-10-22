@@ -16,7 +16,7 @@
     dest: /etc/postfix/sasl_passwd
     owner: root
     group: postfix
-    mode: 0640
+    mode: '0640'
 
 - name: generate postfix lookup table
   command: postmap /etc/postfix/sasl_passwd

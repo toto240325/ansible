@@ -30,7 +30,7 @@
     dest: /etc/sudoers.d/pi
     owner: root
     group: root
-    mode: 0440
+    mode: '0440'
 
 - name: copy basic files - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto

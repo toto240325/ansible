@@ -3,6 +3,13 @@
 #   tags: debug21
 #   debug: var=ansible_facts["lsb"]["id"]
 
+- name: install updates (Ubuntu)
+  apt:
+    update_cache: yes
+    upgrade: dist
+  #when: ansible_distribution == "Ubuntu"
+
+
 - name: Set timezone to Europe/Brussels
   community.general.timezone:
     name: Europe/Brussels

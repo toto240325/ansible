@@ -62,7 +62,7 @@
 #    dest: /var/www/html/index.html
 #    owner: root
 #    group: root
-#    mode: 0644
+#    mode: '0644'
 
 - name: "make sure apache is restarted"
   service:

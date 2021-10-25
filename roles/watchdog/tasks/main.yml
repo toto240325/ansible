@@ -77,7 +77,7 @@
 #     #special_time: reboot
 #     #minute: "*/5"
 #     minute: "30"
-#     job: "conda activate /home/toto/.conda/envs/watchdog; /usr/local/bin/python /home/toto/watchdog/watchdog.py 2>&1 >> /home/toto/watchdog.log; conda deactivate"
+#     job: "conda activate /home/toto/.conda/envs/watchdog; python /home/toto/watchdog/watchdog.py 2>&1 >> /home/toto/watchdog.log; conda deactivate"
 #   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 # - name: change ownership to toto:toto
@@ -96,6 +96,13 @@
     virtualenv_python: python3
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 
+- name: change ownership to toto:toto
+  tags: watchdog_req
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+  with_items:
+  - { path: "/home/toto/venv/" }
+  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+
 - name: cron job to launch watchdog under root
   tags: watchdog_cron
   cron:
@@ -104,6 +111,6 @@
     #special_time: reboot
     minute: "*/5"
     #minute: "30"
-    job: "sleep 20 && . /home/toto/venv/watchdog/bin/activate && /usr/bin/python3 /home/toto/watchdog/watchdog.py  >> /home/toto/watchdog.log"
+    job: ". /home/toto/venv/watchdog/bin/activate && python /home/toto/watchdog/watchdog.py  >> /home/toto/watchdog.log"
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 

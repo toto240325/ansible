@@ -48,9 +48,9 @@
       192.168.0.66 pi6Eth0
       192.168.0.76 pi6Wlan0
       192.168.0.86 pi6Wlan1
-      192.168.0.67 pi8Eth0
-      192.168.0.77 pi8Wlan0
-      192.168.0.87 pi8Wlan1
+      192.168.0.67 pi7Eth0
+      192.168.0.77 pi7Wlan0
+      192.168.0.87 pi7Wlan1
       192.168.0.68 pi8Eth0
       192.168.0.78 pi8Wlan0
       192.168.0.88 pi8Wlan1
@@ -103,9 +103,9 @@
 #     - { regexp: '^192.168.0.76', line: '192.168.0.76 pi6Wlan0', state: 'present' }
 #     - { regexp: '^192.168.0.86', line: '192.168.0.86 pi6Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.67', line: '192.168.0.66 pi7Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.77', line: '192.168.0.76 pi7Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.87', line: '192.168.0.86 pi7Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.67', line: '192.168.0.67 pi7Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.77', line: '192.168.0.77 pi7Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.87', line: '192.168.0.87 pi7Wlan1', state: 'present' }
     
 #     - { regexp: '^192.168.0.68', line: '192.168.0.68 pi8Eth0', state: 'present' }
 #     - { regexp: '^192.168.0.78', line: '192.168.0.78 pi8Wlan0', state: 'present' }

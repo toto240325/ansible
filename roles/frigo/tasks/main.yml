@@ -76,6 +76,6 @@
     special_time: reboot
     #minute: "*/5"
     #minute: "30"
-    job: "sleep 30 && . /home/toto/Envs/frigo/bin/activate && /usr/bin/python3 /user/home/toto/frigo  >> /home/toto/frigo.log"
+    job: "sleep 30 && . /home/toto/Envs/frigo/bin/activate && python /user/home/toto/frigo  >> /home/toto/frigo.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 

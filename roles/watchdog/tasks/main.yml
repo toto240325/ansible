@@ -92,7 +92,8 @@
   pip: 
     requirements: /home/toto/watchdog/requirements.txt
     virtualenv: /home/toto/venv/watchdog
-    virtualenv_python: python3.7
+    #virtualenv_python: python3.7
+    virtualenv_python: python3
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 
 - name: cron job to launch watchdog under root

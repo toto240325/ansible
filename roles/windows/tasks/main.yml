@@ -6,11 +6,24 @@
   ansible.windows.win_command: whoami
   register: whoami_out
 
+- name: check value of whoami
+  debug: var=whoami_out
+
 - name: Run command that only runs if folder exists and runs from a specific folder
-  ansible.windows.win_command: wbadmin -backupTarget:d:\projects\tests-backup\
+  ansible.windows.win_command: dir
   args:
     chdir: d:\projects\tests\
-    creates: d:\projects\tests-backup\
+    register: dir_output
+  
+- name: check value 
+  debug: var=dir_out
+
+
+# - name: Run command that only runs if folder exists and runs from a specific folder
+#   ansible.windows.win_command: wbadmin -backupTarget:d:\projects\tests-backup\
+#   args:
+#     chdir: d:\projects\tests\
+#     creates: d:\projects\tests-backup\
 
 - name: Run an executable and send data to the stdin for the executable
   ansible.windows.win_command: powershell.exe -

@@ -7,6 +7,7 @@
 
 
 [bootstrap]
+# sudo nmap -sn 192.168.0.* | awk ' /scan report/ {printf ("%15s %s\n",$5,$6) }'
 # in this group, ansible_user is not yet always ansible, 
 # but could be pi or toto or vagrant
 # ansible-playbook site.yml --limit bootstrap --tags=bootstrap --skip-tags=always
@@ -25,8 +26,8 @@
 #192.168.0.52 ansible_user=toto newHostname=ubuntu2 mainEthDev=eth0 newEthIP=192.168.0.52 mainWifiDev=wlan0 newWlan0IP=192.168.0.152 newWlan1IP=192.168.0.162
 #192.168.0.60 ansible_user=pi ansible_ssh_pass=raspberry newHostname=pi0 mainEthDev=eth0 newEthIP=192.168.0.60 mainWifiDev=wlan0 newWlan0IP=192.168.0.70 newWlan1IP=192.168.0.80
 #192.168.0.66 ansible_user=pi ansible_ssh_pass=raspberry newHostname=pi6 mainEthDev=eth0 newEthIP=192.168.0.66 mainWifiDev=wlan0 newWlan0IP=192.168.0.76 newWlan1IP=192.168.0.86
-192.168.0.3 ansible_user=pi ansible_ssh_pass=Toto! newHostname=pi2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
-192.168.0.78 ansible_user=pi ansible_ssh_pass=Toto! newHostname=pi2 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
+192.168.0.3 ansible_user=pi ansible_ssh_pass=pw newHostname=pi2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
+192.168.0.67 ansible_user=pi ansible_ssh_pass=raspberry newHostname=pi7 mainEthDev=eth0 newEthIP=192.168.0.67 mainWifiDev=wlan0 newWlan0IP=192.168.0.77 newWlan1IP=192.168.0.87
 
 
 [base]
@@ -41,6 +42,8 @@
 192.168.0.75
 192.168.0.66
 192.168.0.76
+192.168.0.67
+192.168.0.77
 192.168.0.68
 192.168.0.78
 #192.168.0.148
@@ -55,6 +58,8 @@
 192.168.0.75
 192.168.0.66
 192.168.0.76
+192.168.0.67
+192.168.0.77
 192.168.0.68
 192.168.0.78
 
@@ -77,9 +82,6 @@
 192.168.0.76
 192.168.0.68
 192.168.0.78
-
-[windows]
-192.168.0.99 ansible_connection=ssh ansible_shell_type=cmd ansible_user=toto
 
 [web_servers]
 192.168.0.45
@@ -114,6 +116,7 @@
 [file_servers]
 
 [workstations]
+
 
 
 #[x_servers]
@@ -172,3 +175,14 @@
 192.168.0.45
 192.168.0.148
 
+[windows]
+192.168.0.99 ansible_connection=ssh ansible_shell_type=cmd ansible_user=toto
+
+[windows:vars]
+ansible_user=toto
+ansible_password=Toto!
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
+ansible_winrm_scheme=http
+ansible_port=5985
+#ansible_winrm_kerberos_delegation=true

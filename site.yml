@@ -204,12 +204,12 @@
   #   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 
-- hosts: x_servers
-  gather_facts: false
-  tags: x_servers
-  become: true
-  roles:
-    - x_servers
+# - hosts: x_servers
+#   gather_facts: false
+#   tags: x_servers
+#   become: true
+#   roles:
+#     - x_servers
 
 - hosts: web_servers
   gather_facts: false
@@ -228,9 +228,9 @@
     - monitor
     
 - hosts: windows
-  gather_facts: true
+  #gather_facts: true
   tags: windows
-  become: true
+  #become: true
   roles:
     - windows
 

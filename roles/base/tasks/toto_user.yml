@@ -149,6 +149,14 @@
   # - { repo: 'https://github.com/toto240325/watchdog.git',            dest: '/home/toto/watchdog' }
   register: output_git
 
+- name: change ownership repos
+  tags: debug1
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+  with_items:
+  - { path: "/home/toto/utils" }
+  - { path: "/home/toto/ansible" }
+#  register: output_chown
+
 
 # - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
 #   tags: mygit
@@ -178,6 +186,18 @@
     owner: toto
     group: toto
     mode: '0600'
+
+# - name: set ownership of log files (some log files are create by root in /home/toto)
+#   tags: fix_ownership_logs
+#   become: True
+#   file: path="/home/toto/{{ item }}" owner=toto group=toto
+#     # path: /home/toto/watchdog.log
+#     # owner: toto
+#     # group: toto
+#   with_items:
+#   - watchdog.log
+#   - watchdog.txt
+#   - misc.log
 
 - name: cron job to update git utils
   tags: pull_repos

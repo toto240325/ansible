@@ -11,6 +11,12 @@
   - { repo: 'https://github.com/toto240325/fork_of_whos_on_my_network.git', dest: '/home/toto/whos_on_my_network' }
   register: repo_whos
 
+- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+  tags: repowhosonmynetwork
+  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+  with_items:
+  - "/home/toto/whos_on_my_network"
+
 - name: change ownership
   tags: repoonly
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"

@@ -29,6 +29,12 @@
   - { repo: 'https://github.com/toto240325/monitor.git', dest: '/var/www/{{ http_host }}' }
   register: repo_monitor
 
+- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+  tags: repomon
+  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+  with_items:
+  - "/var/www/{{ http_host }}"
+
 - name: "Copy params.php"
   tags: debug_copy_params_mon
   template:

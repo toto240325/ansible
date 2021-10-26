@@ -187,7 +187,7 @@
     special_time: reboot
     #minute: "39"
     #hour: "22"
-    job: "cd ~/toto/utils && git pull >> ~/misc.log"
+    job: "cd ~/utils && git pull >> ~/misc.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: cron job to update git ansible
@@ -198,25 +198,20 @@
     special_time: reboot
     #minute: "43"
     #hour: "22"
-    job: "cd ~/toto/ansible && git pull >> ~/misc.log"
+    job: "cd ~/ansible && git pull >> ~/misc.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
+- name: force git pull utils
+  tags: force_pull
+  shell:
+    cmd: 'su -c "cd ~/utils && date >> ~/misc.log && git pull https://github.com/toto240325/utils.git >> ~/misc.log" toto'
+  
+- name: force git pull ansible
+  tags: force_pull
+  shell:
+    cmd: 'su -c "cd ~/ansible && date >> ~/misc.log && git pull https://github.com/toto240325/ansible.git >> ~/misc.log" toto'
+  
 
-#- name: install repo utils for toto (git method)
-#  become: true
-#  remote_user: toto
-#  tags: gitmethod
-#  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes key_file='/home/toto/.ssh/id_ed25519_toto'
-#  with_items:
-#  - { repo: 'git@github.com:toto240325/watchdog.git', dest: '/home/toto/watchdog' }
-#  #register: output_git
-
-
-#- debug: msg="after debug"
-#  tags: debug1
-
-#- debug: var=output_git
-#  tags: debug1
 
 - name: change ownership
   tags: debug1

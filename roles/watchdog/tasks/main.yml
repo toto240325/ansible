@@ -11,6 +11,12 @@
   - { repo: 'https://github.com/toto240325/watchdog.git', dest: '/home/toto/watchdog' }
   register: repo_watchdog
 
+- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+  tags: repowatchdog
+  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+  with_items:
+  - "/home/toto/watchdog"
+
 - name: "Copy params.py"
   template:
     src: "files/params.py.j2"
@@ -27,16 +33,6 @@
     job: "cd ~/watchdog && git pull >> /home/toto/misc.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-
-
-
-# - name: copy requirementsbasic files to user toto - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
-#   tags: copy_req_w
-#   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
-#   with_items:
-#   - { src: 'requirements.txt',    dest: '/home/toto/watchdog/',  mode: '0644' }
-
-
 - name: change ownership
   tags: repowatchdog
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
@@ -44,14 +40,6 @@
   - { path: "/home/toto/watchdog" }
   #register: output_chown
   when: repo_watchdog.changed
-
-# - name: "initialise DB in separate location (makes sense only for sqlite, not mysql)"
-#   file: 
-#     path: /home/toto/db
-#     state: directory
-#     owner: toto
-#     group: toto
-#   when: repo_monitor.changed
 
 
 # - name: set the SHELL cron variable

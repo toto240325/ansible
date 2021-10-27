@@ -17,72 +17,53 @@
   with_items:
   - "/home/toto/frigo"
 
+# - name: cron job to update the git frigo repository
+#   tags: pull_frigo
+#   cron:
+#     user: toto
+#     name: "pull_frigo"
+#     special_time: reboot
+#     # minute: "24"
+#     # hour: "21"
+#     job: "cd ~/frigo && git pull >> /home/toto/misc.log"
+#   # when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+# - name: force git pull frigo
+#   tags: force_pull_frigo
+#   shell:
+#     cmd: 'su -c "cd ~/frigo && date >> ~/misc.log && git pull https://github.com/toto240325/frigo.git >> ~/misc.log" toto'
+  
 
 - name: "Copy params.py"
   template:
     src: "files/params.py.j2"
     dest: "/home/toto/frigo/params.py"
 
-- name: change ownership
-  tags: repofrigo
+- name: Install requirements for frigo
+  tags: frigo_req
+  pip: 
+    requirements: /home/toto/frigo/requirements.txt
+    virtualenv: /home/toto/venv/frigo
+    #virtualenv_python: python3.7
+    virtualenv_python: python3
+  #when: ansible_facts["lsb"]["id"] == "Raspbian"
+
+- name: change ownership frigo directory to toto:toto
+  tags: frigo_ownership
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
   with_items:
-  - { path: "/home/toto/frigo" }
+  - { path: "/home/toto/venv/" }
   #register: output_chown
-  when: repo_frigo.changed
+  #when: repo_frigo.change
 
-# - name: "initialise DB in separate location (makes sense only for sqlite, not mysql)"
-#   file: 
-#     path: /home/toto/db
-#     state: directory
-#     owner: toto
-#     group: toto
-#   when: repo_monitor.changed
-
-
-
-- name: "pip install numpy for frigo"
-  pip:
-    name: numpy
-    state: latest
-    virtualenv: /home/toto/Envs/frigo
-
-# - name: "after-install of repo of whos_on_my_network (pip requirements)"
-#   pip:
-#     requirements: /home/toto/whos_on_my_network/requirements.txt
-#     virtualenv: /home/toto/Envs/whos_on_my_network
-#   when: repo_whos.changed
-
-# - name: "ad hoc shell : cd webapp && npm i && npm run build"
-#   remote_user: toto
-#   shell: ". ~/Envs/whos_on_my_network/bin/activate && cd /home/toto/whos_on_my_network/webapp && npm i && npm run build"
-#   register: shell_output
-#   when: repo_whos.changed
-
-
-- name: set the SHELL cron variable
-  tags: debug49
-  community.general.cronvar:
-    user: toto
-    name: SHELL
-    value: /bin/bash
-    
-- name: set the BASH_ENV cron variable
-  tags: debug49
-  community.general.cronvar:
-    user: toto
-    name: BASH_ENV
-    value: /home/toto/.bashrc_conda
-    insertafter: SHELL
-    
 - name: cron job to launch frigo under root
-  tags: debug49
+  tags: frigo_cron
   cron:
     user: root
-    name: "frigo"
+    name: "watchdog"
     special_time: reboot
     #minute: "*/5"
     #minute: "30"
-    job: "sleep 30 && . /home/toto/Envs/frigo/bin/activate && python /user/home/toto/frigo  >> /home/toto/frigo.log"
-  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+    job: ". /home/toto/venv/frigo/bin/activate && python /home/toto/frigo/frigo.py  >> /home/toto/frigo.log"
+  #when: ansible_facts["lsb"]["id"] == "Raspbian"
 

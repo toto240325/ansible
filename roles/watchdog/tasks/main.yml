@@ -17,6 +17,15 @@
   with_items:
   - "/home/toto/watchdog"
 
+- name: set ownership of log files (some log files are create by root in /home/toto)
+  tags: fix_ownership_logs
+  become: True
+  file: path="/home/toto/{{ item }}" owner=toto group=toto state=touch
+  with_items:
+  - watchdog.log
+  - watchdog.txt
+
+
 - name: "Copy params.py"
   template:
     src: "files/params.py.j2"
@@ -32,6 +41,13 @@
     # hour: "21"
     job: "cd ~/watchdog && git pull >> /home/toto/misc.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+
+- name: force git pull watchdog
+  tags: force_pull_watchdog
+  shell:
+    cmd: 'su -c "cd ~/watchdog && date >> ~/misc.log && git pull https://github.com/toto240325/watchdog.git >> ~/misc.log" toto'
+  
 
 - name: change ownership
   tags: repowatchdog
@@ -75,7 +91,7 @@
 #   - { path: "/home/toto/conda/" }
 #   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-- name: Install requirements
+- name: Install requirements for watchdog
   tags: watchdog_req
   pip: 
     requirements: /home/toto/watchdog/requirements.txt
@@ -84,7 +100,7 @@
     virtualenv_python: python3
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 
-- name: change ownership to toto:toto
+- name: change ownership watchdog directory to toto:toto
   tags: watchdog_req
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
   with_items:

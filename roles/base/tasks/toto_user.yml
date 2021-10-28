@@ -207,7 +207,7 @@
     special_time: reboot
     #minute: "39"
     #hour: "22"
-    job: "cd ~/utils && git pull >> ~/misc.log"
+    job: "sleep 20 && cd ~/utils && git pull >> ~/misc.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: cron job to update git ansible
@@ -218,7 +218,7 @@
     special_time: reboot
     #minute: "43"
     #hour: "22"
-    job: "cd ~/ansible && git pull >> ~/misc.log"
+    job: "sleep 20 && cd ~/ansible && git pull >> ~/misc.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: force git pull utils
@@ -231,8 +231,6 @@
   shell:
     cmd: 'su -c "cd ~/ansible && date >> ~/misc.log && git pull https://github.com/toto240325/ansible.git >> ~/misc.log" toto'
   
-
-
 - name: change ownership
   tags: debug1
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes

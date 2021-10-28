@@ -57,7 +57,7 @@
     special_time: reboot
     # minute: "24"
     # hour: "21"
-    job: "sleep 30 && cd /var/www/monitor && git pull >> /root/misc.log"
+    job: "sleep 60 && cd /var/www/monitor && git pull >> /root/misc.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 

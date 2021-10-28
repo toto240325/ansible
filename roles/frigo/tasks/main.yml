@@ -60,10 +60,10 @@
   tags: frigo_cron
   cron:
     user: root
-    name: "watchdog"
+    name: "frigo"
     special_time: reboot
     #minute: "*/5"
     #minute: "30"
-    job: ". /home/toto/venv/frigo/bin/activate && python /home/toto/frigo/frigo.py  >> /home/toto/frigo.log"
+    job: "sleep 40 && . /home/toto/venv/frigo/bin/activate && python /home/toto/frigo/frigo.py  >> /home/toto/frigo.log"
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 

@@ -144,6 +144,6 @@
     special_time: reboot
     #minute: "*/5"
     #minute: "30"
-    job: "sleep 20 && . /home/toto/venv/piloop/bin/activate && python /home/toto/utils/piloop.py  >> /home/toto/piloop.log"
+    job: "sleep 30 && . /home/toto/venv/piloop/bin/activate && python /home/toto/utils/piloop.py  >> /home/toto/piloop.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 

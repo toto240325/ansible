@@ -65,9 +65,11 @@
 #    mode: '0644'
 
 - name: "make sure apache is restarted"
+  tags: start_and_enable_apache2
   service:
     name: apache2
     state: restarted
+    enabled: yes
 
 - name: Download php Composer
   # https://symfonycasts.com/screencast/ansible/ansible-composer#installing-composer-with-script

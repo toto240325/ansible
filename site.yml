@@ -172,6 +172,22 @@
     - geerlingguy.postfix
     - postfix
 
+- hosts: web_servers
+  gather_facts: false
+  tags: web_servers
+  become: true
+  roles: 
+    - web_servers
+
+- hosts: monitor
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: false
+  tags: monitor
+  become: true
+  roles: 
+    - monitor
+    
 - hosts: watchdog
   name: install watchdog
   tags: watchdog, conda_watchdog
@@ -211,22 +227,6 @@
 #   roles:
 #     - x_servers
 
-- hosts: web_servers
-  gather_facts: false
-  tags: web_servers
-  become: true
-  roles: 
-    - web_servers
-
-- hosts: monitor
-  vars_files:
-  - ~/ansible/vault.yml
-  gather_facts: false
-  tags: monitor
-  become: true
-  roles: 
-    - monitor
-    
 - hosts: windows
   #gather_facts: true
   tags: windows

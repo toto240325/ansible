@@ -3,6 +3,12 @@
 #   tags: debug21
 #   debug: var=ansible_facts["lsb"]["id"]
 
+- name: test hash {{ 'Toto!' | password_hash('sha512','myOwnSalt') }}
+  tags: test_hash
+  debug: var="{{ 'Toto!' | password_hash('sha512','myOwnSalt') }}"
+   
+
+
 - name: install updates (Ubuntu)
   apt:
     update_cache: yes
@@ -147,6 +153,7 @@
   community.general.cronvar:
     user: root
     name: MAILTO
+    #value: toto240325dummy@gmail.com
     value: toto240325@gmail.com
 
 - name: dummy weekly cron

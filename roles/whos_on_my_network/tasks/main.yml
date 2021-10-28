@@ -38,10 +38,11 @@
   when: repo_whos.changed
 
 - name: "ad hoc shell : cd webapp && npm i && npm run build"
-  remote_user: toto
-  shell: ". ~/Envs/whos_on_my_network/bin/activate && cd /home/toto/whos_on_my_network/webapp && npm i && npm run build"
+  tags: rebuild_whos
+  shell: 
+    cmd: 'su -c ". ~/venv/whos_on_my_network/bin/activate && cd /home/toto/whos_on_my_network/webapp && npm i && npm run build" toto'
   register: shell_output
-  when: repo_whos.changed
+  #when: repo_whos.changed
 
 #- debug: var=shell_output
 

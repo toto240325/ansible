@@ -13,14 +13,8 @@
 #    state: absent
 #  when: ansible_distribution == "Ubuntu"
 
-- name: "register facts"
-  command: echo "test"
-  register: allfacts
 
-# - name: "check allfacts"
-#   debug: var=ansible_facts
-
-- debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+#- debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
 
 - name: "install mysql-server"
   #gather_facts: false
@@ -39,6 +33,7 @@
   # - mysql
 
 - name: "start and enable mysql server"
+  tags: start_and_enable_mysql
   service:
     name: mysql
     state: started

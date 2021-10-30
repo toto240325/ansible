@@ -80,7 +80,7 @@
     mode: '0440'
 
 - name: Set a hostname
-  tags: debug13
+  tags: hostname
   ansible.builtin.hostname:
     name: "{{ newHostname }}"
 

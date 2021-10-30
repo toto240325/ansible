@@ -7,16 +7,37 @@
   register: whoami_out
 
 - name: check value of whoami
-  debug: var=whoami_out
+  debug: var=whoami_out.stdout
 
-- name: Run command that only runs if folder exists and runs from a specific folder
-  ansible.windows.win_command: dir
+- name: Ensure user ansible is present
+  tags: win_create_ansible
+  ansible.windows.win_user:
+    name: ansible
+    password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
+    #password: "{{ 'password' | password_hash('sha512') }}"
+    update_password: on_create
+    state: present
+    groups:
+      - "{{ admin_group }}"
+    
+
+- name: Run an executable and send data to the stdin for the executable
+  ansible.windows.win_command: powershell.exe -
   args:
-    chdir: d:\projects\tests\
-    register: dir_output
-  
-- name: check value 
-  debug: var=dir_out
+    stdin: Write-Host test
+  register: ps_output
+
+- debug: var=ps_output
+
+
+# - name: Run command that only runs if folder exists and runs from a specific folder
+#   ansible.windows.win_command: dir
+#   args:
+#     chdir: d:\projects\tests\
+#     register: dir_output
+# - name: check value 
+#   debug: var=dir_output
+
 
 
 # - name: Run command that only runs if folder exists and runs from a specific folder

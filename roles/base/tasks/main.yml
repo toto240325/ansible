@@ -3,18 +3,15 @@
 #   tags: debug21
 #   debug: var=ansible_facts["lsb"]["id"]
 
-- name: test hash {{ 'Toto!' | password_hash('sha512','myOwnSalt') }}
-  tags: test_hash
-  debug: var="{{ 'Toto!' | password_hash('sha512','myOwnSalt') }}"
+# - name: test hash {{ 'mypw' | password_hash('sha512','myOwnSalt') }}
+#   tags: test_hash
+#   debug: var="{{ 'mypw' | password_hash('sha512','myOwnSalt') }}"
    
-
-
 - name: install updates (Ubuntu)
   apt:
     update_cache: yes
     upgrade: dist
   #when: ansible_distribution == "Ubuntu"
-
 
 - name: Set timezone to Europe/Brussels
   community.general.timezone:
@@ -38,30 +35,31 @@
       192.168.0.52 ubuntu2
       192.168.0.53 ubuntu3
       192.168.0.54 ubuntu4
-      192.168.0.61 pi1Eth0
-      192.168.0.71 pi1Wlan0
-      192.168.0.81 pi1Wlan1
-      192.168.0.62 pi2Eth0
-      192.168.0.72 pi2Wlan0
-      192.168.0.82 pi2Wlan1
-      192.168.0.63 pi3Eth0
-      192.168.0.73 pi3Wlan0
-      192.168.0.83 pi3Wlan1
-      192.168.0.64 pi4Eth0
-      192.168.0.74 pi4Wlan0
-      192.168.0.84 pi4Wlan1
-      192.168.0.65 pi5Eth0
-      192.168.0.75 pi5Wlan0
-      192.168.0.85 pi5Wlan1
-      192.168.0.66 pi6Eth0
-      192.168.0.76 pi6Wlan0
-      192.168.0.86 pi6Wlan1
-      192.168.0.67 pi7Eth0
-      192.168.0.77 pi7Wlan0
-      192.168.0.87 pi7Wlan1
-      192.168.0.68 pi8Eth0
-      192.168.0.78 pi8Wlan0
-      192.168.0.88 pi8Wlan1
+      192.168.0.61 mc1Eth0
+      192.168.0.71 mc1Wlan0
+      192.168.0.81 mc1Wlan1
+      192.168.0.62 mc2Eth0
+      192.168.0.72 mc2Wlan0
+      192.168.0.82 mc2Wlan1
+      192.168.0.63 mc3Eth0
+      192.168.0.73 mc3Wlan0
+      192.168.0.83 mc3Wlan1
+      192.168.0.64 mc4Eth0
+      192.168.0.74 mc4Wlan0
+      192.168.0.84 mc4Wlan1
+      192.168.0.65 mc5Eth0
+      192.168.0.75 mc5Wlan0
+      192.168.0.85 mc5Wlan1
+      192.168.0.66 mc6Eth0
+      192.168.0.76 mc6Wlan0
+      192.168.0.86 mc6Wlan1
+      192.168.0.67 mc7Eth0
+      192.168.0.77 mc7Wlan0
+      192.168.0.87 mc7Wlan1
+      192.168.0.68 mc8Eth0
+      192.168.0.78 mc8Wlan0
+      192.168.0.88 mc8Wlan1
+      192.168.0.96 hp2560
       192.168.0.97 lenovoOrange
       192.168.0.99 mypc3
       192.168.0.148 nb2502
@@ -87,37 +85,37 @@
 #     - { regexp: '^192.168.0.53', line: '192.168.0.53 ubuntu3', state: 'present' }
 #     - { regexp: '^192.168.0.54', line: '192.168.0.54 ubuntu4', state: 'present' }
     
-#     - { regexp: '^192.168.0.61', line: '192.168.0.61 pi1Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.71', line: '192.168.0.71 pi1Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.81', line: '192.168.0.81 pi1Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.61', line: '192.168.0.61 mc1Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.71', line: '192.168.0.71 mc1Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.81', line: '192.168.0.81 mc1Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.62', line: '192.168.0.62 pi2Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.72', line: '192.168.0.72 pi2Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.82', line: '192.168.0.82 pi2Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.62', line: '192.168.0.62 mc2Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.72', line: '192.168.0.72 mc2Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.82', line: '192.168.0.82 mc2Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.63', line: '192.168.0.63 pi3Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.73', line: '192.168.0.73 pi3Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.83', line: '192.168.0.83 pi3Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.63', line: '192.168.0.63 mc3Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.73', line: '192.168.0.73 mc3Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.83', line: '192.168.0.83 mc3Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.64', line: '192.168.0.64 pi4Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.74', line: '192.168.0.74 pi4Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.84', line: '192.168.0.84 pi4Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.64', line: '192.168.0.64 mc4Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.74', line: '192.168.0.74 mc4Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.84', line: '192.168.0.84 mc4Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.65', line: '192.168.0.65 pi5Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.75', line: '192.168.0.75 pi5Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.85', line: '192.168.0.85 pi5Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.65', line: '192.168.0.65 mc5Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.75', line: '192.168.0.75 mc5Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.85', line: '192.168.0.85 mc5Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.66', line: '192.168.0.66 pi6Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.76', line: '192.168.0.76 pi6Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.86', line: '192.168.0.86 pi6Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.66', line: '192.168.0.66 mc6Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.76', line: '192.168.0.76 mc6Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.86', line: '192.168.0.86 mc6Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.67', line: '192.168.0.67 pi7Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.77', line: '192.168.0.77 pi7Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.87', line: '192.168.0.87 pi7Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.67', line: '192.168.0.67 mc7Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.77', line: '192.168.0.77 mc7Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.87', line: '192.168.0.87 mc7Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.68', line: '192.168.0.68 pi8Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.78', line: '192.168.0.78 pi8Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.88', line: '192.168.0.88 pi8Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.68', line: '192.168.0.68 mc8Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.78', line: '192.168.0.78 mc8Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.88', line: '192.168.0.88 mc8Wlan1', state: 'present' }
     
 #     - { regexp: '^192.168.0.97', line: '192.168.0.97 lenovoOrange', state: 'present' }
 #     - { regexp: '^192.168.0.99', line: '192.168.0.99 mypc3', state: 'present' }
@@ -153,7 +151,6 @@
   community.general.cronvar:
     user: root
     name: MAILTO
-    #value: toto240325dummy@gmail.com
     value: toto240325@gmail.com
 
 - name: dummy weekly cron

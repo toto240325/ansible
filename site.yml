@@ -19,7 +19,6 @@
 # ansible-vault edit ~/ansible/roles/watchdog/vars/main.yml --vault-password-file  ~/.ssh/vault-key
 #
 
-
 # - hosts: 192.168.0.51
 #   gather_facts: true
 #   tasks:
@@ -32,7 +31,6 @@
 #     debug: var=ansible_facts
 
 #   - debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
-
 
 # - hosts: 192.168.0.52
 #   tags: debug76
@@ -102,7 +100,6 @@
   #   register: cmdoutput
   #   when: ansible_facts["os_family"] != "Windows"
 
-
   # - debug: var=cmdoutput
   #   tags: debugecho
       
@@ -113,8 +110,7 @@
 #    changed_when: false
 #    when: ansible_distribution == "CentOS"
 #
- 
-  # - tags: debug40
+   # - tags: debug40
   #   debug:
   #     var: ansible_facts
   #     #var: ansible_facts["cmdline"]
@@ -219,6 +215,12 @@
   #     executable: /opt/conda/bin/conda
   #   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
+- hosts: vnc_servers
+  tags: vnc_servers
+  become: true
+  roles: 
+    - vnc_servers
+
 
 # - hosts: x_servers
 #   gather_facts: false
@@ -228,9 +230,10 @@
 #     - x_servers
 
 - hosts: windows
-  #gather_facts: true
   tags: windows
-  #become: true
+  gather_facts: false
+  vars_files:
+  - ~/ansible/vault.yml
   roles:
     - windows
 

@@ -207,7 +207,7 @@
     special_time: reboot
     #minute: "39"
     #hour: "22"
-    job: "sleep 30 && cd ~/utils && git pull >> ~/misc.log"
+    job: "sleep 90 && cd ~/utils && git pull >> ~/misc.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: cron job to update git ansible
@@ -218,7 +218,7 @@
     special_time: reboot
     #minute: "43"
     #hour: "22"
-    job: "sleep 30 && cd ~/ansible && git pull >> ~/misc.log"
+    job: "sleep 90 && cd ~/ansible && git pull >> ~/misc.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: force git pull utils

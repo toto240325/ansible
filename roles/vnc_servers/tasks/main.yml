@@ -1,0 +1,10 @@
+---
+- name: install basic packages for vnc_ servers
+  tags: install_vnc
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - xfce4
+    - xfce4-goodies
+    - tightvncserver

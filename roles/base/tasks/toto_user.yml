@@ -122,7 +122,7 @@
 - name: setup some git global variables
   tags: debug2
   lineinfile:
-    dest: /home/toto/.gitconfig
+    dest: /home/toto/.gitconfig # same as git config --global user.name "toto.tutu"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
     insertafter: "[user]"

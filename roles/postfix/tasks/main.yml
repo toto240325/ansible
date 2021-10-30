@@ -34,12 +34,12 @@
     name: postfix
     state: restarted
 
-- name: "shell test"
+- name: "get hostname"
   shell: "hostname"
   register: shelloutput
 
-- name: "debug shell output"
-  debug: var=shelloutput.stdout
+# - name: "debug shell output"
+#   debug: var=shelloutput.stdout
 
 - name: sending mail to test@gmail.com
   tags: debugmail
@@ -51,7 +51,7 @@
     to: 
     - "{{ vault_toto_email }}@gmail.com"
     - "eric.derruine@ec.europa.eu"
-    subject: System {{ ansible_hostname }} has been successfully provisioned.
-    body: "System {{ ansible_hostname }} has been successfully provisioned.  Sent from {{ shelloutput.stdout }}"
+    subject: Postfix installed correctly on {{ ansible_hostname }}.
+    body: "Postfix installed correctly on {{ ansible_hostname }}.  Sent from {{ shelloutput.stdout }}"
   #delegate_to: localhost
 

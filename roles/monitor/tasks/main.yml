@@ -6,6 +6,13 @@
 #    name: npm
 #    state: latest
 
+- name: Create document root
+  file:
+    path: "/var/www/{{ http_host }}"
+    state: directory
+    owner: "{{ app_user }}"
+    mode: '0755'
+
 - name: Install a php package 
   tags: debug72
   community.general.composer:
@@ -14,13 +21,6 @@
     arguments: phpunit/phpunit
     working_dir: "/var/www/{{ http_host }}"
     #global_command: yes
-
-- name: Create document root
-  file:
-    path: "/var/www/{{ http_host }}"
-    state: directory
-    owner: "{{ app_user }}"
-    mode: '0755'
 
 - name: install repo monitor for toto
   tags: repomon

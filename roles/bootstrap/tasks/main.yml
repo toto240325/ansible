@@ -17,6 +17,7 @@
 #   debug: var=ansible_facts
   
 - name: install basic packages
+  tags: basic_pkg
   package:
     name: "{{ item }}"
     state: latest

@@ -25,13 +25,12 @@
 #192.168.1.70 ansible_user=vagrant
 #192.168.0.68 ansible_user=pi newhostname=mc8 newEthIP=192.168.0.68 newWlan0P=192.168.0.78 newWlan1IP=192.168.0.88 
 #192.168.0.43 ansible_user=toto newHostname=vayo newEthIP=192.168.0.44 newWlan0IP=192.168.0.45 newWlan1IP=192.168.0.46 
-#192.168.0.52 ansible_user=toto newHostname=ubuntu2 mainEthDev=eth1 newEthIP=192.168.0.52 newWlan0IP="" newWlan1IP="" 
-#192.168.0.53 ansible_user=toto newHostname=ubuntu3 mainEthDev=eth1 newEthIP=192.168.0.53 newWlan0IP="" newWlan1IP="" 
 #192.168.0.54 ansible_user=toto newHostname=ubuntu4 mainEthDev=eth1 newEthIP=192.168.0.54 newWlan0IP="" newWlan1IP="" 
 #192.168.0.65 ansible_user=pi ansible_ssh_pass=raspberry newhostname=mc5 mainEthDev=eth0 newEthIP=192.168.0.65 newWlan0IP=192.168.0.75 newWlan1IP=192.168.0.85
 #192.168.0.61 ansible_user=pi ansible_ssh_pass=xxxx newHostname=mc1 mainEthDev=eth0 newEthIP=192.168.0.61 newWlan0IP=192.168.0.71 newWlan1IP=192.168.0.81
 #192.168.0.45 newHostname=vayo mainEthDev=enp1s0 newEthIP=192.168.0.45 mainWifiDev=wlp2s0 newWlan0IP=192.168.0.46 newWlan1IP=192.168.0.47
-#192.168.0.52 ansible_user=toto newHostname=ubuntu2 mainEthDev=eth0 newEthIP=192.168.0.52 mainWifiDev=wlan0 newWlan0IP=192.168.0.152 newWlan1IP=192.168.0.162
+192.168.0.52 ansible_user=toto newHostname=ubuntu2 mainEthDev=eth0 newEthIP=192.168.0.52 mainWifiDev=wlan0 newWlan0IP=192.168.0.199 newWlan1IP=198.168.0.199
+#192.168.0.53 ansible_user=toto newHostname=ubuntu3 mainEthDev=eth0 newEthIP=192.168.0.53 mainWifiDev=wlan0 newWlan0IP=192.168.0.199 newWlan1IP=198.168.0.199
 #192.168.0.60 ansible_user=pi ansible_ssh_pass=raspberry newhostname=mc0 mainEthDev=eth0 newEthIP=192.168.0.60 mainWifiDev=wlan0 newWlan0IP=192.168.0.70 newWlan1IP=192.168.0.80
 #192.168.0.66 ansible_user=pi ansible_ssh_pass=raspberry newhostname=mc6 mainEthDev=eth0 newEthIP=192.168.0.66 mainWifiDev=wlan0 newWlan0IP=192.168.0.76 newWlan1IP=192.168.0.86
 #192.168.0.3 ansible_user=pi ansible_ssh_pass=pw newhostname=mc2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82

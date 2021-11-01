@@ -7,14 +7,17 @@
 
 
 [bootstrap]
-192.168.0.70 newHostname=mc0
-192.168.0.71 newHostname=mc1
-192.168.0.72 newHostname=mc2
-192.168.0.74 newHostname=mc4
-192.168.0.75 newHostname=mc5
-192.168.0.76 newHostname=mc6
-192.168.0.77 newHostname=mc7
-192.168.0.79 newHostname=mc9
+## aps -l 192.168.0.73,192.168.0.78 -t=hostname
+#192.168.0.70 newHostname=sd0
+#192.168.0.71 newHostname=sd1
+#192.168.0.72 newHostname=sd2
+##192.168.0.73 newHostname=sd3
+#192.168.0.74 newHostname=sd4
+#192.168.0.75 newHostname=sd5
+#192.168.0.76 newHostname=sd6
+#192.168.0.77 newHostname=sd7
+##192.168.0.78 newHostname=sd8
+#192.168.0.79 newHostname=sd9
 # sudo nmap -sn 192.168.0.* | awk ' /scan report/ {printf ("%15s %s\n",$5,$6) }'
 # in this group, ansible_user is not yet always ansible, 
 # but could be pi or toto or vagrant
@@ -23,21 +26,21 @@
 #192.168.0.23 ansible_user=toto
 #192.168.0.80 ansible_user=pi 
 #192.168.1.70 ansible_user=vagrant
-#192.168.0.68 ansible_user=pi newhostname=mc8 newEthIP=192.168.0.68 newWlan0P=192.168.0.78 newWlan1IP=192.168.0.88 
+#192.168.0.68 ansible_user=pi newhostname=sd8 newEthIP=192.168.0.68 newWlan0P=192.168.0.78 newWlan1IP=192.168.0.88 
 #192.168.0.43 ansible_user=toto newHostname=vayo newEthIP=192.168.0.44 newWlan0IP=192.168.0.45 newWlan1IP=192.168.0.46 
 #192.168.0.54 ansible_user=toto newHostname=ubuntu4 mainEthDev=eth1 newEthIP=192.168.0.54 newWlan0IP="" newWlan1IP="" 
-#192.168.0.65 ansible_user=pi ansible_ssh_pass=raspberry newhostname=mc5 mainEthDev=eth0 newEthIP=192.168.0.65 newWlan0IP=192.168.0.75 newWlan1IP=192.168.0.85
-#192.168.0.61 ansible_user=pi ansible_ssh_pass=xxxx newHostname=mc1 mainEthDev=eth0 newEthIP=192.168.0.61 newWlan0IP=192.168.0.71 newWlan1IP=192.168.0.81
+#192.168.0.65 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd5 mainEthDev=eth0 newEthIP=192.168.0.65 newWlan0IP=192.168.0.75 newWlan1IP=192.168.0.85
+#192.168.0.61 ansible_user=pi ansible_ssh_pass=xxxx newHostname=sd1 mainEthDev=eth0 newEthIP=192.168.0.61 newWlan0IP=192.168.0.71 newWlan1IP=192.168.0.81
 #192.168.0.45 newHostname=vayo mainEthDev=enp1s0 newEthIP=192.168.0.45 mainWifiDev=wlp2s0 newWlan0IP=192.168.0.46 newWlan1IP=192.168.0.47
-192.168.0.52 ansible_user=toto newHostname=ubuntu2 mainEthDev=eth0 newEthIP=192.168.0.52 mainWifiDev=wlan0 newWlan0IP=192.168.0.199 newWlan1IP=198.168.0.199
+#192.168.0.52 ansible_user=toto newHostname=ubuntu2 mainEthDev=eth0 newEthIP=192.168.0.52 mainWifiDev=wlan0 newWlan0IP=192.168.0.199 newWlan1IP=198.168.0.199
 #192.168.0.53 ansible_user=toto newHostname=ubuntu3 mainEthDev=eth0 newEthIP=192.168.0.53 mainWifiDev=wlan0 newWlan0IP=192.168.0.199 newWlan1IP=198.168.0.199
-#192.168.0.60 ansible_user=pi ansible_ssh_pass=raspberry newhostname=mc0 mainEthDev=eth0 newEthIP=192.168.0.60 mainWifiDev=wlan0 newWlan0IP=192.168.0.70 newWlan1IP=192.168.0.80
-#192.168.0.66 ansible_user=pi ansible_ssh_pass=raspberry newhostname=mc6 mainEthDev=eth0 newEthIP=192.168.0.66 mainWifiDev=wlan0 newWlan0IP=192.168.0.76 newWlan1IP=192.168.0.86
-#192.168.0.3 ansible_user=pi ansible_ssh_pass=pw newhostname=mc2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
-#192.168.0.67 ansible_user=pi ansible_ssh_pass=raspberry newhostname=mc7 mainEthDev=eth0 newEthIP=192.168.0.67 mainWifiDev=wlan0 newWlan0IP=192.168.0.77 newWlan1IP=192.168.0.87
-#192.168.0.78                                             newhostname=mc8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
-#192.168.0.68 ansible_user=pi ansible_ssh_pass=raspberry newhostname=mc8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
-#192.168.0.13 ansible_user=pi ansible_ssh_pass=raspberry newhostname=mc2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
+#192.168.0.60 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd0 mainEthDev=eth0 newEthIP=192.168.0.60 mainWifiDev=wlan0 newWlan0IP=192.168.0.70 newWlan1IP=192.168.0.80
+#192.168.0.66 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd6 mainEthDev=eth0 newEthIP=192.168.0.66 mainWifiDev=wlan0 newWlan0IP=192.168.0.76 newWlan1IP=192.168.0.86
+#192.168.0.3 ansible_user=pi ansible_ssh_pass=pw newhostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
+#192.168.0.67 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd7 mainEthDev=eth0 newEthIP=192.168.0.67 mainWifiDev=wlan0 newWlan0IP=192.168.0.77 newWlan1IP=192.168.0.87
+#192.168.0.78                                             newhostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
+#192.168.0.68 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
+#192.168.0.13 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
 
 [base]
 vayo # 192.168.0.45
@@ -45,30 +48,30 @@ ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
 #192.168.0.54
-mc0 # 192.168.0.70
-mc1 # 192.168.0.71
-mc2 # 192.168.0.72
-mc3 # 192.168.0.73
-mc4 # 192.168.0.74
-mc5 # 192.168.0.75
-mc6 # 192.168.0.76
-mc7 # 192.168.0.77
-mc8 # 192.168.0.78
-mc9 # 192.168.0.79
+sd0 # 192.168.0.70
+sd1 # 192.168.0.71
+sd2 # 192.168.0.72
+sd3 # 192.168.0.73
+sd4 # 192.168.0.74
+sd5 # 192.168.0.75
+sd6 # 192.168.0.76
+sd7 # 192.168.0.77
+sd8 # 192.168.0.78
+sd9 # 192.168.0.79
 #192.168.0.148
 #192.168.0.80
 
 [pi]
-mc0 # 192.168.0.70
-mc1 # 192.168.0.71
-mc2 # 192.168.0.72
-mc3 # 192.168.0.73
-mc4 # 192.168.0.74
-mc5 # 192.168.0.75
-mc6 # 192.168.0.76
-mc7 # 192.168.0.77
-mc8 # 192.168.0.78
-mc9 # 192.168.0.79
+sd0 # 192.168.0.70
+sd1 # 192.168.0.71
+sd2 # 192.168.0.72
+sd3 # 192.168.0.73
+sd4 # 192.168.0.74
+sd5 # 192.168.0.75
+sd6 # 192.168.0.76
+sd7 # 192.168.0.77
+sd8 # 192.168.0.78
+sd9 # 192.168.0.79
 
 [laptops]
 vayo # 192.168.0.45
@@ -81,16 +84,16 @@ ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
 #192.168.0.54
 #192.168.0.148
-mc0 # 192.168.0.70
-mc1 # 192.168.0.71
-mc2 # 192.168.0.72
-mc3 # 192.168.0.73
-mc4 # 192.168.0.74
-mc5 # 192.168.0.75
-mc6 # 192.168.0.76
-mc7 # 192.168.0.77
-mc8 # 192.168.0.78
-mc9 # 192.168.0.79
+sd0 # 192.168.0.70
+sd1 # 192.168.0.71
+sd2 # 192.168.0.72
+sd3 # 192.168.0.73
+sd4 # 192.168.0.74
+sd5 # 192.168.0.75
+sd6 # 192.168.0.76
+sd7 # 192.168.0.77
+sd8 # 192.168.0.78
+sd9 # 192.168.0.79
 
 [postfix]
 vayo # 192.168.0.45
@@ -99,16 +102,16 @@ ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
 #192.168.0.54
 #192.168.0.148
-mc0 # 192.168.0.70
-mc1 # 192.168.0.71
-mc2 # 192.168.0.72
-mc3 # 192.168.0.73
-mc4 # 192.168.0.74
-mc5 # 192.168.0.75
-mc6 # 192.168.0.76
-mc7 # 192.168.0.77
-mc8 # 192.168.0.78
-mc9 # 192.168.0.79
+sd0 # 192.168.0.70
+sd1 # 192.168.0.71
+sd2 # 192.168.0.72
+sd3 # 192.168.0.73
+sd4 # 192.168.0.74
+sd5 # 192.168.0.75
+sd6 # 192.168.0.76
+sd7 # 192.168.0.77
+sd8 # 192.168.0.78
+sd9 # 192.168.0.79
 
 [web_servers]
 vayo # 192.168.0.45
@@ -142,7 +145,7 @@ ubuntu3 # 192.168.0.53
 
 [frigo]
 vayo # 192.168.0.45
-mc8 # 192.168.0.78
+sd8 # 192.168.0.78
 
 #[ansible_servers]
 #192.168.0.23

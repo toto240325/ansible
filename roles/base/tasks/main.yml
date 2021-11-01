@@ -35,36 +35,36 @@
       192.168.0.52 ubuntu2
       192.168.0.53 ubuntu3
       192.168.0.54 ubuntu4
-      192.168.0.60 mc0Eth0
-      192.168.0.70 mc0Wlan0 mc0
-      192.168.0.80 mc0Wlan1
-      192.168.0.61 mc1Eth0
-      192.168.0.71 mc1Wlan0 mc1
-      192.168.0.81 mc1Wlan1
-      192.168.0.62 mc2Eth0
-      192.168.0.72 mc2Wlan0 mc2
-      192.168.0.82 mc2Wlan1
-      192.168.0.63 mc3Eth0
-      192.168.0.73 mc3Wlan0 mc3
-      192.168.0.83 mc3Wlan1
-      192.168.0.64 mc4Eth0
-      192.168.0.74 mc4Wlan0 mc4
-      192.168.0.84 mc4Wlan1
-      192.168.0.65 mc5Eth0
-      192.168.0.75 mc5Wlan0 mc5
-      192.168.0.85 mc5Wlan1
-      192.168.0.66 mc6Eth0
-      192.168.0.76 mc6Wlan0 mc6
-      192.168.0.86 mc6Wlan1
-      192.168.0.67 mc7Eth0
-      192.168.0.77 mc7Wlan0 mc7
-      192.168.0.87 mc7Wlan1
-      192.168.0.68 mc8Eth0
-      192.168.0.78 mc8Wlan0 mc8
-      192.168.0.88 mc8Wlan1
-      192.168.0.69 mc9Eth0
-      192.168.0.79 mc9Wlan0 mc9
-      192.168.0.89 mc9Wlan1
+      192.168.0.60 sd0Eth0
+      192.168.0.70 sd0Wlan0 sd0
+      192.168.0.80 sd0Wlan1
+      192.168.0.61 sd1Eth0
+      192.168.0.71 sd1Wlan0 sd1
+      192.168.0.81 sd1Wlan1
+      192.168.0.62 sd2Eth0
+      192.168.0.72 sd2Wlan0 sd2
+      192.168.0.82 sd2Wlan1
+      192.168.0.63 sd3Eth0
+      192.168.0.73 sd3Wlan0 sd3
+      192.168.0.83 sd3Wlan1
+      192.168.0.64 sd4Eth0
+      192.168.0.74 sd4Wlan0 sd4
+      192.168.0.84 sd4Wlan1
+      192.168.0.65 sd5Eth0
+      192.168.0.75 sd5Wlan0 sd5
+      192.168.0.85 sd5Wlan1
+      192.168.0.66 sd6Eth0
+      192.168.0.76 sd6Wlan0 sd6
+      192.168.0.86 sd6Wlan1
+      192.168.0.67 sd7Eth0
+      192.168.0.77 sd7Wlan0 sd7
+      192.168.0.87 sd7Wlan1
+      192.168.0.68 sd8Eth0
+      192.168.0.78 sd8Wlan0 sd8
+      192.168.0.88 sd8Wlan1
+      192.168.0.69 sd9Eth0
+      192.168.0.79 sd9Wlan0 sd9
+      192.168.0.89 sd9Wlan1
       192.168.0.96 hp2560
       192.168.0.97 lenovo
       192.168.0.99 mypc3
@@ -91,37 +91,37 @@
 #     - { regexp: '^192.168.0.53', line: '192.168.0.53 ubuntu3', state: 'present' }
 #     - { regexp: '^192.168.0.54', line: '192.168.0.54 ubuntu4', state: 'present' }
     
-#     - { regexp: '^192.168.0.61', line: '192.168.0.61 mc1Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.71', line: '192.168.0.71 mc1Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.81', line: '192.168.0.81 mc1Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.61', line: '192.168.0.61 sd1Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.71', line: '192.168.0.71 sd1Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.81', line: '192.168.0.81 sd1Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.62', line: '192.168.0.62 mc2Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.72', line: '192.168.0.72 mc2Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.82', line: '192.168.0.82 mc2Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.62', line: '192.168.0.62 sd2Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.72', line: '192.168.0.72 sd2Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.82', line: '192.168.0.82 sd2Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.63', line: '192.168.0.63 mc3Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.73', line: '192.168.0.73 mc3Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.83', line: '192.168.0.83 mc3Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.63', line: '192.168.0.63 sd3Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.73', line: '192.168.0.73 sd3Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.83', line: '192.168.0.83 sd3Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.64', line: '192.168.0.64 mc4Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.74', line: '192.168.0.74 mc4Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.84', line: '192.168.0.84 mc4Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.64', line: '192.168.0.64 sd4Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.74', line: '192.168.0.74 sd4Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.84', line: '192.168.0.84 sd4Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.65', line: '192.168.0.65 mc5Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.75', line: '192.168.0.75 mc5Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.85', line: '192.168.0.85 mc5Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.65', line: '192.168.0.65 sd5Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.75', line: '192.168.0.75 sd5Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.85', line: '192.168.0.85 sd5Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.66', line: '192.168.0.66 mc6Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.76', line: '192.168.0.76 mc6Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.86', line: '192.168.0.86 mc6Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.66', line: '192.168.0.66 sd6Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.76', line: '192.168.0.76 sd6Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.86', line: '192.168.0.86 sd6Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.67', line: '192.168.0.67 mc7Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.77', line: '192.168.0.77 mc7Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.87', line: '192.168.0.87 mc7Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.67', line: '192.168.0.67 sd7Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.77', line: '192.168.0.77 sd7Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.87', line: '192.168.0.87 sd7Wlan1', state: 'present' }
     
-#     - { regexp: '^192.168.0.68', line: '192.168.0.68 mc8Eth0', state: 'present' }
-#     - { regexp: '^192.168.0.78', line: '192.168.0.78 mc8Wlan0', state: 'present' }
-#     - { regexp: '^192.168.0.88', line: '192.168.0.88 mc8Wlan1', state: 'present' }
+#     - { regexp: '^192.168.0.68', line: '192.168.0.68 sd8Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.78', line: '192.168.0.78 sd8Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.88', line: '192.168.0.88 sd8Wlan1', state: 'present' }
     
 #     - { regexp: '^192.168.0.97', line: '192.168.0.97 lenovo', state: 'present' }
 #     - { regexp: '^192.168.0.99', line: '192.168.0.99 mypc3', state: 'present' }

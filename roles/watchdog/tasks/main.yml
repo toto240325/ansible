@@ -6,7 +6,7 @@
 
 - name: install repo watchdog for toto
   tags: repowatchdog
-  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes force=yes
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes # update=yes force=yes
   with_items:
   - { repo: 'https://github.com/toto240325/watchdog.git', dest: '/home/toto/watchdog' }
   register: repo_watchdog
@@ -25,29 +25,10 @@
   - watchdog.log
   - watchdog.txt
 
-
 - name: "Copy params.py"
   template:
     src: "files/params.py.j2"
     dest: "/home/toto/watchdog/params.py"
-
-- name: cron job to update the git repository
-  tags: pull_watchdog
-  cron:
-    user: toto
-    name: "pull_watchdog"
-    special_time: reboot
-    # minute: "24"
-    # hour: "21"
-    job: "sleep 90 && cd ~/watchdog && git pull >> /home/toto/misc.log"
-  # when: ansible_facts["lsb"]["id"] != "Raspbian"
-
-
-- name: force git pull watchdog
-  tags: force_pull_watchdog
-  shell:
-    cmd: 'su -c "cd ~/watchdog && date >> ~/misc.log && git pull https://github.com/toto240325/watchdog.git >> ~/misc.log" toto'
-  
 
 - name: change ownership
   tags: repowatchdog
@@ -57,6 +38,22 @@
   #register: output_chown
   when: repo_watchdog.changed
 
+- name: cron job to update the git repository
+  tags: pull_watchdog
+  cron:
+    user: toto
+    name: "pull_watchdog"
+    special_time: reboot
+    # minute: "24"
+    # hour: "21"
+    job: "sleep 90 && cd ~/watchdog && date >> ~/misc.log && git pull https://github.com/toto240325/watchdog.git >> ~/misc.log 2>&1"
+  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+- name: force git pull watchdog
+  tags: force_pull_watchdog
+  shell:
+    cmd: 'su -c "cd ~/watchdog && date >> ~/misc.log && git pull https://github.com/toto240325/watchdog.git >> ~/misc.log" toto'
+  
 
 # - name: set the SHELL cron variable
 #   tags: debug49

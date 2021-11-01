@@ -22,7 +22,7 @@
 
 - name: install repos 
   become: true
-  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes # update=no
   with_items:
   - { repo: 'https://github.com/toto240325/frigo.git',            dest: '/home/toto/frigo' }
   - { repo: 'https://github.com/toto240325/utils.git',            dest: '/home/toto/utils' }

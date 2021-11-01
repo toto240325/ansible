@@ -6,7 +6,7 @@
 
 - name: install repo whos_on_my_network for toto
   tags: repoonly
-  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no force=no
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes # update=no force=no
   with_items:
   - { repo: 'https://github.com/toto240325/fork_of_whos_on_my_network.git', dest: '/home/toto/whos_on_my_network' }
   register: repo_whos

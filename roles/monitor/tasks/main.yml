@@ -6,6 +6,13 @@
 #    name: npm
 #    state: latest
 
+- name: install repo monitor (under root)
+  tags: repomon
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes # update=no force=no
+  with_items:
+  - { repo: 'https://github.com/toto240325/monitor.git', dest: '/var/www/{{ http_host }}' }
+  register: repo_monitor
+
 - name: Create document root
   file:
     path: "/var/www/{{ http_host }}"
@@ -21,13 +28,6 @@
     arguments: phpunit/phpunit
     working_dir: "/var/www/{{ http_host }}"
     #global_command: yes
-
-- name: install repo monitor for toto
-  tags: repomon
-  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes force=yes
-  with_items:
-  - { repo: 'https://github.com/toto240325/monitor.git', dest: '/var/www/{{ http_host }}' }
-  register: repo_monitor
 
 - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
   tags: repomon
@@ -57,7 +57,7 @@
     special_time: reboot
     # minute: "24"
     # hour: "21"
-    job: "sleep 90 && cd /var/www/monitor && git pull >> /root/misc.log"
+    job: "sleep 90 && date >> /root/misc.log && cd /var/www/monitor && git pull https://github.com/toto240325/monitor.git >> /root/misc.log 2>&1"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 

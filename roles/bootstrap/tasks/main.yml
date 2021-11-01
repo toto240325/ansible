@@ -117,7 +117,7 @@
   register: dhcpd_output
 
 # - debug: var=dhcpd_output
-#   tags: debug_dhcpd3
+#   tags: check_dhcpd_status
 
 - name: disable service dhcpcd (to avoid interference with network-manager static addresses)
   tags: debug_dhcpd3

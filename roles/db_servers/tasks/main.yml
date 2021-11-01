@@ -113,14 +113,14 @@
     priv: "*.*:ALL"
     state: present
 
-- name: make sure the DB is accessible remotely, with its ip address
+- name: make sure the DB is accessible remotely, with its ip address - {{ ansible_facts["default_ipv4"]["address"] }}
   tags: debug70
   lineinfile:
     path: "/etc/mysql/mysql.conf.d/mysqld.cnf"
     state: present
-    regexp: "bind-address"
-    #line: 'bind-address  = {{ ansible_facts["eth0"]["address"]["ipv4"] }}'
-    line: 'bind-address  = {{ inventory_hostname }}'
+    regexp: "^bind-address"
+    line: 'bind-address  = {{ ansible_facts["default_ipv4"]["address"] }}'
+    #line: 'bind-address  = {{ inventory_hostname }}'
   notify: restart mysql  
   
 

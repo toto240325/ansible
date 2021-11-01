@@ -6,7 +6,7 @@
 
 - name: install repo frigo for toto
   tags: repofrigo
-  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes force=yes
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes # update=yes force=yes
   with_items:
   - { repo: 'https://github.com/toto240325/frigo.git', dest: '/home/toto/frigo' }
   register: repo_frigo
@@ -25,7 +25,7 @@
 #     special_time: reboot
 #     # minute: "24"
 #     # hour: "21"
-#     job: "cd ~/frigo && git pull >> /home/toto/misc.log"
+#     job: "cd ~/frigo && git pull https://github.com/toto240325/frigo.git >> /home/toto/misc.log"
 #   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 # - name: force git pull frigo

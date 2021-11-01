@@ -134,6 +134,22 @@
     - { regexp: '^.*name', line: '  name = toto240325', state: 'present' }
   # register: myoutput
 
+
+- name: setup some git global variables
+  tags: git_editor
+  lineinfile:
+    dest: /home/toto/.gitconfig # same as git config --global core.editor "code --wait"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    insertafter: "[core]"
+    state: "{{ item.state }}"
+    create: yes
+  loop:
+    - { regexp: '^[core]', line: '[core]', state: 'present' }
+    - { regexp: '^.*editor', line: '  editor = code --wait', state: 'present' }
+  # register: myoutput
+
+
 # - debug: var=myoutput
 #   tags: debug2
 
@@ -207,7 +223,7 @@
     special_time: reboot
     #minute: "39"
     #hour: "22"
-    job: "sleep 90 && cd ~/utils && git pull >> ~/misc.log"
+    job: "sleep 90 && cd ~/utils && date >> ~/misc.log && git pull https://github.com/toto240325/utils.git >> ~/misc.log 2>&1"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: cron job to update git ansible
@@ -218,7 +234,7 @@
     special_time: reboot
     #minute: "43"
     #hour: "22"
-    job: "sleep 90 && cd ~/ansible && git pull >> ~/misc.log"
+    job: "sleep 90 && cd ~/ansible && date >> ~/misc.log && git pull https://github.com/toto240325/ansible.git >> ~/misc.log 2>&1"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: force git pull utils
@@ -275,7 +291,7 @@
     minute: "00"
     #job: "/home/toto/run_ansible_pull.sh >> ~/ansible-pull.log"
     job: "/usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> ~/ansible-pull.log"
-
+    state: absent
 
 #- debug: var=output_chown
 #  tags: debug1

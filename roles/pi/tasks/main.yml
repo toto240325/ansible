@@ -5,7 +5,7 @@
     name: "{{ item }}"
     state: latest
   with_items:
-    - python-gpiozero
+    - python-gpiozero # not sure this is necessary if installed with pip requirements below
     - htop
     - virtualenv
     # to solve this error when sending postfix mail from raspbian : "SASL authentication failure: No worthy mechs found"
@@ -43,91 +43,13 @@
   - { path: "/home/toto/utils" }
 #  register: output_chown
 
-- name: "install pip gpiozero"
-  tags: gpiozero
-  pip:
-    name: gpiozero
-    state: latest
-    virtualenv: /home/toto/venv/piloop
-  #when: ansible_facts["lsb"]["id"] != "Raspbian"
-
-- name: set the MAILTO cron variable
-  community.general.cronvar:
-    user: root
-    name: MAILTO
-    value: toto240325@gmail.com
-    
-# - name: cron job to launch piloop under root
-#   tags: piloop
-#   cron:
-#     user: root
-#     name: "cron piloop"
-#     special_time: reboot
-#     #minute: "*/10"
-#     job: "sleep 30; python /home/toto/utils/piloop.py"
-
-# - name: cron job to launch piloop under root
-#   tags: piloop
-#   cron:
-#     user: root
-#     name: "cron piloop"
-#     special_time: reboot
-#     #minute: "*/10"
-#     job: "sleep 30; python /home/toto/utils/piloop.py"
-
-# - name: cron job to launch piloop under root
-#   tags: piloop
-#   cron:
-#     user: root
-#     name: "cron piloop at a given time"
-#     #special_time: reboot
-#     minute: "46"
-#     hour: "20"
-#     job: "python /home/toto/utils/piloop.py"
-
-# - name: cron job to launch piloop under root
-#   tags: piloop
-#   cron:
-#     user: root
-#     name: "cron piloop at reboot"
-#     special_time: reboot
-#     #minute: "00"
-#     #hour: "22"
-#     job: "python /home/toto/utils/piloop.py"
-
-
-# - name: piloop under root
-#   tags: piloop
-#   shell: "sleep 30 && python /home/toto/utils/piloop.py &"
-#   # async: 99999
-#   # poll: 0
-
-
-- name: "pip install packages for piloop"
-  pip:
-    name: gpiozero
-    state: latest
-    virtualenv: /home/toto/venv/piloop
-
-# - name: "after-install of repo of whos_on_my_network (pip requirements)"
+# - name: "install pip gpiozero"
+#   tags: gpiozero
 #   pip:
-#     requirements: /home/toto/whos_on_my_network/requirements.txt
-#     virtualenv: /home/toto/venv/whos_on_my_network
-#   when: repo_whos.changed
-
-    
-# - name: cron job to launch piloop under root
-#   tags: debug49
-#   cron:
-#     user: root
-#     name: "piloop"
-#     special_time: reboot
-#     #minute: "*/5"
-#     #minute: "30"
-#     job: "sleep 30 && . /home/toto/venv/frigo/bin/activate && python /user/home/toto/utils/piloop.py  >> /home/toto/piloop.log"
-#   # when: ansible_facts["lsb"]["id"] != "Raspbian"
-
-
+#     name: gpiozero
+#     state: latest
+#     virtualenv: /home/toto/venv/piloop
+#   #when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: Install requirements
   tags: piloop_req
@@ -135,6 +57,24 @@
     requirements: /home/toto/utils/piloop_requirements.txt
     virtualenv: /home/toto/venv/piloop
     virtualenv_python: python3.7
+
+- name: set the MAILTO cron variable
+  community.general.cronvar:
+    user: root
+    name: MAILTO
+    value: toto240325@gmail.com
+
+# - name: try to force execution of piloop; doesn't seem to work 
+#   tags: piloop
+#   shell: "sleep 30 && python /home/toto/utils/piloop.py &"
+#   # async: 99999
+#   # poll: 0
+
+# - name: "pip install packages for piloop"
+#   pip:
+#     name: gpiozero
+#     state: latest
+#     virtualenv: /home/toto/venv/piloop
 
 - name: cron job to launch piloop under root
   tags: cron_piloop
@@ -147,3 +87,23 @@
     job: "sleep 60 && . /home/toto/venv/piloop/bin/activate && python /home/toto/utils/piloop.py  >> /home/toto/piloop.log"
   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
+- name: cron job to reboot the pi every night
+  tags: cron_nightly_reboot
+  cron:
+    user: root
+    name: "nightly reboot"
+    #special_time: reboot
+    minute: "00"
+    hour: "03"
+    job: "sudo reboot"
+    
+- name: cron job to send an email after reboot
+  tags: cron_email_after_reboot
+  cron:
+    user: root
+    name: "email_after_reboot"
+    special_time: reboot
+    #minute: "00"
+    #hour: "03"
+    job: 'sleep 60; echo "`hostname` rebooted 60 secs ago (`date`), sent from user `whoami`" | mail -s "`hostname` rebooted 60 secs ago" toto240325@gmail.com'
+    

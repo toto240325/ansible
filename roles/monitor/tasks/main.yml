@@ -89,15 +89,22 @@
     port: "{{ http_port }}"
     proto: tcp
 
-
 - name: check if mydatabase already exists
-  tags: db_servers5
-  stat:
-    path: "/var/www/{{ http_host }}/mydatabase.sql"
-  register: mydatabase_exists
+  tags: check_mydatabase_exists
+  shell: "mysql -u toto -p{{ vault_mysql_toto_pw }} -e 'show databases;' 2>&1 | grep mydatabase -c"
+  register: mysql_output
+  failed_when: mysql_output.rc == 2  # grep returns 0 if kw found, 1 if not found, 2 if other error
+
+- debug: msg="database mydatabase already exists"
+  tags: check_mydatabase_exists
+  when: mysql_output.stdout == "1"
+
+- debug: msg="database mydatabase don't already exist"
+  tags: check_mydatabase_exists
+  when: mysql_output.stdout != "1"
 
 - name: Create mysql database
-  tags: db_servers5
+  tags: check_mydatabase_exists
   mysql_db:
     login_unix_socket: /var/run/mysqld/mysqld.sock
     login_user: 'toto'
@@ -106,7 +113,8 @@
     state: import
     #target: /home/toto/monitor/mydatabase.sql
     target: "/var/www/{{ http_host }}/mydatabase.sql"
-  when: not mydatabase_exists
+  #when: not mydatabase_exists
+  when: mysql_output.stdout != "1"
 
 #- name: cron job to launch whos_on_my_network watcher under root
 #  cron:

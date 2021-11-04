@@ -195,6 +195,15 @@
   roles: 
     - web_servers
 
+- hosts: db_servers
+  vars_files:
+  - ~/ansible/vault.yml
+  #gather_facts: false
+  tags: db_servers
+  become: true
+  roles:
+  - db_servers
+
 - hosts: monitor
   vars_files:
   - ~/ansible/vault.yml
@@ -285,15 +294,6 @@
   # - name: Install R, using a versioned name
   #   conda:
   #     name: r-base=3.5.0
-
-- hosts: db_servers
-  vars_files:
-  - ~/ansible/vault.yml
-  #gather_facts: false
-  tags: db_servers
-  become: true
-  roles:
-  - db_servers
 
 #
 #- hosts: file_servers

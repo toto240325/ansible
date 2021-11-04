@@ -8,7 +8,7 @@
 
 - name: install repo monitor (under root)
   tags: repomon
-  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes # update=no force=no
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no force=no
   with_items:
   - { repo: 'https://github.com/toto240325/monitor.git', dest: '/var/www/{{ http_host }}' }
   register: repo_monitor

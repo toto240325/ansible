@@ -3,8 +3,9 @@
 # ansible windows -m win_ping --ask-pass
 
 # ansible -v webservers -m copy -a "src=dist/ dest=/var/www/html" -i inventory --become
-# ansible-galaxy collection install community.general
 # ansible-galaxy install -r requirements.yml # apparently this doesn't install collections ??
+# ansible-galaxy collection install -r requirements.yml # this forces the install of the collections only, not the roles
+# ansible-galaxy collection install community.general
 # ansible-galaxy collection install community.general
 # ansible-galaxy collection install ansible.utils
 # ansible-playbook site.yml --vault-password-file  ~/.ssh/vault-key # until ansible user created on target and accessible via ssh key
@@ -213,23 +214,23 @@
   roles: 
     - monitor
     
-- hosts: event_prod
-  vars_files:
-  - ~/ansible/vault.yml
-  gather_facts: false
-  tags: event_prod
-  become: true
-  roles: 
-    - event_prod
+# - hosts: event_prod
+#   vars_files:
+#   - ~/ansible/vault.yml
+#   gather_facts: false
+#   tags: event_prod
+#   become: true
+#   roles: 
+#     - event_prod
     
-- hosts: event_dev
-  vars_files:
-  - ~/ansible/vault.yml
-  gather_facts: false
-  tags: event_dev
-  become: true
-  roles: 
-    - event_dev
+# - hosts: event_dev
+#   vars_files:
+#   - ~/ansible/vault.yml
+#   gather_facts: false
+#   tags: event_dev
+#   become: true
+#   roles: 
+#     - event_dev
     
 - hosts: watchdog
   name: install watchdog

@@ -97,7 +97,7 @@
 
 
 - name: copy basic files to user toto - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
-  tags: debugv
+  tags: refresh_files
   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
   with_items:
   - { src: 'id_ed25519_toto.pub',    dest: '/home/toto/.ssh/',  mode: '0644' }

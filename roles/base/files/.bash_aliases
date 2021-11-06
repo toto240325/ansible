@@ -41,6 +41,7 @@ alias wolmypc3='wakeonlan f4:4d:30:05:78:01'
 alias gitca='git commit -a -m "."'
 alias gitpp='git pull; git push'
 alias gitcapp='git commit -a -m "."; git pull; git push; git status'
+alias gitlog='git log --oneline --decorate --all --graph'
 alias sshagent="eval \`ssh-agent -s\`; ssh-add ~/.ssh/id_ed25519_toto"
 alias lsys="less /var/log/syslog"
 alias sshgit='sed -i "s#https://github.com/#git@github.com:#" .git/config'

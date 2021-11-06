@@ -160,7 +160,6 @@
   with_items:
   - { repo: 'https://github.com/toto240325/utils.git',              dest: '/home/toto/utils' }
   - { repo: 'https://github.com/toto240325/ansible.git',           dest: '/home/toto/ansible' }
-  - { repo: 'https://github.com/toto240325/event.git',           dest: '/home/toto/event' }
   #- { repo: 'https://github.com/toto240325/whos_on_my_network.git', dest: '/home/toto/whos_on_my_network' }
   # - { repo: 'https://github.com/toto240325/monitor.git',            dest: '/var/www/monitor' }
   # - { repo: 'https://github.com/toto240325/watchdog.git',            dest: '/home/toto/watchdog' }
@@ -172,7 +171,6 @@
   with_items:
   - { path: "/home/toto/utils" }
   - { path: "/home/toto/ansible" }
-  - { path: "/home/toto/event" }
 #  register: output_chown
 
 
@@ -189,7 +187,6 @@
   with_items:
   - "/home/toto/utils"
   - "/home/toto/ansible"
-  - "/home/toto/event"
   # - "/var/www/monitor"
   # - "/home/toto/watchdog"
 
@@ -256,7 +253,6 @@
   with_items:
   - { path: "/home/toto/utils" }
   - { path: "/home/toto/ansible" }
-  - { path: "/home/toto/event" }
   #- { path: "/home/toto/whos_on_my_network" }
   #- { path: "/home/toto/monitor" }
   #- { path: "/var/www/monitor" }
@@ -267,6 +263,7 @@
 #   #become_user: toto
 #   command: sudo su toto; ansible-galaxy install -r ~/ansible/requirements.yml
 #   #when: ansible_facts["os_family"] != "Windows"
+
 
 # - name: copy ansible-pull script
 #   tags: debug12
@@ -284,16 +281,17 @@
     name: MAILTO
     value: toto240325@gmail.com
 
-# - name: install cron job for toto (ansible-pull)
-#   tags: debug12
-#   cron:
-#     user: toto
-#     name: "ansible provision"
-#     hour: "21"
-#     minute: "00"
-#     #job: "/home/toto/run_ansible_pull.sh >> ~/ansible-pull.log"
-#     job: "/usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> ~/ansible-pull.log"
-#     # state: absent
+
+- name: install cron job for toto (ansible-pull)
+  tags: debug12
+  cron:
+    user: toto
+    name: "ansible provision"
+    hour: "21"
+    minute: "00"
+    #job: "/home/toto/run_ansible_pull.sh >> ~/ansible-pull.log"
+    job: "/usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> ~/ansible-pull.log"
+    state: absent
 
 #- debug: var=output_chown
 #  tags: debug1

@@ -214,23 +214,23 @@
   roles: 
     - monitor
     
-# - hosts: event_prod
-#   vars_files:
-#   - ~/ansible/vault.yml
-#   gather_facts: false
-#   tags: event_prod
-#   become: true
-#   roles: 
-#     - event_prod
+- hosts: event_prod
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: false
+  tags: event_prod
+  become: true
+  roles: 
+    - event_prod
     
-# - hosts: event_dev
-#   vars_files:
-#   - ~/ansible/vault.yml
-#   gather_facts: false
-#   tags: event_dev
-#   become: true
-#   roles: 
-#     - event_dev
+- hosts: event_dev
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: false
+  tags: event_dev
+  become: true
+  roles: 
+    - event_dev
     
 - hosts: watchdog
   name: install watchdog

@@ -2,14 +2,14 @@
 
 - name: install repo event (under toto)
   tags: repoevent
-  ansible.builtin.git: repo='https://github.com/toto240325/{{ item.repo }}.git" dest={{ item.dest }} clone=yes update=no force=no 
+  ansible.builtin.git: repo='https://github.com/toto240325/{{ item.repo }}.git' dest={{ item.dest }} clone=yes update=no force=no 
   with_items:
-  - { repo: 'event', dest: '/var/www/{{ http_host }}' }
+  - { repo: 'event', dest: '/home/toto/{{ http_host }}' }
   register: repo_event
 
-- name: Create document root
+- name: Create/update document root
   file:
-    path: "/var/www/{{ http_host }}"
+    path: "/home/toto/{{ http_host }}"
     state: directory
     owner: "{{ app_user }}"
     mode: '0755'
@@ -20,34 +20,34 @@
     #command: remove
     command: require
     arguments: phpunit/phpunit
-    working_dir: "/var/www/{{ http_host }}"
+    working_dir: "/home/toto/{{ http_host }}"
     #global_command: yes
 
 - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
-  tags: repomon
+  tags: repoevent
   replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
   with_items:
-  - "/var/www/{{ http_host }}"
+  - "/home/toto/{{ http_host }}"
 
 - name: "Copy params.php"
-  tags: debug_copy_params_mon
+  tags: debug_copy_params_event
   template:
     src: "files/params.php.j2"
-    dest: "/var/www/{{ http_host }}/params.php"
+    dest: "/home/toto/{{ http_host }}/params.php"
 
 - name: change ownership
-  tags: repomon
+  tags: repoevent
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
   with_items:
-  - { path: "/var/www/{{ http_host }}" }
+  - { path: "/home/toto/{{ http_host }}" }
   #register: output_chown
-  when: repo_monitor.changed
+  when: repo_event.changed
 
 # - name: cron job to update the git repository
-#   tags: pull_monitor
+#   tags: pull_event
 #   cron:
 #     user: root
-#     name: "pull_monitor"
+#     name: "pull_event"
 #     special_time: reboot
 #     # minute: "24"
 #     # hour: "21"
@@ -66,10 +66,10 @@
 - name: Set up Apache virtualhost
   template:
     src: "files/apache.conf.j2"
-    dest: "/etc/apache2/sites-available/{{ http_conf }}"
+    dest: "/etc/apache2/sites-available/{{ http_conf }}-dev"
 
 - name: Enable new site
-  shell: /usr/sbin/a2ensite {{ http_conf }}
+  shell: /usr/sbin/a2ensite {{ http_conf }}-dev
   notify: Reload Apache
 
 - name: Disable default Apache site
@@ -105,8 +105,8 @@
     login_password: "{{ vault_mysql_toto_pw }}"
     name: "mydatabase"
     state: import
-    #target: /home/toto/monitor/mydatabase.sql
-    target: "/var/www/{{ http_host }}/events.sql"
+    #target: /home/toto/event/mydatabase.sql
+    target: "/home/toto/{{ http_host }}/events.sql"
   #when: not mydatabase_exists
   when: mysql_output.stdout != "1"
 

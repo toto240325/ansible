@@ -15,6 +15,22 @@
     owner: "{{ app_user }}"
     mode: '0755'
 
+- name: Add apache2 directory event
+  tags: apache2_event
+  blockinfile:
+    path: /etc/apache2/sites-available/000-default.conf
+    block: |
+      Alias /event/ "/var/www/event/"
+        <Directory "/var/www/event/">
+        Options Indexes FollowSymLinks
+            Order allow,deny
+            Allow from all
+            Require all granted
+        </Directory>
+    marker: "# {mark} ANSIBLE MANAGED BLOCK event"
+    insertbefore: </VirtualHost>
+  notify: Reload Apache
+
 - name: Install a php package 
   tags: debug72
   community.general.composer:

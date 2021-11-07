@@ -20,6 +20,23 @@
     owner: "{{ app_user }}"
     mode: '0755'
 
+- name: Add apache2 directory monitor
+  tags: apache2_monitor
+  blockinfile:
+    path: /etc/apache2/sites-available/000-default.conf
+    block: |
+      Alias /monitor/ "/var/www/monitor/"
+        <Directory "/var/www/monitor/">
+        Options Indexes FollowSymLinks
+            Order allow,deny
+            Allow from all
+            Require all granted
+        </Directory>
+    marker: "# {mark} ANSIBLE MANAGED BLOCK monitor"
+    insertbefore: </VirtualHost>
+  notify: Reload Apache
+
+
 - name: Install a php package 
   tags: debug72
   community.general.composer:

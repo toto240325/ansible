@@ -14,6 +14,23 @@
     owner: "{{ app_user }}"
     mode: '0755'
 
+- name: Add apache2 directory event_dev
+  tags: apache2_event_dev
+  blockinfile:
+    path: /etc/apache2/sites-available/000-default.conf
+    block: |
+      Alias /event_dev/ "/home/toto/event_dev/"
+      <Directory "/home/toto/event_dev/">
+      Options Indexes FollowSymLinks
+          Order allow,deny
+          Allow from all
+          Require all granted
+      </Directory>
+    marker: "# {mark} ANSIBLE MANAGED BLOCK event_dev"
+    insertbefore: </VirtualHost>
+  notify: Reload Apache
+
+
 - name: Install a php package 
   tags: debug72
   community.general.composer:
@@ -66,10 +83,10 @@
 - name: Set up Apache virtualhost
   template:
     src: "files/apache.conf.j2"
-    dest: "/etc/apache2/sites-available/{{ http_conf }}-dev"
+    dest: "/etc/apache2/sites-available/{{ http_conf }}"
 
 - name: Enable new site
-  shell: /usr/sbin/a2ensite {{ http_conf }}-dev
+  shell: /usr/sbin/a2ensite {{ http_conf }}
   notify: Reload Apache
 
 - name: Disable default Apache site

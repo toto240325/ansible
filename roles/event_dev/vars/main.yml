@@ -1,7 +1,7 @@
 ---
 app_user: "toto"
-http_host: "event"
-http_conf: "event.conf"
+http_host: "event_dev"
+http_conf: "event_dev.conf"
 http_port: "80"
 disable_default: true
 event_db_server: 192.168.0.52

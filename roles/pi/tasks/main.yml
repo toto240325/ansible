@@ -20,9 +20,10 @@
     state: present
     # apparently not supported : no_log: true
 
-- name: install repos 
+- name: install repos for toto on pi
+  tags: repos_for_toto_on_pi
   become: true
-  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes # update=no
+  ansible.builtin.git: repo={{ item.repo }} version=develop dest={{ item.dest }} clone=yes # update=no
   with_items:
   - { repo: 'https://github.com/toto240325/frigo.git',            dest: '/home/toto/frigo' }
   - { repo: 'https://github.com/toto240325/utils.git',            dest: '/home/toto/utils' }

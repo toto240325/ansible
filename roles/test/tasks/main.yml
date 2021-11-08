@@ -10,4 +10,25 @@
 - name: uptime debugging
   debug: var=myuptime
 
+- name: enable default Apache site
+  tags: enable_default
+  shell: /usr/sbin/a2ensite 000-default.conf
+  notify: Reload Apache
+
+- name: disable monitor Apache site
+  tags: disable_monitor
+  shell: /usr/sbin/a2dissite monitor.conf
+  notify: Reload Apache
+
+- name: disable event Apache site
+  tags: disable_event
+  shell: /usr/sbin/a2dissite event.conf
+  notify: Reload Apache
+
+- name: disable event_dev Apache site
+  tags: disable_event_dev
+  shell: /usr/sbin/a2dissite event_dev.conf
+  notify: Reload Apache
+
+
 

@@ -285,6 +285,15 @@
   roles:
     - windows
 
+- hosts: test
+  tags: test
+  gather_facts: false
+  become: true
+  vars_files:
+  - ~/ansible/vault.yml
+  roles:
+    - test
+
 - hosts: whos_on_my_network
   gather_facts: false
   tags: whos_on_my_network

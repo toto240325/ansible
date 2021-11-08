@@ -32,6 +32,22 @@
  # if mariadb ??????
   # - mysql
 
+- name: "install mysql-server"
+  tags: mysql_pi
+#gather_facts: false
+  package: name={{ item }} state=latest
+  with_items:
+    - mysql
+    - phpmyadmin
+    - php-mbstring
+    - php-zip
+    - php-gd
+    - php-json
+    - php-curl
+  when: ansible_facts["lsb"]["id"] == "Raspbian"
+ # if mariadb ??????
+  # - mysql
+
 - name: "start and enable mysql server"
   tags: start_and_enable_mysql
   service:

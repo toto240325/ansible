@@ -118,12 +118,14 @@ vayo # 192.168.0.45
 ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
+sd3
 
 [db_servers]
 vayo # 192.168.0.45
 ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
+sd3
 
 [file_servers]
 
@@ -141,6 +143,7 @@ vayo # 192.168.0.45
 ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
+sd3
 #192.168.0.54
 
 [event_prod]
@@ -173,6 +176,13 @@ vayo # 192.168.0.45
 
 [vnc_servers]
 vayo # 192.168.0.45
+
+[test]
+ubuntu2
+ubuntu3
+sd3
+sd8
+vayo
 
 [windows]
 mypc3 # 192.168.0.99 admin_group=administrateurs # ansible_connection=ssh ansible_shell_type=cmd ansible_user=toto

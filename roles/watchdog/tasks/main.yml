@@ -26,6 +26,7 @@
   - watchdog.txt
 
 - name: "Copy params.py"
+  tags: update_watchdog_params
   template:
     src: "files/params.py.j2"
     dest: "/home/toto/watchdog/params.py"

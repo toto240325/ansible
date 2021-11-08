@@ -1,6 +1,6 @@
 alias h='history'
 #alias mysuspend='sudo dbus-send --system --print-reply  --dest="org.freedesktop.UPower"  /org/freedesktop/UPower org.freedesktop.UPower.Suspend'
-#alias mountdrived='sudo mkdir /mnt/mysmb; sudo mount -t cifs -o username=toto,password=Toto! //192.168.0.2/d  /mnt/mysmb'
+#alias mountdrived='sudo mkdir /mnt/mysmb; sudo mount -t cifs -o username=toto,password=mypw //192.168.0.2/d  /mnt/mysmb'
 #alias unmountdrived='sudo umount /mnt/mysmb'
 #alias wolmypc3='wakeonlan 74:DA:38:82:A3:EC'
 alias addbackup='addbackup_fct'

@@ -1,0 +1,9 @@
+---
+
+# variables for sqlite
+sqlite_db: "mydatabase"
+sqlite_user: toto
+sqlite_pasword: "{{ vault_toto_password }}"
+
+
+

@@ -46,11 +46,19 @@
 #   with_items:
 #   - "/var/www/{{ http_host }}"
 
+
+- name: check if event_prod params.php already exists
+  tags: event_prod_params
+  stat:
+    path: /var/www/event/params.php
+  register: stat_result
+
 - name: "Copy params.php"
-  tags: copy_params_event
+  tags: event_prod_params
   template:
     src: "files/params.php.j2"
     dest: "/var/www/{{ http_host }}/params.php"
+  when: not stat_result.stat.exists
 
 - name: change ownership
   tags: repoevent
@@ -59,6 +67,7 @@
   - { path: "/var/www/{{ http_host }}" }
   #register: output_chown
   when: repo_event.changed
+
 
 # - name: cron job to update the git repository
 #   tags: pull_event

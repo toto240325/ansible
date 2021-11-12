@@ -25,11 +25,18 @@
   - watchdog.log
   - watchdog.txt
 
+- name: check if watchdog params.py already exists
+  tags: watchdog_params
+  stat:
+    path: /home/toto/watchdog/params.py
+  register: stat_result
+
 - name: "Copy params.py"
   tags: update_watchdog_params
   template:
     src: "files/params.py.j2"
     dest: "/home/toto/watchdog/params.py"
+  when: not stat_result.stat.exists
 
 - name: change ownership
   tags: repowatchdog

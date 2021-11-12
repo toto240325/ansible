@@ -34,10 +34,18 @@
 #     cmd: 'su -c "cd ~/frigo && date >> ~/misc.log && git pull https://github.com/toto240325/frigo.git >> ~/misc.log" toto'
   
 
-- name: "Copy params.py"
+- name: check if frigo params.py already exists
+  tags: frigo_params
+  stat:
+    path: /home/toto/frigo/params.py
+  register: stat_result
+
+- name: "Copy frigo params.py"
+  tags: frigo_params
   template:
     src: "files/params.py.j2"
     dest: "/home/toto/frigo/params.py"
+  when: not stat_result.stat.exists
 
 - name: Install requirements for frigo
   tags: frigo_req

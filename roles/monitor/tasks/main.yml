@@ -52,11 +52,18 @@
   with_items:
   - "/var/www/{{ http_host }}"
 
+- name: check if monitor params.py already exists
+  tags: monitor_params
+  stat:
+    path: /var/www/monitor/params.php
+  register: stat_result
+
 - name: "Copy params.php"
-  tags: debug_copy_params_mon
+  tags: monitor_params
   template:
     src: "files/params.php.j2"
     dest: "/var/www/{{ http_host }}/params.php"
+  when: not stat_result.stat.exists
 
 - name: change ownership
   tags: repomon

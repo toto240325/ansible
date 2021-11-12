@@ -5,11 +5,18 @@
     - sqlite3
     - php-sqlite3
 
+- name: check if mydatabase.db (sqlite) already exists
+  tags: sqlite_db
+  stat:
+    path: /opt/db/mydatabase.db
+  register: stat_result
+
 - name: "install empty sqlite db"
   tags: sqlite_db
   copy: src={{ item.src }} dest={{ item.dest }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }}
   with_items:
   - { src: "mydatabase.db", dest: "/opt/db", owner: "root", group: "www-data", mode: "774" }
   - { src: "mydatabase_dev.db", dest: "/opt/db", owner: "root", group: "www-data", mode: "774" }
+  when: not stat_result.stat.exists
 
 

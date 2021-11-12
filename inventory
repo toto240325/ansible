@@ -119,6 +119,7 @@ ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
 sd3
+sd8
 
 [db_servers]
 vayo # 192.168.0.45
@@ -126,6 +127,9 @@ ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
 sd3
+
+[sqlite]
+sd8
 
 [file_servers]
 
@@ -149,6 +153,7 @@ sd3
 [event_prod]
 #vayo # 192.168.0.45
 ubuntu2 # 192.168.0.52
+sd8
 #192.168.0.54
 
 [event_dev]

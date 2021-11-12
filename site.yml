@@ -205,6 +205,15 @@
   roles:
   - db_servers
 
+- hosts: sqlite
+  vars_files:
+  - ~/ansible/vault.yml
+  #gather_facts: false
+  tags: sqlite
+  become: true
+  roles:
+  - sqlite
+
 - hosts: monitor
   vars_files:
   - ~/ansible/vault.yml

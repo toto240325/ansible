@@ -1,6 +1,17 @@
 <?php
 //$webserver = "192.168.0.147";
-$webserver = "localhost";
-//$dbhost = "{{ event_db_server }}";
-$dbhost = "localhost";
+//$webserver = "localhost";
+//$dbhost = "192.168.0.52";
+//$dbhost = "localhost";
+
+$params = array(
+    "mysql_username" => "toto",
+    "mysql_password" => "Toto!",
+    "sqlite_db" => "/opt/db/mydatabase_dev.db",
+     "db_type" => "sqlite"
+    //"db_type" => "sqlite"
+);
+// echo $params["mysql_username"];
+// echo "test";
+
 ?>

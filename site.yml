@@ -272,6 +272,33 @@
   #     executable: /opt/conda/bin/conda
   #   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
+- hosts: all
+  name: install watchdog
+  tags: success_msg
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: true
+  become: true
+  tasks:
+    - name: "get hostname"
+      shell: "hostname"
+      register: shelloutput
+
+    - name: sending mail to confirm completion of ansible script
+      tags: confirm_success
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        username: "{{ vault_toto_mailer }}@gmail.com"
+        password: "{{ vault_toto_mailer_pw }}"
+        to: 
+        - "{{ vault_toto_email }}@gmail.com"
+        #- "eric.derruine@ec.europa.eu"
+        subject: System {{ ansible_hostname }} has been successfully provisioned.
+        body: "System {{ ansible_hostname }} has been successfully provisioned.  Sent from {{ shelloutput.stdout }}"
+      #delegate_to: localhost
+
+
 - hosts: vnc_servers
   tags: vnc_servers
   become: true
@@ -310,16 +337,26 @@
   roles: 
     - whos_on_my_network
 
-- hosts: frigo
-  name: install frigo
-  tags: frigo
+- hosts: frigo_dev
+  name: install frigo dev
+  tags: frigo_dev
   vars_files:
   - ~/ansible/vault.yml
-  gather_facts: true
   become: true
   roles: 
-    - evandam.conda
-    - frigo
+    #- evandam.conda
+    - frigo_dev
+
+- hosts: frigo_prod
+  name: install frigo prod
+  tags: frigo_prod
+  vars_files:
+  - ~/ansible/vault.yml
+  become: true
+  roles: 
+    #- evandam.conda
+    - frigo_prod
+
   # tasks:
   # - name: Update conda
   #   conda:
@@ -386,32 +423,4 @@
 #   become: true
 #   roles:
 #     - vagrant
-
-
-
-- hosts: all
-  name: install watchdog
-  tags: success_msg
-  vars_files:
-  - ~/ansible/vault.yml
-  gather_facts: true
-  become: true
-  tasks:
-    - name: "get hostname"
-      shell: "hostname"
-      register: shelloutput
-
-    - name: sending mail to confirm completion of ansible script
-      tags: confirm_success
-      mail:
-        host: smtp.gmail.com
-        port: 587
-        username: "{{ vault_toto_mailer }}@gmail.com"
-        password: "{{ vault_toto_mailer_pw }}"
-        to: 
-        - "{{ vault_toto_email }}@gmail.com"
-        #- "eric.derruine@ec.europa.eu"
-        subject: System {{ ansible_hostname }} has been successfully provisioned.
-        body: "System {{ ansible_hostname }} has been successfully provisioned.  Sent from {{ shelloutput.stdout }}"
-      #delegate_to: localhost
 

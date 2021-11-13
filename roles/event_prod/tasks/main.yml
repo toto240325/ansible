@@ -1,6 +1,6 @@
 ---
 
-# - name: Create document root
+# - name: Create document root 
 #   file:
 #     path: "/var/www/{{ http_host }}"
 #     state: directory

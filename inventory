@@ -163,9 +163,14 @@ sd8
 ubuntu2 # 192.168.0.52
 #192.168.0.54
 
-[frigo]
-vayo # 192.168.0.45
+[frigo_prod]
+#vayo # 192.168.0.45
 sd8 # 192.168.0.78
+
+[frigo_dev]
+ubuntu2
+#vayo # 192.168.0.45
+#sd8 # 192.168.0.78
 
 #[ansible_servers]
 #192.168.0.23

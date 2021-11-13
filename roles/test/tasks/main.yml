@@ -1,20 +1,5 @@
 ---
 
-- name: check if /usr/bin/gh already exists
-  tags: gh
-  stat:
-    path: /usr/bin/gh
-  register: stat_result
-
-- name: multi-line simple shell command
-  shell: |
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-    sudo apt update
-    sudo apt install gh
-  register: output
-  when: not stat_result.stat.exists
-
 #- debug: var=output["stdout"]
 #  when: not stat_result.stat.exists
 

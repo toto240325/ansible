@@ -1,9 +1,4 @@
 ---
-#- name: "install some packages"
-#  package:
-#    name: npm
-#    state: latest
-
 - name: install repo frigo for toto
   tags: repofrigo
   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes # update=yes force=yes

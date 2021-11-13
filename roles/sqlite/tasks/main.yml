@@ -6,11 +6,13 @@
     - php-sqlite3
 
 - name: "create sqlite /opt/db folder"
+  tags: opt_db
   file: 
     path: /opt/db
     state: directory
     owner: toto       # to be fixed one day
     group: www-data
+    mode: '0775'
 
 - name: check if mydatabase.db (sqlite) already exists
   tags: sqlite_db

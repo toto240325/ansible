@@ -129,6 +129,7 @@ ubuntu3 # 192.168.0.53
 sd3
 
 [sqlite]
+sd3
 sd8
 
 [file_servers]
@@ -153,6 +154,7 @@ sd3
 [event_prod]
 #vayo # 192.168.0.45
 ubuntu2 # 192.168.0.52
+sd3
 sd8
 #192.168.0.54
 
@@ -183,11 +185,11 @@ vayo # 192.168.0.45
 vayo # 192.168.0.45
 
 [test]
-ubuntu2
-ubuntu3
+#ubuntu2
+#ubuntu3
 sd3
-sd8
-vayo
+#sd8
+#vayo
 
 [windows]
 mypc3 # 192.168.0.99 admin_group=administrateurs # ansible_connection=ssh ansible_shell_type=cmd ansible_user=toto

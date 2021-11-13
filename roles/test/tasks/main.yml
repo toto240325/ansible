@@ -1,34 +1,60 @@
 ---
 
-- name: simple debug msg
-  debug: msg="this is a simple debug message"
+- name: check if /usr/bin/gh already exists
+  tags: gh
+  stat:
+    path: /usr/bin/gh
+  register: stat_result
 
-- name: simple shell command
-  shell: /usr/bin/uptime
-  register: myuptime
+- name: multi-line simple shell command
+  shell: |
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+    sudo apt update
+    sudo apt install gh
+  register: output
+  when: not stat_result.stat.exists
 
-- name: uptime debugging
-  debug: var=myuptime
+#- debug: var=output["stdout"]
+#  when: not stat_result.stat.exists
 
-- name: enable default Apache site
-  tags: enable_default
-  shell: /usr/sbin/a2ensite 000-default.conf
-  notify: Reload Apache
+# - name: two line simple shell command
+#   shell: |
+#     /usr/bin/whoami ; 
+#     /usr/bin/hostname
+#   register: output
+# - debug: var=output["stdout"]
 
-- name: disable monitor Apache site
-  tags: disable_monitor
-  shell: /usr/sbin/a2dissite monitor.conf
-  notify: Reload Apache
 
-- name: disable event Apache site
-  tags: disable_event
-  shell: /usr/sbin/a2dissite event.conf
-  notify: Reload Apache
+# - name: simple debug msg
+#   debug: msg="this is a simple debug message"
 
-- name: disable event_dev Apache site
-  tags: disable_event_dev
-  shell: /usr/sbin/a2dissite event_dev.conf
-  notify: Reload Apache
+# - name: simple shell command
+#   shell: /usr/bin/uptime
+#   register: myuptime
+
+# - name: uptime debugging
+#   debug: var=myuptime
+
+# - name: enable default Apache site
+#   tags: enable_default
+#   shell: /usr/sbin/a2ensite 000-default.conf
+#   notify: Reload Apache
+
+# - name: disable monitor Apache site
+#   tags: disable_monitor
+#   shell: /usr/sbin/a2dissite monitor.conf
+#   notify: Reload Apache
+
+# - name: disable event Apache site
+#   tags: disable_event
+#   shell: /usr/sbin/a2dissite event.conf
+#   notify: Reload Apache
+
+#- name: disable event_dev Apache site
+#  tags: disable_event_dev
+#  shell: /usr/sbin/a2dissite event_dev.conf
+#  notify: Reload Apache
 
 
 

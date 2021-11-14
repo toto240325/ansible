@@ -55,6 +55,7 @@
   tags: frigo_ownership
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
   with_items:
+  - { path: "/home/toto/frigo/" }
   - { path: "/home/toto/venv/" }
   #register: output_chown
   #when: repo_frigo.change

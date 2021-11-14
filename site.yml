@@ -240,17 +240,28 @@
   become: true
   roles: 
     - event_dev
-    
-- hosts: watchdog
-  name: install watchdog
-  tags: watchdog, conda_watchdog
+
+- hosts: watchdog_dev
+  name: install watchdog_dev
+  tags: watchdog_dev     #, conda_watchdog
   vars_files:
   - ~/ansible/vault.yml
   gather_facts: true
   become: true
   roles: 
-    - evandam.conda
-    - watchdog
+    # - evandam.conda
+    - watchdog_prod
+
+- hosts: watchdog_prod
+  name: install watchdog_prod
+  tags: watchdog_prod     #, conda_watchdog
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: true
+  become: true
+  roles: 
+    # - evandam.conda
+    - watchdog_prod
   # tasks:
   # - name: Create a conda environment - watchdog
   #   tags: conda_watchdog

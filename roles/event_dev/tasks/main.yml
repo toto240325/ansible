@@ -133,7 +133,8 @@
     #target: /home/toto/event/mydatabase.sql
     target: "/home/toto/{{ http_host }}/events.sql"
   #when: not mydatabase_exists
-  when: mysql_output.stdout != "1"
+  when: mysql_output.stdout != "1" and ansible_facts["lsb"]["id"] != "Raspbian"
+
 
 #- name: cron job to launch whos_on_my_network watcher under root
 #  cron:

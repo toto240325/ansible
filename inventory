@@ -13,7 +13,7 @@
 #192.168.0.72 newHostname=sd2
 ##192.168.0.73 newHostname=sd3
 #192.168.0.74 newHostname=sd4
-#192.168.0.75 newHostname=sd5
+#192.168.0.75 newHostname=sd5    # aps -t=hostname
 #192.168.0.76 newHostname=sd6
 #192.168.0.77 newHostname=sd7
 ##192.168.0.78 newHostname=sd8
@@ -77,24 +77,6 @@ sd9 # 192.168.0.79
 vayo # 192.168.0.45
 #192.168.0.148
 
-[watchdog]
-vayo # 192.168.0.45
-ubuntu1 # 192.168.0.51
-ubuntu2 # 192.168.0.52
-ubuntu3 # 192.168.0.53
-#192.168.0.54
-#192.168.0.148
-sd0 # 192.168.0.70
-sd1 # 192.168.0.71
-sd2 # 192.168.0.72
-sd3 # 192.168.0.73
-sd4 # 192.168.0.74
-sd5 # 192.168.0.75
-sd6 # 192.168.0.76
-sd7 # 192.168.0.77
-sd8 # 192.168.0.78
-sd9 # 192.168.0.79
-
 [postfix]
 vayo # 192.168.0.45
 ubuntu1 # 192.168.0.51
@@ -126,10 +108,10 @@ vayo # 192.168.0.45
 ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
-sd3
 
 [sqlite]
 sd3
+sd7
 sd8
 
 [file_servers]
@@ -139,9 +121,27 @@ sd8
 #[x_servers]
 #192.168.0.148
 
-[whos_on_my_network]
-#192.168.0.148
+[watchdog_prod]
 vayo # 192.168.0.45
+ubuntu1 # 192.168.0.51
+ubuntu2 # 192.168.0.52
+ubuntu3 # 192.168.0.53
+#192.168.0.54
+#192.168.0.148
+sd0 # 192.168.0.70
+sd1 # 192.168.0.71
+sd2 # 192.168.0.72
+sd3 # 192.168.0.73
+sd4 # 192.168.0.74
+sd5 # 192.168.0.75
+sd6 # 192.168.0.76
+sd7 # 192.168.0.77
+sd8 # 192.168.0.78
+sd9 # 192.168.0.79
+
+[watchdog_dev]
+ubuntu2 # 192.168.0.52
+ubuntu3 # 192.168.0.53
 
 [monitor]
 vayo # 192.168.0.45
@@ -164,13 +164,19 @@ ubuntu2 # 192.168.0.52
 #192.168.0.54
 
 [frigo_prod]
+# https://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/ds18b20
 #vayo # 192.168.0.45
+sd3
 sd8 # 192.168.0.78
 
 [frigo_dev]
 ubuntu2
 #vayo # 192.168.0.45
 #sd8 # 192.168.0.78
+
+[whos_on_my_network]
+#192.168.0.148
+vayo # 192.168.0.45
 
 #[ansible_servers]
 #192.168.0.23

@@ -64,7 +64,7 @@
     virtualenv_python: python3
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 
-- name: change ownership frigo directory to toto:toto
+- name: change ownership frigo venv directory to toto:toto
   tags: frigo_ownership
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
   with_items:

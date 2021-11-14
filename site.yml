@@ -55,24 +55,24 @@
   - ~/ansible/vault.yml
   become: true
   tasks:
-#  - debug: var=ansible_facts["architecture"]
-  - debug: var=ansible_facts["all_ipv4_addresses"]
-  - debug: var=ansible_facts["default_ipv4"]["address"]
-  - debug: var=ansible_facts["distribution_file_variety"]
-  - debug: var=ansible_facts["distribution"]
-  - debug: var=ansible_facts["distribution_version"]
-  - debug: var=ansible_facts["env"]["user"]
-  #- debug: var=ansible_facts["eth0"]["device"]
-  - debug: var=ansible_facts["hostname"]
-  - debug: var=ansible_facts["interfaces"]
-  - debug: var=ansible_facts["machine"]
-  - debug: var=ansible_facts["memory_total_mb"]
-  - debug: var=ansible_facts["nodename"]
-  - debug: var=ansible_facts["os_family"]
-  - debug: var=ansible_facts["nodename"]
-  - debug: var=ansible_facts["nodename"]
-  - debug: var=ansible_facts["nodename"]
-  - debug: var=ansible_facts["nodename"]
+# #  - debug: var=ansible_facts["architecture"]
+#   - debug: var=ansible_facts["all_ipv4_addresses"]
+#   - debug: var=ansible_facts["default_ipv4"]["address"]
+#   - debug: var=ansible_facts["distribution_file_variety"]
+#   - debug: var=ansible_facts["distribution"]
+#   - debug: var=ansible_facts["distribution_version"]
+#   - debug: var=ansible_facts["env"]["user"]
+#   #- debug: var=ansible_facts["eth0"]["device"]
+#   - debug: var=ansible_facts["hostname"]
+#   - debug: var=ansible_facts["interfaces"]
+#   - debug: var=ansible_facts["machine"]
+#   - debug: var=ansible_facts["memory_total_mb"]
+#   - debug: var=ansible_facts["nodename"]
+#   - debug: var=ansible_facts["os_family"]
+#   - debug: var=ansible_facts["nodename"]
+#   - debug: var=ansible_facts["nodename"]
+#   - debug: var=ansible_facts["nodename"]
+#   - debug: var=ansible_facts["nodename"]
 
 
   #- debug: var=ansible_facts 
@@ -243,14 +243,14 @@
 
 - hosts: watchdog_dev
   name: install watchdog_dev
-  tags: watchdog_dev     #, conda_watchdog
+  tags: watchdog_dev
   vars_files:
   - ~/ansible/vault.yml
   gather_facts: true
   become: true
   roles: 
     # - evandam.conda
-    - watchdog_prod
+    - watchdog_dev
 
 - hosts: watchdog_prod
   name: install watchdog_prod

@@ -39,7 +39,7 @@
   with_items:
   - { path: "/home/toto/watchdog" }
   #register: output_chown
-  when: repo_watchdog.changed
+  when: repo_watchdog_dev.changed
 
 - name: cron job to update the git repository
   tags: pull_watchdog
@@ -82,7 +82,7 @@
     #minute: "*/5"
     minute: "30"
     job: "conda activate /home/toto/.conda/envs/watchdog; python /home/toto/watchdog/watchdog.py 2>&1 >> /home/toto/watchdog.log; conda deactivate"
-    state:absent
+    state: absent
 
 # - name: change ownership to toto:toto
 #   tags: debug111

@@ -1,0 +1,133 @@
+---
+- name: Create/update /opt/watchdog
+  tags: deploy_watchdog_prod
+  file:
+    path: /opt/watchdog
+    state: directory
+    owner: root
+    mode: '0755'
+
+- name: install latest version of watchdog in /opt/watchdog
+  tags: deploy_watchdog_prod
+  shell: "curl -L https://api.github.com/repos/toto240325/watchdog/tarball | tar xzvf - --one-top-level=/opt/watchdog --strip-components 1"
+
+
+# - name: install repo watchdog for toto
+#   tags: repowatchdog
+#   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no force=no
+#   with_items:
+#   - { repo: 'https://github.com/toto240325/watchdog.git', dest: '/opt/watchdog' }
+#   register: repo_watchdog_prod
+
+# - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+#   tags: repowatchdog
+#   replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+#   with_items:
+#   - "/opt/watchdog"
+
+# - name: set ownership of log files (some log files are create by root in /home/toto)
+#   tags: fix_ownership_logs
+#   become: True
+#   file: path="/opt/watchdog" owner=toto group=toto state=touch
+#   with_items:
+#   - watchdog.log
+#   - watchdog.txt
+
+- name: check if watchdog params.py already exists (watchdog prod)
+  tags: watchdog_params_prod
+  stat:
+    path: /opt/watchdog/params.py
+  register: stat_result
+
+- name: "Copy params.py for watchdog prod"
+  tags: watchdog_params_prod
+  template:
+    src: "files/params.py.j2"
+    dest: "/opt/watchdog/params.py"
+  when: not stat_result.stat.exists
+
+- name: Install requirements for watchdog
+  tags: watchdog_req_prod
+  pip: 
+    requirements: /opt/watchdog/requirements.txt
+    virtualenv: /opt/venv/watchdog
+    #virtualenv_python: python3.7
+    virtualenv_python: python3
+
+- name: change ownership watchdog venv directory to toto:toto
+  tags: watchdog_req_prod
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+  with_items:
+  - { path: "/opt/venv" }
+  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+
+# - name: change ownership
+#   tags: repowatchdog
+#   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
+#   with_items:
+#   - { path: "/opt/watchdog" }
+#   #register: output_chown
+#   when: repo_watchdog.changed
+
+- name: cron job to update the git repository
+  tags: pull_watchdog
+  cron:
+    user: toto
+    name: "pull_watchdog"
+    special_time: reboot
+    # minute: "24"
+    # hour: "21"
+    job: "sleep 90 && cd ~/watchdog && date >> ~/misc.log && git pull https://github.com/toto240325/watchdog.git >> ~/misc.log 2>&1"
+    state: absent
+
+# - name: force git pull watchdog
+#   tags: force_pull_watchdog
+#   shell:
+#     cmd: 'su -c "cd ~/watchdog && date >> ~/misc.log && git pull https://github.com/toto240325/watchdog.git >> ~/misc.log" toto'
+  
+
+# - name: set the SHELL cron variable
+#   tags: debug49
+#   community.general.cronvar:
+#     user: toto
+#     name: SHELL
+#     value: /bin/bash
+    
+# - name: set the BASH_ENV cron variable
+#   tags: debug49
+#   community.general.cronvar:
+#     user: toto
+#     name: BASH_ENV
+#     value: /home/toto/.bashrc_conda
+#     insertafter: SHELL
+    
+# - name: cron job to launch watchdog under toto
+#   tags: debug49
+#   cron:
+#     user: toto
+#     name: "watchdog"
+#     #special_time: reboot
+#     #minute: "*/5"
+#     minute: "30"
+#     job: "conda activate /home/toto/.conda/envs/watchdog; python /home/toto/watchdog/watchdog.py 2>&1 >> /home/toto/watchdog.log; conda deactivate"
+#   when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+# - name: change ownership to toto:toto
+#   tags: debug111
+#   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+#   with_items:
+#   - { path: "/home/toto/conda/" }
+#   when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+- name: cron job to launch watchdog under root
+  tags: watchdog_cron
+  cron:
+    user: root
+    name: "watchdog"
+    #special_time: reboot
+    minute: "*/5"
+    #minute: "30"
+    job: ". /opt/venv/watchdog/bin/activate && python /opt/watchdog/watchdog.py  >> /opt/watchdog/watchdog.log"
+  #when: ansible_facts["lsb"]["id"] == "Raspbian"
+

@@ -11,7 +11,6 @@
   tags: deploy_watchdog_prod
   shell: "curl -L https://api.github.com/repos/toto240325/watchdog/tarball | tar xzvf - --one-top-level=/opt/watchdog --strip-components 1"
 
-
 # - name: install repo watchdog for toto
 #   tags: repowatchdog
 #   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no force=no
@@ -130,4 +129,16 @@
     #minute: "30"
     job: ". /opt/venv/watchdog/bin/activate && python /opt/watchdog/watchdog.py  >> /opt/watchdog/watchdog.log"
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
+
+- name: make sure the prod monitor server has the right value for its clients
+  tags: monitor_server_prod
+  lineinfile:
+    dest: "{{ item.dest }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: "{{ item.state }}"
+    create: yes
+  loop:
+    - { dest: '/opt/watchdog/params.py', regexp: '^monitor_server', line: 'monitor_server = "192.168.0.52"', state: 'present' }
+  # register: myoutput
 

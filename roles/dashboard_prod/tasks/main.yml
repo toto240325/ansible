@@ -1,0 +1,85 @@
+---
+- name: Create/update /opt/dashboard
+  tags: deploy_dashboard_prod
+  file:
+    path: /opt/dashboard
+    state: directory
+    owner: root
+    mode: '0755'
+
+- name: install latest version of dashboard in /opt/dashboard
+  tags: deploy_dashboard_prod
+  shell: "curl -L https://api.github.com/repos/toto240325/dashboard/tarball | tar xzvf - --one-top-level=/opt/dashboard --strip-components 1"
+
+
+# - name: install repo dashboard for toto
+#   tags: repodashboard
+#   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes # update=yes force=yes
+#   with_items:
+#   - { repo: 'https://github.com/toto240325/dashboard.git', dest: '/home/toto/dashboard' }
+#   register: repo_dashboard
+
+# - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+#   tags: repodashboard
+#   replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+#   with_items:
+#   - "/home/toto/dashboard"
+
+# - name: cron job to update the git dashboard repository
+#   tags: pull_dashboard
+#   cron:
+#     user: toto
+#     name: "pull_dashboard"
+#     special_time: reboot
+#     # minute: "24"
+#     # hour: "21"
+#     job: "cd ~/dashboard && git pull https://github.com/toto240325/dashboard.git >> /home/toto/misc.log"
+#   # when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+# - name: force git pull dashboard
+#   tags: force_pull_dashboard
+#   shell:
+#     cmd: 'su -c "cd ~/dashboard && date >> ~/misc.log && git pull https://github.com/toto240325/dashboard.git >> ~/misc.log" toto'
+  
+
+- name: check if dashboard params.py already exists
+  tags: dashboard_params_prod
+  stat:
+    path: /opt/dashboard/params.py
+  register: stat_result
+
+- name: "Copy dashboard params.py to /opt/dashboard"
+  tags: dashboard_params_prod
+  template:
+    src: "files/params.py.j2"
+    dest: "/opt/dashboard/params.py"
+  when: not stat_result.stat.exists
+
+- name: Install requirements for dashboard
+  tags: dashboard_req
+  pip: 
+    requirements: /opt/dashboard/requirements.txt
+    virtualenv: /opt/venv/dashboard
+    #virtualenv_python: python3.7
+    virtualenv_python: python3
+  #when: ansible_facts["lsb"]["id"] == "Raspbian"
+
+- name: change ownership dashboard venv directory to toto:toto
+  tags: dashboard_ownership
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
+  with_items:
+  - { path: "/opt/env/dashboard" }
+  #register: output_chown
+  #when: repo_dashboard.change
+
+- name: cron job to launch dashboard under root
+  tags: dashboard_cron
+  cron:
+    user: root
+    name: "dashboard"
+    special_time: reboot
+    #minute: "*/5"
+    #minute: "30"
+    job: "sleep 60 && . /opt/venv/dashboard/bin/activate && python /opt/dashboard/app.py  >> /opt/dashboard/dashboard.log"
+  #when: ansible_facts["lsb"]["id"] == "Raspbian"
+

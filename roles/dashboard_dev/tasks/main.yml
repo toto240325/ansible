@@ -1,0 +1,73 @@
+---
+- name: install repo dashboard for toto
+  tags: repodashboard
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes # update=yes force=yes
+  with_items:
+  - { repo: 'https://github.com/toto240325/dashboard.git', dest: '/home/toto/dashboard' }
+  register: repo_dashboard
+
+- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+  tags: repodashboard
+  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+  with_items:
+  - "/home/toto/dashboard"
+
+# - name: cron job to update the git dashboard repository
+#   tags: pull_dashboard
+#   cron:
+#     user: toto
+#     name: "pull_dashboard"
+#     special_time: reboot
+#     # minute: "24"
+#     # hour: "21"
+#     job: "cd ~/dashboard && git pull https://github.com/toto240325/dashboard.git >> /home/toto/misc.log"
+#   # when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+# - name: force git pull dashboard
+#   tags: force_pull_dashboard
+#   shell:
+#     cmd: 'su -c "cd ~/dashboard && date >> ~/misc.log && git pull https://github.com/toto240325/dashboard.git >> ~/misc.log" toto'
+  
+
+- name: check if dashboard params.py already exists
+  tags: dashboard_params
+  stat:
+    path: /home/toto/dashboard/params.py
+  register: stat_result
+
+- name: "Copy dashboard params.py"
+  tags: dashboard_params
+  template:
+    src: "files/params.py.j2"
+    dest: "/home/toto/dashboard/params.py"
+  when: not stat_result.stat.exists
+
+- name: Install requirements for dashboard
+  tags: dashboard_req
+  pip: 
+    requirements: /home/toto/dashboard/requirements.txt
+    virtualenv: /home/toto/venv/dashboard
+    #virtualenv_python: python3.7
+    virtualenv_python: python3
+  #when: ansible_facts["lsb"]["id"] == "Raspbian"
+
+- name: change ownership dashboard directory to toto:toto
+  tags: dashboard_ownership
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
+  with_items:
+  - { path: "/home/toto/dashboard/" }
+  - { path: "/home/toto/venv/" }
+  #register: output_chown
+  #when: repo_dashboard.change
+
+# - name: cron job to launch dashboard under root
+#   tags: dashboard_cron
+#   cron:
+#     user: root
+#     name: "dashboard"
+#     special_time: reboot
+#     #minute: "*/5"
+#     #minute: "30"
+#     job: "sleep 60 && . /home/toto/venv/dashboard/bin/activate && python /home/toto/dashboard/dashboard.py  >> /home/toto/dashboard.log"
+#   #when: ansible_facts["lsb"]["id"] == "Raspbian"
+

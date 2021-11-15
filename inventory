@@ -163,16 +163,23 @@ sd8
 ubuntu2 # 192.168.0.52
 #192.168.0.54
 
+[frigo_dev]
+# https://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/ds18b20
+ubuntu2
+#vayo # 192.168.0.45
+#sd8 # 192.168.0.78
+
 [frigo_prod]
 # https://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/ds18b20
 #vayo # 192.168.0.45
 sd3
 sd8 # 192.168.0.78
 
-[frigo_dev]
+[dashboard_dev]
 ubuntu2
-#vayo # 192.168.0.45
-#sd8 # 192.168.0.78
+
+[dashboard_prod]
+sd5
 
 [whos_on_my_network]
 #192.168.0.148

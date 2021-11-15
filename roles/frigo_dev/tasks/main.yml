@@ -60,14 +60,14 @@
   #register: output_chown
   #when: repo_frigo.change
 
-- name: cron job to launch frigo under root
-  tags: frigo_cron
-  cron:
-    user: root
-    name: "frigo"
-    special_time: reboot
-    #minute: "*/5"
-    #minute: "30"
-    job: "sleep 60 && . /home/toto/venv/frigo/bin/activate && python /home/toto/frigo/frigo.py  >> /home/toto/frigo.log"
-  #when: ansible_facts["lsb"]["id"] == "Raspbian"
+# - name: cron job to launch frigo under root
+#   tags: frigo_cron
+#   cron:
+#     user: root
+#     name: "frigo"
+#     special_time: reboot
+#     #minute: "*/5"
+#     #minute: "30"
+#     job: "sleep 60 && . /home/toto/venv/frigo/bin/activate && python /home/toto/frigo/frigo.py  >> /home/toto/frigo.log"
+#   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 

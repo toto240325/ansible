@@ -2,14 +2,15 @@
 
 - name: copy basic files to user ansible - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=ansible group=ansible
-  tags: debug36
+  tags: copy_basic_files
   with_items:
-  - { src: 'id_ed25519_toto.pub',    dest: '/home/ansible/.ssh/', mode: '0644' }
-  - { src: '~/.ssh/id_ed25519_toto', dest: '/home/ansible/.ssh/', mode: '0600' }
-  - { src: '.vimrc',                 dest: '/home/ansible/.ssh/', mode: '0644' }
-  - { src: '.tmux.conf',             dest: '/home/ansible/.ssh/', mode: '0644' }
-  - { src: '.bash_aliases',          dest: '/home/ansible/.ssh/', mode: '0644' }
-
+  - { src: 'id_ed25519_toto.pub',     dest: '/home/ansible/.ssh/',  mode: '0644' }
+  - { src: '~/.ssh/id_ed25519_toto',  dest: '/home/ansible/.ssh/',  mode: '0600' }
+  - { src: '~/.ssh/id_ed25519_gitro', dest: '/home/ansible/.ssh/',  mode: '0600' }
+  - { src: 'config',                  dest: '/home/ansible/.ssh/',  mode: '0644' }
+  - { src: '.vimrc',                  dest: '/home/ansible/',       mode: '0644' }
+  - { src: '.tmux.conf',              dest: '/home/ansible/',       mode: '0644' }
+  - { src: '.bash_aliases',           dest: '/home/ansible/',       mode: '0644' }
 
 
 - name: add ssh key for ansible (ed_25519_toto_local)

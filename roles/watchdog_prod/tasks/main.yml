@@ -139,6 +139,6 @@
     state: "{{ item.state }}"
     create: yes
   loop:
-    - { dest: '/opt/watchdog/params.py', regexp: '^monitor_server', line: 'monitor_server = "192.168.0.52"', state: 'present' }
+    - { dest: '/opt/watchdog/params.py', regexp: '^monitor_server', line: 'monitor_server = "192.168.0.45"', state: 'present' }
   # register: myoutput
 

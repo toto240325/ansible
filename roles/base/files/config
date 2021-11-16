@@ -1,0 +1,14 @@
+# https://docs.github.com/en/developers/overview/managing-deploy-keys
+
+Host github.com-proj1
+    Hostname github.com
+    IdentityFile=/home/toto/.ssh/id_ed25519_gitro
+    
+Host github.com-watchdog
+    Hostname github.com
+    IdentityFile=/home/toto/.ssh/id_ed25519_gitro
+
+Host github.com-frigo
+    Hostname github.com
+    IdentityFile=/home/toto/.ssh/id_ed25519_gitro
+    

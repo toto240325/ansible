@@ -1,4 +1,8 @@
 # https://docs.github.com/en/developers/overview/managing-deploy-keys
+# there must exist :
+# cat ~/.ssh/config
+# ls -ltr ~/.ssh/id_ed25519_gitro
+# git clone git@github.com-frigo:toto240325/frigo.git
 
 Host github.com-proj1
     Hostname github.com

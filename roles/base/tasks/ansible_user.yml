@@ -2,7 +2,7 @@
 
 - name: copy basic files to user ansible - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=ansible group=ansible
-  tags: copy_basic_files
+  tags: copy_basic_files_ansible
   with_items:
   - { src: 'id_ed25519_toto.pub',     dest: '/home/ansible/.ssh/',  mode: '0644' }
   - { src: '~/.ssh/id_ed25519_toto',  dest: '/home/ansible/.ssh/',  mode: '0600' }

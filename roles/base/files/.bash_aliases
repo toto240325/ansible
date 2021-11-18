@@ -56,6 +56,8 @@ alias cf="cp -vu ~/{.tmux.conf,.bash_aliases,.vimrc} ~/ansible/roles/base/files/
 alias venv_watchdog=". /home/toto/venv/watchdog/bin/activate"
 alias venv_piloop=". /home/toto/venv/piloop/bin/activate"
 alias venv_frigo=". /home/toto/venv/frigo/bin/activate"
+alias venv_dashboard=". /home/toto/venv/dashboard/bin/activate"
+alias venv=". venv/bin/activate"
 
 if [ -f ~/.my_aliases ]; then
   . ~/.my_aliases

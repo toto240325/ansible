@@ -40,12 +40,28 @@ alias wolhp='wakeonlan e4:11:5b:32:98:63'
 alias wolmypc3='wakeonlan f4:4d:30:05:78:01'
 alias gitca='git commit -a -m "."'
 alias gitpp='git pull; git push'
-alias gitcapp='git commit -a -m "."; git pull; git push; git status'
+alias gitcapp2='git commit -a -m "."; git pull; git push; git status'
 alias gitlog='git log --oneline --decorate --all --graph'
 alias sshagent="eval \`ssh-agent -s\`; ssh-add ~/.ssh/id_ed25519_toto"
 alias lsys="less /var/log/syslog"
 alias sshgit='sed -i "s#https://github.com/#git@github.com:#" .git/config'
 
+
+gitcapp()
+{
+  # check if ssh-agent has already been loaded with a key
+  ssh-add -l > /dev/null 2>&1
+  result=$?
+  echo $result
+
+  # if ssh-agent has already been loaded, continueIf in a git repo - call git mv. otherwise- call mv
+  if [ $result -eq 0 ]; 
+  then
+      gitcapp2
+  else 
+      echo "please run sshagent before"  
+  fi
+}
 
 export XAUTHORITY=~/.Xauthority
 

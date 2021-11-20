@@ -3,7 +3,7 @@
   tags: repoevent
   ansible.builtin.git: repo='https://github.com/toto240325/event.git' dest={{ item.dest }} clone=yes update=no force=no 
   with_items:
-  - { repo: 'event', dest: '/home/toto/event_dev' }
+  - { repo: 'event', dest: '/home/toto/event' }
   register: repo_event
 
 - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
@@ -15,14 +15,14 @@
 - name: Install requirements for event (for the python part)
   tags: event_req_dev
   pip: 
-    requirements: /home/toto/event_dev/requirements.txt
-    virtualenv: /home/toto/event_dev/venv
+    requirements: /home/toto/event/requirements.txt
+    virtualenv: /home/toto/event/venv
     #virtualenv_python: python3.7
     virtualenv_python: python3
 
 - name: Create/update document root
   file:
-    path: "/home/toto/event_dev"
+    path: "/home/toto/event"
     state: directory
     owner: "toto"
     mode: '0755'
@@ -32,8 +32,8 @@
   blockinfile:
     path: /etc/apache2/sites-available/000-default.conf
     block: |
-      Alias /event_dev/ "/home/toto/event_dev/"
-      <Directory "/home/toto/event_dev/">
+      Alias /event/ "/home/toto/event/"
+      <Directory "/home/toto/event/">
       Options Indexes FollowSymLinks
           Order allow,deny
           Allow from all
@@ -57,34 +57,34 @@
 - name: check if event_dev params.php already exists
   tags: event_dev_params
   stat:
-    path: /home/toto/event_dev/params.php
+    path: /home/toto/event/params.php
   register: stat_result
 
 - name: "Copy event_dev params.php"
   tags: event_dev_params
   template:
     src: "files/params.php.j2"
-    dest: "/home/toto/{{ http_host }}/params.php"
+    dest: "/home/toto/event/params.php"
   when: not stat_result.stat.exists
 
 - name: check if event_dev params.py already exists
   tags: event_dev_params
   stat:
-    path: /home/toto/event_dev/params.py
+    path: /home/toto/event/params.py
   register: stat_result
 
 - name: "Copy event_dev params.py"
   tags: event_dev_params
   template:
     src: "files/params.py.j2"
-    dest: "/home/toto/event_dev/params.py"
+    dest: "/home/toto/event/params.py"
   when: not stat_result.stat.exists
 
 - name: change ownership
   tags: repoevent
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
   with_items:
-  - { path: "/home/toto/{{ http_host }}" }
+  - { path: "/home/toto/event" }
   #register: output_chown
   when: repo_event.changed
 

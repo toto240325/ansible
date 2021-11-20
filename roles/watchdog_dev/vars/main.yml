@@ -1,0 +1,3 @@
+# vars for watchdog_dev
+vars_monitor_server: "192.168.0.45"
+vars_main_watchdog: "192.168.0.3"

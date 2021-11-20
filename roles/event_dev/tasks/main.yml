@@ -1,17 +1,30 @@
 ---
-
 - name: install repo event (under toto)
   tags: repoevent
-  ansible.builtin.git: repo='https://github.com/toto240325/{{ item.repo }}.git' dest={{ item.dest }} clone=yes update=no force=no 
+  ansible.builtin.git: repo='https://github.com/toto240325/event.git' dest={{ item.dest }} clone=yes update=no force=no 
   with_items:
-  - { repo: 'event', dest: '/home/toto/{{ http_host }}' }
+  - { repo: 'event', dest: '/home/toto/event_dev' }
   register: repo_event
+
+- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+  tags: repoevent
+  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+  with_items:
+  - "/home/toto/{{ http_host }}"
+
+- name: Install requirements for event (for the python part)
+  tags: event_req_dev
+  pip: 
+    requirements: /home/toto/event_dev/requirements.txt
+    virtualenv: /home/toto/event_dev/venv
+    #virtualenv_python: python3.7
+    virtualenv_python: python3
 
 - name: Create/update document root
   file:
-    path: "/home/toto/{{ http_host }}"
+    path: "/home/toto/event_dev"
     state: directory
-    owner: "{{ app_user }}"
+    owner: "toto"
     mode: '0755'
 
 - name: Add apache2 directory event_dev
@@ -40,12 +53,6 @@
     working_dir: "/home/toto/{{ http_host }}"
     #global_command: yes
 
-- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
-  tags: repoevent
-  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
-  with_items:
-  - "/home/toto/{{ http_host }}"
-
 
 - name: check if event_dev params.php already exists
   tags: event_dev_params
@@ -58,6 +65,19 @@
   template:
     src: "files/params.php.j2"
     dest: "/home/toto/{{ http_host }}/params.php"
+  when: not stat_result.stat.exists
+
+- name: check if event_dev params.py already exists
+  tags: event_dev_params
+  stat:
+    path: /home/toto/event_dev/params.py
+  register: stat_result
+
+- name: "Copy event_dev params.py"
+  tags: event_dev_params
+  template:
+    src: "files/params.py.j2"
+    dest: "/home/toto/event_dev/params.py"
   when: not stat_result.stat.exists
 
 - name: change ownership

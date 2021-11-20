@@ -32,6 +32,19 @@
 #   - watchdog.log
 #   - watchdog.txt
 
+- name: Install requirements for watchdog
+  tags: watchdog_req_prod
+  pip: 
+    requirements: /opt/watchdog/requirements.txt
+    virtualenv: /opt/watchdog/venv
+    #virtualenv_python: python3.7
+    virtualenv_python: python3
+
+- name: remove old venv
+  file:
+    path: /opt/venv/watchdog
+    state: absent
+
 - name: check if watchdog params.py already exists (watchdog prod)
   tags: watchdog_params_prod
   stat:
@@ -44,14 +57,6 @@
     src: "files/params.py.j2"
     dest: "/opt/watchdog/params.py"
   when: not stat_result.stat.exists
-
-- name: Install requirements for watchdog
-  tags: watchdog_req_prod
-  pip: 
-    requirements: /opt/watchdog/requirements.txt
-    virtualenv: /opt/venv/watchdog
-    #virtualenv_python: python3.7
-    virtualenv_python: python3
 
 - name: change ownership watchdog venv directory to toto:toto
   tags: watchdog_req_prod
@@ -84,7 +89,6 @@
 #   tags: force_pull_watchdog
 #   shell:
 #     cmd: 'su -c "cd ~/watchdog && date >> ~/misc.log && git pull https://github.com/toto240325/watchdog.git >> ~/misc.log" toto'
-  
 
 # - name: set the SHELL cron variable
 #   tags: debug49
@@ -127,11 +131,11 @@
     #special_time: reboot
     minute: "*/5"
     #minute: "30"
-    job: ". /opt/venv/watchdog/bin/activate && python /opt/watchdog/watchdog.py  >> /opt/watchdog/watchdog.log"
+    job: ". /opt/watchdog/venv/bin/activate && python /opt/watchdog/watchdog.py  >> /opt/watchdog/watchdog.log"
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 
-- name: make sure the prod monitor server has the right value for its clients
-  tags: monitor_server_prod
+- name: make sure the parameters (monitor_server, main_watchdog) in prod have the right value
+  tags: update_watchdog_params_prod
   lineinfile:
     dest: "{{ item.dest }}"
     regexp: "{{ item.regexp }}"
@@ -139,6 +143,8 @@
     state: "{{ item.state }}"
     create: yes
   loop:
-    - { dest: '/opt/watchdog/params.py', regexp: '^monitor_server', line: 'monitor_server = "192.168.0.45"', state: 'present' }
+    - { dest: '/opt/watchdog/params.py', regexp: '^monitor_server', line: 'monitor_server = "{{ vars_monitor_server }}"', state: 'present' }
+    - { dest: '/opt/watchdog/params.py', regexp: '^main_watchdog', line: 'main_watchdog = "{{ vars_main_watchdog }}"', state: 'present' }
   # register: myoutput
+
 

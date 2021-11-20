@@ -2,6 +2,6 @@ mailer = "{{ vault_toto_email }}mailer@gmail.com"
 mailer_pw = "{{ vault_toto_mailer_pw }}"
 from_email = "{{ vault_toto_email }}@gmail.com"
 to_email = "{{ vault_toto_email }}@gmail.com"
-monitor_server = "192.168.0.45"
+monitor_server = "{{ vars_monitor_server }}"
 event_server = "http://192.168.0.73/event"
-
+main_watchdog = "{{ vars_main_watchdog }}"

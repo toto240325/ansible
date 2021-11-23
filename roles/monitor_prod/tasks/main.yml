@@ -1,0 +1,157 @@
+---
+
+# ap --tags=monitor_prod --skip-tags=always
+#- name: "install some packages"
+#  package:
+#    name: npm
+#    state: latest
+
+- name: install repo monitor (under root)
+  tags: repomon
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no force=no
+  with_items:
+  - { repo: 'https://github.com/toto240325/monitor.git', dest: '/var/www/monitor' }
+  register: repo_monitor
+
+- name: Create document root
+  file:
+    path: "/var/www/monitor"
+    state: directory
+    owner: "{{ app_user }}"
+    mode: '0755'
+
+- name: Add apache2 directory monitor
+  tags: apache2_monitor
+  blockinfile:
+    path: /etc/apache2/sites-available/000-default.conf
+    block: |
+      Alias /monitor/ "/var/www/monitor/"
+        <Directory "/var/www/monitor/">
+        Options Indexes FollowSymLinks
+            Order allow,deny
+            Allow from all
+            Require all granted
+        </Directory>
+    marker: "# {mark} ANSIBLE MANAGED BLOCK monitor"
+    insertbefore: </VirtualHost>
+  notify: Reload Apache
+
+
+- name: Install a php package 
+  tags: debug72
+  community.general.composer:
+    #command: remove
+    command: require
+    arguments: phpunit/phpunit
+    working_dir: "/var/www/monitor"
+    #global_command: yes
+
+- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+  tags: repomon
+  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+  with_items:
+  - "/var/www/monitor"
+
+- name: check if monitor params.py already exists
+  tags: monitor_params
+  stat:
+    path: /var/www/monitor/params.php
+  register: stat_result
+
+- name: "Copy params.php"
+  tags: monitor_params
+  template:
+    src: "files/params.php.j2"
+    dest: "/var/www/monitor/params.php"
+  when: not stat_result.stat.exists
+
+- name: change ownership
+  tags: repomon
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
+  with_items:
+  - { path: "/var/www/monitor" }
+  #register: output_chown
+  when: repo_monitor.changed
+
+- name: cron job to update the git repository
+  tags: pull_monitor
+  cron:
+    user: root
+    name: "pull_monitor"
+    special_time: reboot
+    # minute: "24"
+    # hour: "21"
+    job: "sleep 90 && date >> /root/misc.log && cd /var/www/monitor && git pull https://github.com/toto240325/monitor.git >> /root/misc.log 2>&1"
+  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+
+# - name: "initialise DB in separate location (makes sense only for sqlite, note mysql)"
+#   file: 
+#     path: /home/toto/db
+#     state: directory
+#     owner: toto
+#     group: toto
+#   when: repo_monitor.changed
+
+# - name: Set up Apache virtualhost
+#   template:
+#     src: "files/apache.conf.j2"
+#     dest: "/etc/apache2/sites-available/{{ http_conf }}"
+
+# - name: Enable new site
+#   shell: /usr/sbin/a2ensite {{ http_conf }}
+#   notify: Reload Apache
+
+# - name: Disable default Apache site
+#   shell: /usr/sbin/a2dissite 000-default.conf
+#   when: disable_default
+#   notify: Reload Apache
+
+# - name: "UFW - Allow HTTP on port {{ http_port }}"
+#   ufw:
+#     rule: allow
+#     port: "{{ http_port }}"
+#     proto: tcp
+
+- name: check if mydatabase already exists
+  tags: check_mydatabase_exists
+  shell: "mysql -u toto -p{{ vault_mysql_toto_pw }} -e 'show databases;' 2>&1 | grep mydatabase -c"
+  register: mysql_output
+  failed_when: mysql_output.rc == 2  # grep returns 0 if kw found, 1 if not found, 2 if other error
+
+- debug: msg="database mydatabase already exists"
+  tags: check_mydatabase_exists
+  when: mysql_output.stdout == "1"
+
+- debug: msg="database mydatabase don't already exist"
+  tags: check_mydatabase_exists
+  when: mysql_output.stdout != "1"
+
+- name: Create mysql database
+  tags: check_mydatabase_exists
+  mysql_db:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_user: 'toto'
+    login_password: "{{ vault_mysql_toto_pw }}"
+    name: "mydatabase"
+    state: import
+    #target: /home/toto/monitor/mydatabase.sql
+    target: "/var/www/monitor/mydatabase.sql"
+  when: mysql_output.stdout != "1"  and ansible_facts["lsb"]["id"] != "Raspbian"
+
+#- name: cron job to launch whos_on_my_network watcher under root
+#  cron:
+#    user: root
+#    name: "cron whos_on_my_network watcher"
+#    special_time: reboot
+#    #minute: "*/10"
+#    job: ". /home/toto/whos_on_my_network/run_whos_watcher >> /root/whos_on_my_network_watcher.log"
+#
+#- name: cron job to launch whos_on_my_network webserver under root
+#  cron:
+#    user: root
+#    name: "cron whos_on_my_network_webserver"
+#    special_time: reboot
+#    #minute: "*/10"
+#    job: ". /home/toto/whos_on_my_network/run_whos_webserver >> /root/whos_on_my_network_webserver.log"
+

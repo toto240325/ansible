@@ -1,0 +1,9 @@
+<VirtualHost *:{{ http_port }}>
+    ServerAdmin webmaster@localhost
+    ServerName monitor
+    ServerAlias www.monitor
+    DocumentRoot /var/www
+#    DocumentRoot /var/www/monitor
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>

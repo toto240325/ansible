@@ -1,6 +1,6 @@
 ---
 app_user: "toto"
-http_host: "event"
+#http_host: "event"
 http_conf: "event.conf"
 http_port: "80"
 disable_default: true

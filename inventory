@@ -143,7 +143,10 @@ sd9 # 192.168.0.79
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
 
-[monitor]
+[monitor_dev]
+ubuntu2 # 192.168.0.52
+
+[monitor_prod]
 vayo # 192.168.0.45
 ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52

@@ -214,14 +214,23 @@
   roles:
   - sqlite
 
-- hosts: monitor
+- hosts: monitor_dev
   vars_files:
   - ~/ansible/vault.yml
   gather_facts: false
-  tags: monitor
+  tags: monitor_dev
   become: true
   roles: 
-    - monitor
+    - monitor_dev
+    
+- hosts: monitor_dev
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: false
+  tags: monitor_dev
+  become: true
+  roles: 
+    - monitor_dev
     
 - hosts: event_prod
   vars_files:

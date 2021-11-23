@@ -2,16 +2,16 @@
 
 # - name: Create document root 
 #   file:
-#     path: "/var/www/{{ http_host }}"
+#     path: "/var/www/event"
 #     state: directory
 #     owner: "{{ app_user }}"
 #     mode: '0755'
 
-- name: "install repo event (under root) - repo : {{ http_host }}"
+- name: "install repo event (under root) - repo : event"
   tags: repoevent
   ansible.builtin.git: repo='https://github.com/toto240325/{{ item.repo }}.git' dest='{{ item.dest }}' clone=yes update=no force=no depth=1
   with_items:
-  - { repo: 'event', dest: '/var/www/{{ http_host }}' }
+  - { repo: 'event', dest: '/var/www/event' }
   register: repo_event
 
 - name: Add apache2 directory event
@@ -121,7 +121,7 @@
 #     name: "mydatabase"
 #     state: import
 #     #target: /home/toto/event/mydatabase.sql
-#     target: "/var/www/{{ http_host }}/events.sql"
+#     target: "/var/www/event/events.sql"
 #   #when: not mydatabase_exists
 #   when: mysql_output.stdout != "1"
 

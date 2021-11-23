@@ -10,7 +10,7 @@
   tags: repoevent
   replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
   with_items:
-  - "/home/toto/{{ http_host }}"
+  - "/home/toto/event"
 
 - name: Install requirements for event (for the python part)
   tags: event_req_dev
@@ -50,7 +50,7 @@
     #command: remove
     command: require
     arguments: phpunit/phpunit
-    working_dir: "/home/toto/{{ http_host }}"
+    working_dir: "/home/toto/event"
     #global_command: yes
 
 
@@ -151,7 +151,7 @@
     name: "mydatabase"
     state: import
     #target: /home/toto/event/mydatabase.sql
-    target: "/home/toto/{{ http_host }}/events.sql"
+    target: "/home/toto/event/events.sql"
   #when: not mydatabase_exists
   when: mysql_output.stdout != "1" and ansible_facts["lsb"]["id"] != "Raspbian"
 

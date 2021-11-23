@@ -122,18 +122,20 @@
 #   register: myoutput
 
 - name: setup some git global variables
-  tags: debug2
+  tags: update_gitconfig
   lineinfile:
     dest: /home/toto/.gitconfig # same as git config --global user.name "toto.tutu"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    insertafter: "[user]"
+    insertafter: "{{ item.insert_after }}"
     state: "{{ item.state }}"
     create: yes
   loop:
-    - { regexp: '^[user]', line: '[user]', state: 'present' }
-    - { regexp: '^.*email', line: '  email = toto240325@gmail.com', state: 'present' }
-    - { regexp: '^.*name', line: '  name = toto240325', state: 'present' }
+    - { regexp: '^[user]', line: '[user]', state: 'present', insert_after: '[user]' }
+    - { regexp: '^.*email', line: '  email = toto240325@gmail.com', state: 'present', insert_after: '[user]' }
+    - { regexp: '^.*name', line: '  name = toto240325', state: 'present', insert_after: '[user]' }
+    - { regexp: '^[tag]', line: '[tag]', state: 'present', insert_after: '[tag]' }
+    - { regexp: '^.*sort', line: '  sort = version:refname', state: 'present', insert_after: '[tag]' }
   # register: myoutput
 
 

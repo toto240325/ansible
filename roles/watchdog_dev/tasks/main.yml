@@ -52,7 +52,7 @@
   with_items:
   - { path: "/home/toto/watchdog" }
   #register: output_chown
-  when: repo_watchdog_dev.changed
+  #when: repo_watchdog_dev.changed
 
 # - name: cron job to update the git repository
 #   tags: pull_watchdog

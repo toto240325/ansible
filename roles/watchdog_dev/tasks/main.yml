@@ -38,17 +38,6 @@
     dest: "/home/toto/watchdog/params.py"
   when: not stat_result.stat.exists
 
-- name: update the list of server that mustBeUp
-  tags: update_mustBeUp
-  blockinfile:
-    path: /home/toto/watchdog/params.py
-    block: |
-      mustBeup block
-      should be put here
-    marker: "# {mark} ANSIBLE MANAGED BLOCK watchdog_mustBeUp"
-    #insertbefore: 
-  #notify: do_this_after_mustBeUp_updated
-
 
 - name: set ownership of log files (some log files are create by root in /home/toto)
   tags: fix_ownership_logs

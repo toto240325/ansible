@@ -58,6 +58,28 @@
     dest: "/opt/watchdog/params.py"
   when: not stat_result.stat.exists
 
+- name: update the list of server that mustBeUp
+  tags: update_mustBeUp
+  blockinfile:
+    path: /opt/watchdog/params.py
+    block: |
+      mustBeUp = [
+        ("voo_router",      "192.168.0.1"),
+        ("webcamChalet",    "192.168.0.4"),
+        # ("HP5520 printer",  "192.168.0.6"),
+        ("alarmSystem",     "192.168.0.9"),
+        ("linksysed_router","192.168.0.50"),
+        #("sd4",             "192.168.0.94"),
+        #("vayo",            "192.168.0.45"),
+        ("sd3",             "192.168.0.73"),
+        ("sd5",             "192.168.0.75"),
+        ("sd8",             "192.168.0.78")
+      ]
+    marker: "# {mark} ANSIBLE MANAGED BLOCK watchdog_mustBeUp"
+    #insertbefore: 
+  #notify: do_this_after_mustBeUp_updated
+
+
 - name: change ownership watchdog venv directory to toto:toto
   tags: watchdog_req_prod
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes

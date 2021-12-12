@@ -46,7 +46,7 @@
   tags: frigo_req
   pip: 
     requirements: /home/toto/frigo/requirements.txt
-    virtualenv: /home/toto/venv/frigo
+    virtualenv: /home/toto/frigo/venv
     #virtualenv_python: python3.7
     virtualenv_python: python3
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
@@ -56,7 +56,6 @@
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
   with_items:
   - { path: "/home/toto/frigo/" }
-  - { path: "/home/toto/venv/" }
   #register: output_chown
   #when: repo_frigo.change
 

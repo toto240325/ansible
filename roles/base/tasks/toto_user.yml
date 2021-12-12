@@ -178,6 +178,25 @@
 #  register: output_chown
 
 
+- name: Install requirements for utils
+  tags: utils_req
+  pip: 
+    requirements: /home/toto/utils/requirements.txt
+    virtualenv: /home/toto/utils/venv
+    #virtualenv_python: python3.7
+    virtualenv_python: python3
+  #when: ansible_facts["lsb"]["id"] == "Raspbian"
+
+- name: change ownership utils directory to toto:toto
+  tags: utils_ownership
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
+  with_items:
+  - { path: "/home/toto/utils/" }
+  #register: output_chown
+  #when: repo_utils.change
+
+
+
 # - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
 #   tags: mygit
 #   replace:

@@ -1,0 +1,39 @@
+---
+
+- name: check if bashrc exists or not
+  tags: debug_bashrc
+  stat:
+    path: "/root/.bash_profile"
+  register: bash_profile_exists
+
+- name: ensure .bashrc is run if it exists (wheter interactive logon or not)
+  tags: debug_bashrc
+  blockinfile:
+    dest : /root/.bash_profile
+    block: |
+      # if running bash
+      if [ -n "$BASH_VERSION" ]; then
+          # include .bashrc if it exists
+          if [ -f "$HOME/.bashrc" ]; then
+          . "$HOME/.bashrc"
+          fi
+      fi
+  when: bash_profile_exists == true
+
+
+- name: ensure .bashrc_conda is run (wheter interactive logon or not)
+  tags: debug_bashrc
+  blockinfile:
+    dest : /root/.bashrc
+    block: |
+      # this is not the proper way to do this I guess; to be fixed
+      export PYTHONPATH=/opt/utils:$PYTHONPATH
+    insertbefore: BOF
+
+
+- name: copy basic files to user root .bash_aliases
+  tags: copy_basic_files_root
+  copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} 
+  with_items:
+  - { src: '.bash_aliases',           dest: '/home/toto/',       mode: '0644' }
+

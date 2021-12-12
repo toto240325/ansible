@@ -153,16 +153,6 @@
   #when: ansible_distribution in ["Ubuntu","Debian"] and ansible_distribution_version == "20.04"
   #when: no
 
-- name: define the PYTHONPAH env variable
-  tags: define_pythonpath
-  lineinfile:
-    dest: "/etc/environment"
-    state: present
-    regexp: "^{{ item.key }}="
-    line: "{{ item.key }}={{ item.value}}"
-  with_items:
-    - { key: "PYTHONPATH", value: "/opt/utils" }
-
 - name: check if /usr/bin/gh already exists
   tags: gh
   stat:
@@ -253,6 +243,9 @@
 
 - include: toto_user.yml
   tags: toto
+
+- include: root_user.yml
+  tags: root
 
 - include: ansible_user.yml
 

@@ -46,13 +46,15 @@
       fi
   when: bash_profile_exists == true
 
-- name: ensure .bashrc_conda is run (wheter interactive logon or not)
+
+- name: ensure .bashrc_conda is run (wheter interactive logon or not) + define PYTHONPATH
   tags: debug_bashrc
   blockinfile:
     dest : /home/toto/.bashrc
     block: |
       # this is not the proper way to do this I guess; to be fixed
       . /home/toto/.bashrc_conda
+      export PYTHONPATH=/opt/utils:$PYTHONPATH
     insertbefore: BOF
 
 

@@ -41,7 +41,7 @@
 #192.168.0.78                                             newhostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
 #192.168.0.68 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
 #192.168.0.13 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
-192.168.0.62 ansible_user=pi ansible_ssh_pass=Toto! newhostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
+#192.168.0.62 ansible_user=pi ansible_ssh_pass=Toto! newhostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
 
 [base]
 vayo # 192.168.0.45

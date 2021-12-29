@@ -161,8 +161,8 @@
 
 - name: install repo utils for toto 
   become: true
-  tags: debug1
-  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no
+  tags: repo_utils_toto
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes
   with_items:
   - { repo: 'https://github.com/toto240325/utils.git',              dest: '/home/toto/utils' }
   - { repo: 'https://github.com/toto240325/ansible.git',           dest: '/home/toto/ansible' }
@@ -170,6 +170,7 @@
   # - { repo: 'https://github.com/toto240325/monitor.git',            dest: '/var/www/monitor' }
   # - { repo: 'https://github.com/toto240325/watchdog.git',            dest: '/home/toto/watchdog' }
   register: output_git
+
 
 - name: change ownership repos
   tags: debug1
@@ -180,7 +181,7 @@
 #  register: output_chown
 
 
-- name: Install requirements for utils
+- name: Install requirements for utils toto
   tags: utils_req
   pip: 
     requirements: /home/toto/utils/requirements.txt
@@ -196,7 +197,6 @@
   - { path: "/home/toto/utils/" }
   #register: output_chown
   #when: repo_utils.change
-
 
 
 # - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git

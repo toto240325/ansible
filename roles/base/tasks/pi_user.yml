@@ -33,7 +33,7 @@
     mode: '0440'
 
 - name: copy basic files - id_ed25519_toto.pub, id_ed25519_toto, .vimrc, .tmux.conf, .bash_aliases
-  tags: copy_basic_files
+  tags: copy_basic_files_for_pi
   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
   with_items:
   - { src: 'id_ed25519_toto.pub',    dest: '/home/pi/.ssh/',  mode: '0644' }

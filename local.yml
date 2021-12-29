@@ -25,7 +25,7 @@
   # - name: "debug shell output"
   #   debug: var=shelloutput
 
-#    - include: tasks/users.yml
-#    - include: tasks/cron.yml
-#    - include: tasks/packages.yml
+#    - include_tasks: tasks/users.yml
+#    - include_tasks: tasks/cron.yml
+#    - include_tasks: tasks/packages.yml
 

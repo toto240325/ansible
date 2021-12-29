@@ -7,7 +7,7 @@
   register: bash_profile_exists
 
 - name: ensure .bashrc is run if it exists (wheter interactive logon or not)
-  tags: debug_bashrc
+  tags: root_bash_profile
   blockinfile:
     dest : /root/.bash_profile
     block: |
@@ -17,18 +17,19 @@
           if [ -f "$HOME/.bashrc" ]; then
           . "$HOME/.bashrc"
           fi
-      fi
+    marker: "# {mark} ANSIBLE MANAGED BLOCK call_bashrc"
   when: bash_profile_exists == true
 
 
-- name: ensure .bashrc_conda is run (wheter interactive logon or not)
-  tags: debug_bashrc
+- name: define pythonpath
+  tags: root_pythonpath
   blockinfile:
     dest : /root/.bashrc
     block: |
       # this is not the proper way to do this I guess; to be fixed
       export PYTHONPATH=/opt/utils:$PYTHONPATH
     insertbefore: BOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK pythonpath"
 
 
 - name: copy basic files to user root .bash_aliases
@@ -36,4 +37,14 @@
   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} 
   with_items:
   - { src: '.bash_aliases',           dest: '/root/',       mode: '0644' }
+
+- name: ensure .bash_aliases is called from .bashrc
+  tags: root_bash_aliases
+  blockinfile:
+    dest : /root/.bashrc
+    block: |
+      if [ -f ~/.bash_aliases ]; then
+        . ~/.bash_aliases
+      fi
+    marker: "# {mark} ANSIBLE MANAGED BLOCK call_bash_aliases"
 

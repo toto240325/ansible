@@ -80,6 +80,6 @@
     special_time: reboot
     #minute: "*/5"
     #minute: "30"
-    job: "sleep 60 && . /opt/dashboard/venv/bin/activate && python /opt/dashboard/app.py  >> /opt/dashboard/dashboard.log"
+    job: "sleep 60 && export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/dashboard/venv/bin/activate && python /opt/dashboard/app.py  >> /opt/dashboard/dashboard.log"
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 

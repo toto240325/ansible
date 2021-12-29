@@ -7,10 +7,10 @@
 
 
 [bootstrap]
-## aps -l 192.168.0.73,192.168.0.78 -t=hostname
+## aps -l 192.168.0.80,192.168.0.78 -t=hostname
 #192.168.0.70 newHostname=sd0
 #192.168.0.71 newHostname=sd1
-#192.168.0.72 newHostname=sd2
+#192.168.0.62 newHostname=sd2
 ##192.168.0.73 newHostname=sd3
 #192.168.0.74 newHostname=sd4
 #192.168.0.75 newHostname=sd5    # aps -t=hostname
@@ -41,6 +41,7 @@
 #192.168.0.78                                             newhostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
 #192.168.0.68 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
 #192.168.0.13 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
+192.168.0.62 ansible_user=pi ansible_ssh_pass=Toto! newhostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
 
 [base]
 vayo # 192.168.0.45
@@ -143,6 +144,24 @@ sd9 # 192.168.0.79
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
 
+[utils_prod]
+vayo # 192.168.0.45
+ubuntu1 # 192.168.0.51
+ubuntu2 # 192.168.0.52
+ubuntu3 # 192.168.0.53
+#192.168.0.54
+#192.168.0.148
+sd0 # 192.168.0.70
+sd1 # 192.168.0.71
+sd2 # 192.168.0.72
+sd3 # 192.168.0.73
+sd4 # 192.168.0.74
+sd5 # 192.168.0.75
+sd6 # 192.168.0.76
+sd7 # 192.168.0.77
+sd8 # 192.168.0.78
+sd9 # 192.168.0.79
+
 [monitor_dev]
 ubuntu2 # 192.168.0.52
 
@@ -177,16 +196,19 @@ ubuntu2
 #vayo # 192.168.0.45
 #sd3
 sd8 # 192.168.0.78
+sd9
 
 [dashboard_dev]
 ubuntu2
 
 [dashboard_prod]
+sd3
 sd5
 
 [whos_on_my_network]
 #192.168.0.148
 vayo # 192.168.0.45
+#ubuntu2
 
 #[ansible_servers]
 #192.168.0.23

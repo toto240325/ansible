@@ -1,0 +1,48 @@
+---
+- name: Create/update /opt/utils
+  tags: deploy_utils_prod
+  file:
+    path: /opt/utils
+    state: directory
+    owner: root
+    mode: '0755'
+
+- name: install latest version of utils in /opt/utils
+  tags: deploy_utils_prod
+  shell: "curl -L https://api.github.com/repos/toto240325/utils/tarball | tar xzvf - --one-top-level=/opt/utils --strip-components 1"
+
+- name: Install requirements for utils
+  tags: utils_req_prod
+  pip: 
+    requirements: /opt/utils/requirements.txt
+    virtualenv: /opt/utils/venv
+    #virtualenv_python: python3.7
+    virtualenv_python: python3
+
+- name: check if utils params.py already exists (utils prod)
+  tags: utils_params_prod
+  stat:
+    path: /opt/utils/params.py
+  register: stat_result
+
+- name: "Copy params.py for utils prod"
+  tags: utils_params_prod
+  template:
+    src: "files/params.py.j2"
+    dest: "/opt/utils/params.py"
+  when: not stat_result.stat.exists
+
+# - name: make sure the parameters (monitor_server, main_utils) in prod have the right value
+#   tags: update_utils_params_prod
+#   lineinfile:
+#     dest: "{{ item.dest }}"
+#     regexp: "{{ item.regexp }}"
+#     line: "{{ item.line }}"
+#     state: "{{ item.state }}"
+#     create: yes
+#   loop:
+#     # - { dest: '/opt/utils/params.py', regexp: '^monitor_server', line: 'monitor_server = "{{ vars_monitor_server }}"', state: 'present' }
+#     # - { dest: '/opt/utils/params.py', regexp: '^main_utils', line: 'main_utils = "{{ vars_main_utils }}"', state: 'present' }
+#   # register: myoutput
+
+

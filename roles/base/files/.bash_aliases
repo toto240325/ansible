@@ -1,3 +1,6 @@
+# to update on all hosts :
+# ap -t=copy_basic_files_toto
+#
 alias h='history'
 #alias mysuspend='sudo dbus-send --system --print-reply  --dest="org.freedesktop.UPower"  /org/freedesktop/UPower org.freedesktop.UPower.Suspend'
 #alias mountdrived='sudo mkdir /mnt/mysmb; sudo mount -t cifs -o username=toto,password=mypw //192.168.0.2/d  /mnt/mysmb'
@@ -45,7 +48,17 @@ alias gitlog='git log --oneline --decorate --all --graph'
 alias sshagent="eval \`ssh-agent -s\`; ssh-add ~/.ssh/id_ed25519_toto"
 alias lsys="less /var/log/syslog"
 alias sshgit='sed -i "s#https://github.com/#git@github.com:#" .git/config'
-alias release="bash ../utils/release.sh"
+alias release="bash ~/utils/release.sh"
+
+mynmap() 
+{
+  sudo nmap -sn 192.168.0.* | awk ' /scan report/ {printf ("%15s %s\n",$5,$6) }'
+}
+
+mynmap2() 
+{
+  sudo nmap -sn 192.168.0.* | awk '/Nmap scan/{ip=$NF;name=$5; next}ip && /MAC/{printf "%s %-16s %s\n", $3, ip, name}' | ~/util/bash map_mac_addr.sh
+}
 
 gitcapp()
 {

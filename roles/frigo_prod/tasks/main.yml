@@ -59,7 +59,7 @@
   tags: frigo_req
   pip: 
     requirements: /opt/frigo/requirements.txt
-    virtualenv: /opt/venv/frigo
+    virtualenv: /opt/frigo/venv
     #virtualenv_python: python3.7
     virtualenv_python: python3
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
@@ -68,11 +68,15 @@
   tags: frigo_ownership
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
   with_items:
-  - { path: "/opt/env/frigo" }
+  - { path: "/opt/frigo/" }
   #register: output_chown
   #when: repo_frigo.change
 
-- name: cron job to launch frigo under root
+# - name: "get hostname"
+#   shell: "hostname"
+#   register: shelloutput
+
+- name: "cron job to launch frigo under root but only for the real frigo, i.e. for {{ vars_frigo }} {{ ansible_facts['hostname'] }} (enable)"
   tags: frigo_cron
   cron:
     user: root
@@ -80,6 +84,19 @@
     special_time: reboot
     #minute: "*/5"
     #minute: "30"
-    job: "sleep 60 && . /opt/venv/frigo/bin/activate && python /opt/frigo/frigo.py  >> /opt/frigo/frigo.log"
-  #when: ansible_facts["lsb"]["id"] == "Raspbian"
+    job: "sleep 60 && export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/frigo/venv/bin/activate && python /opt/frigo/frigo.py  >> /opt/frigo/frigo.log"
+    state: present
+  when: ansible_facts["hostname"] == vars_frigo
+
+- name: "cron job to launch frigo under root but only for the real frigo, i.e. for {{ vars_frigo }} (disable)"
+  tags: frigo_cron
+  cron:
+    user: root
+    name: "frigo"
+    special_time: reboot
+    #minute: "*/5"
+    #minute: "30"
+    job: "sleep 60 && export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/frigo/venv/bin/activate && python /opt/frigo/frigo.py  >> /opt/frigo/frigo.log"
+    state: absent  # <-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  when: ansible_facts["hostname"] != vars_frigo
 

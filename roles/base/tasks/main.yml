@@ -228,6 +228,7 @@
   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: upgrade pip to latest version
+  tags: latest_pip
   pip:
     name: pip
     executable: pip3
@@ -241,15 +242,16 @@
     #virtualenv: /my_app/venv
   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-- include: toto_user.yml
+- include_tasks: toto_user.yml
   tags: toto
 
-- include: root_user.yml
+- include_tasks: root_user.yml
   tags: root
 
-- include: ansible_user.yml
+- include_tasks: ansible_user.yml
 
-- include: pi_user.yml
+- include_tasks: pi_user.yml
+  tags: pi
   #when: ansible_facts["nodename"] == "raspberry"
   when: ansible_facts["lsb"]["id"] == "Raspbian"
 
@@ -276,3 +278,15 @@
 #   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=root group=root
 #   with_items:
 #   - { src: 'rc.local',    dest: '/etc/',  mode: '0755' }
+
+- name: cron job to create an even when rebooting
+  tags: cron_create_event_on_reboot
+  cron:
+    user: root
+    name: "cron to create event on reboot"
+    special_time: reboot
+    #minute: "*/5"
+    #minute: "30"
+    job: 'sleep 60 && export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/utils/venv/bin/activate && python /opt/utils/event.py create "reboot" "this host is rebooting"  >> /opt/utils/reboot.log'
+  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+

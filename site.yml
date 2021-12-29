@@ -292,6 +292,16 @@
   #     executable: /opt/conda/bin/conda
   #   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
+- hosts: utils_prod
+  name: install utils_prod
+  tags: utils_prod    
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: true
+  become: true
+  roles: 
+    - utils_prod
+
 - hosts: all
   name: install watchdog
   tags: success_msg

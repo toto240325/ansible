@@ -128,7 +128,7 @@
   when: dhcpd_output.stdout != "Unit dhcpd.service could not be found."
 
 - name: "Add an Ethernet connection with static IP configuration for {{ mainEthDev }} on {{ newEthIP }}"
-  tags: debug17
+  tags: my-eth0
   community.general.nmcli:
     conn_name: my-eth0
     ifname: "{{ mainEthDev }}"
@@ -139,11 +139,10 @@
     - 8.8.4.4
     - 1.1.1.1
     autoconnect: true
-    
     state: present
 
 - name: check if wlan0 exists
-  tags: debug_wlan0
+  tags: wlan0
   shell: "ip a | grep {{ mainWifiDev }}"
   register: wlan0_output
   failed_when: wlan0_output.rc == 2  # grep returns 0 if kw found, 1 if not found, 2 if other error
@@ -152,7 +151,7 @@
 #   tags: debug_wlan0
   
 - name: "Add a wifi connections to {{ mainWifiDev }} with static IP configuration on VOO-953522"
-  tags: debug_wlan0
+  tags: wlan0
   community.general.nmcli:
     conn_name: "{{ item.conn_name }}"
     ifname: "{{ item.ifname }}"
@@ -174,7 +173,7 @@
 
 
 - name: "Add a wifi connections to {{ mainWifiDev }} with static IP configuration on linksysed"
-  tags: debug_wlan0
+  tags: wlan0
   community.general.nmcli:
     conn_name: "{{ item.conn_name }}"
     ifname: "{{ item.ifname }}"

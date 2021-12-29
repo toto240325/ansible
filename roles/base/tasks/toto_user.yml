@@ -102,6 +102,7 @@
   tags: copy_basic_files_toto
   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=toto group=toto
   with_items:
+  - { src: '.bash_aliases',           dest: '/home/toto/',       mode: '0644' }
   - { src: 'id_ed25519_toto.pub',     dest: '/home/toto/.ssh/',  mode: '0644' }
   - { src: '~/.ssh/id_ed25519_toto',  dest: '/home/toto/.ssh/',  mode: '0600' }
   - { src: '~/.ssh/id_ed25519_gitro', dest: '/home/toto/.ssh/',  mode: '0600' }
@@ -109,7 +110,6 @@
   - { src: 'config',                  dest: '/home/toto/.ssh',   mode: '0644' }
   - { src: '.vimrc',                  dest: '/home/toto/',       mode: '0644' }
   - { src: '.tmux.conf',              dest: '/home/toto/',       mode: '0644' }
-  - { src: '.bash_aliases',           dest: '/home/toto/',       mode: '0644' }
   - { src: '.bashrc_conda',           dest: '/home/toto/',       mode: '0644' }
 
 #this one doesn't work !!!!!

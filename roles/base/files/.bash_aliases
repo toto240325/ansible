@@ -16,6 +16,7 @@ alias ls='ls --color=auto'
 #alias dir='dir --color=auto'
 #alias vdir='vdir --color=auto'
 
+
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
@@ -49,6 +50,10 @@ alias sshagent="eval \`ssh-agent -s\`; ssh-add ~/.ssh/id_ed25519_toto"
 alias lsys="less /var/log/syslog"
 alias sshgit='sed -i "s#https://github.com/#git@github.com:#" .git/config'
 alias release="bash ~/utils/release.sh"
+alias mygitdiff='git fetch origin ; git diff origin/master'
+
+# NB : to print the definition of a given bash function :
+# type mynmap
 
 mynmap() 
 {
@@ -57,7 +62,7 @@ mynmap()
 
 mynmap2() 
 {
-  sudo nmap -sn 192.168.0.* | awk '/Nmap scan/{ip=$NF;name=$5; next}ip && /MAC/{printf "%s %-16s %s\n", $3, ip, name}' | ~/util/bash map_mac_addr.sh
+  sudo nmap -sn 192.168.0.* | awk '/Nmap scan/{ip=$NF;name=$5; next}ip && /MAC/{printf "%s %-16s %s\n", $3, ip, name}' | bash ~/utils/map_mac_addr.sh
 }
 
 gitcapp()

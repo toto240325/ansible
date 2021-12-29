@@ -129,11 +129,12 @@
 #   when: yes
 
 - name: install basic packages
-  tags: debug_packages
+  tags: basic_packages
   package:
     name: "{{ item }}"
     state: latest
   with_items:
+    - chrony
     - ansible
     - ansible-lint
     - sshpass            # this is need to manage windows machines
@@ -242,15 +243,15 @@
     #virtualenv: /my_app/venv
   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-- include_tasks: toto_user.yml
+- import_tasks: toto_user.yml
   tags: toto
 
-- include_tasks: root_user.yml
+- import_tasks: root_user.yml
   tags: root
 
-- include_tasks: ansible_user.yml
+- import_tasks: ansible_user.yml
 
-- include_tasks: pi_user.yml
+- import_tasks: pi_user.yml
   tags: pi
   #when: ansible_facts["nodename"] == "raspberry"
   when: ansible_facts["lsb"]["id"] == "Raspbian"

@@ -159,6 +159,10 @@
 # - debug: var=myoutput
 #   tags: debug2
 
+# if this task fails with error "local modifications exist in repository (force=no)", check local repo copy  with something like :
+# cd /home/toto/utils
+# git status
+
 - name: install repo utils for toto 
   become: true
   tags: repo_utils_toto
@@ -182,6 +186,13 @@
 
 
 - name: Install requirements for utils toto
+# consider doing this is this task fails with error "Unable to find pip in the virtualenv"
+# 1. first delete the failing venv
+# rm -fr /home/toto/utils/venv
+# 2. if not enough do this (this will allow virtualenv to recreate the virtualenv with pip included)
+# sudo rm -rfv /root/.local/share/virtualenv
+# rm -rfv /home/toto/.local/share/virtualenv
+
   tags: utils_req
   pip: 
     requirements: /home/toto/utils/requirements.txt

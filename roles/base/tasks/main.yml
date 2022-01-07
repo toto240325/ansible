@@ -24,6 +24,7 @@
     block: |
       192.168.0.1 voo
       192.168.0.4 webcamChalet
+      192.168.0.5 smartTV_LG_TN510S
       192.168.0.6 hp5520
       192.168.0.9 alarmSystem
       192.168.0.40 ps4
@@ -134,7 +135,8 @@
     name: "{{ item }}"
     state: latest
   with_items:
-    - chrony
+    - ntp
+#    - chrony
     - ansible
     - ansible-lint
     - sshpass            # this is need to manage windows machines

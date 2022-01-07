@@ -1,0 +1,10 @@
+---
+
+# - name: install packages for cam
+#   tags: cam_packages
+#   shell:
+#     name: "{{ item }}"
+#     state: latest
+#   with_items:
+#     - docker
+    

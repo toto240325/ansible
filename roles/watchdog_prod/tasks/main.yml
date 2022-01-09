@@ -139,7 +139,7 @@
     #special_time: reboot
     minute: "*/5"
     #minute: "30"
-    job: "export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/watchdog/venv/bi/n/activate && python /opt/watchdog/watchdog.py  | tee -a /opt/watchdog/watchdog_full.log >> /opt/watchdog/watchdog.log"
+    job: "export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/watchdog/venv/bin/activate && python /opt/watchdog/watchdog.py  | tee -a /opt/watchdog/watchdog_full.log >> /opt/watchdog/watchdog.log"
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 
 - name: make sure the parameters (monitor_server, main_watchdog) in prod have the right value

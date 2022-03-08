@@ -92,6 +92,7 @@ alias venv_piloop=". /home/toto/venv/piloop/bin/activate"
 alias venv_frigo=". /home/toto/venv/frigo/bin/activate"
 alias venv_dashboard=". /home/toto/venv/dashboard/bin/activate"
 alias venv=". venv/bin/activate"
+alias venv2=". venv/Scripts/activate"
 
 if [ -f ~/.my_aliases ]; then
   . ~/.my_aliases

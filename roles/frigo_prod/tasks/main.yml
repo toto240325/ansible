@@ -100,3 +100,13 @@
     state: absent  # <-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   when: ansible_facts["hostname"] != vars_frigo
 
+- name: cron job to reboot the frigo in addition to the usual pi reboot every night
+  tags: cron_additional_reboot_frigo
+  cron:
+    user: root
+    name: "additional reboot frigo"
+    #special_time: reboot
+    minute: "00"
+    hour: "09,15,21"
+    job: "sudo reboot"
+    

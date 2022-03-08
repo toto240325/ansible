@@ -57,7 +57,7 @@
   pip: 
     requirements: /home/toto/utils/piloop_requirements.txt
     virtualenv: /home/toto/venv/piloop
-    virtualenv_python: python3.7
+    #virtualenv_python: python3.7
 
 - name: set the MAILTO cron variable
   community.general.cronvar:

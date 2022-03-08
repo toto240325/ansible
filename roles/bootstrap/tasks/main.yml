@@ -80,7 +80,7 @@
     group: root
     mode: '0440'
 
-- name: Set a hostname
+- name: Set a hostname {{ newHostname }}
   tags: hostname
   ansible.builtin.hostname:
     name: "{{ newHostname }}"

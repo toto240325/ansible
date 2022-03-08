@@ -6,8 +6,10 @@
 ; 192.168.0.54   # ansible_user=toto
 
 
+
 [bootstrap]
 ## aps -l 192.168.0.80,192.168.0.78 -t=hostname
+## aps -l 192.168.0.16 -t=bootstrap
 #192.168.0.70 newHostname=sd0
 #192.168.0.71 newHostname=sd1
 #192.168.0.62 newHostname=sd2
@@ -22,28 +24,29 @@
 # in this group, ansible_user is not yet always ansible, 
 # but could be pi or toto or vagrant
 # ansible-playbook site.yml --limit bootstrap --tags=bootstrap --skip-tags=always
-#192.168.0.51 ansible_user=vagrant
+192.168.0.51 ansible_user=vagrant newHostname=ubuntu1 mainEthDev=eth0 newEthIP=192.168.0.51 mainWifiDev=wlan0 newWlan0IP=192.168.0.251 newWlan1IP=198.168.0.251
 #192.168.0.23 ansible_user=toto
 #192.168.0.80 ansible_user=pi 
 #192.168.1.70 ansible_user=vagrant
-#192.168.0.68 ansible_user=pi newhostname=sd8 newEthIP=192.168.0.68 newWlan0P=192.168.0.78 newWlan1IP=192.168.0.88 
+#192.168.0.68 ansible_user=pi newHostname=sd8 newEthIP=192.168.0.68 newWlan0P=192.168.0.78 newWlan1IP=192.168.0.88 
 #192.168.0.43 ansible_user=toto newHostname=vayo newEthIP=192.168.0.44 newWlan0IP=192.168.0.45 newWlan1IP=192.168.0.46 
 #192.168.0.54 ansible_user=toto newHostname=ubuntu4 mainEthDev=eth1 newEthIP=192.168.0.54 newWlan0IP="" newWlan1IP="" 
-#192.168.0.65 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd5 mainEthDev=eth0 newEthIP=192.168.0.65 newWlan0IP=192.168.0.75 newWlan1IP=192.168.0.85
+#192.168.0.65 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd5 mainEthDev=eth0 newEthIP=192.168.0.65 newWlan0IP=192.168.0.75 newWlan1IP=192.168.0.85
 #192.168.0.61 ansible_user=pi ansible_ssh_pass=xxxx newHostname=sd1 mainEthDev=eth0 newEthIP=192.168.0.61 newWlan0IP=192.168.0.71 newWlan1IP=192.168.0.81
 #192.168.0.45 newHostname=vayo mainEthDev=enp1s0 newEthIP=192.168.0.45 mainWifiDev=wlp2s0 newWlan0IP=192.168.0.46 newWlan1IP=192.168.0.47
 #192.168.0.52 ansible_user=toto newHostname=ubuntu2 mainEthDev=eth0 newEthIP=192.168.0.52 mainWifiDev=wlan0 newWlan0IP=192.168.0.199 newWlan1IP=198.168.0.199
 #192.168.0.53 ansible_user=toto newHostname=ubuntu3 mainEthDev=eth0 newEthIP=192.168.0.53 mainWifiDev=wlan0 newWlan0IP=192.168.0.199 newWlan1IP=198.168.0.199
-#192.168.0.60 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd0 mainEthDev=eth0 newEthIP=192.168.0.60 mainWifiDev=wlan0 newWlan0IP=192.168.0.70 newWlan1IP=192.168.0.80
-#192.168.0.66 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd6 mainEthDev=eth0 newEthIP=192.168.0.66 mainWifiDev=wlan0 newWlan0IP=192.168.0.76 newWlan1IP=192.168.0.86
-#192.168.0.3 ansible_user=pi ansible_ssh_pass=pw newhostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
-#192.168.0.67 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd7 mainEthDev=eth0 newEthIP=192.168.0.67 mainWifiDev=wlan0 newWlan0IP=192.168.0.77 newWlan1IP=192.168.0.87
-#192.168.0.78                                             newhostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
-#192.168.0.68 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
-#192.168.0.13 ansible_user=pi ansible_ssh_pass=raspberry newhostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
-#192.168.0.62 ansible_user=pi ansible_ssh_pass=Toto! newhostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
+#192.168.0.60 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd0 mainEthDev=eth0 newEthIP=192.168.0.60 mainWifiDev=wlan0 newWlan0IP=192.168.0.70 newWlan1IP=192.168.0.80
+#192.168.0.66 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd6 mainEthDev=eth0 newEthIP=192.168.0.66 mainWifiDev=wlan0 newWlan0IP=192.168.0.76 newWlan1IP=192.168.0.86
+#192.168.0.3 ansible_user=pi ansible_ssh_pass=pw newHostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
+#192.168.0.67 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd7 mainEthDev=eth0 newEthIP=192.168.0.67 mainWifiDev=wlan0 newWlan0IP=192.168.0.77 newWlan1IP=192.168.0.87
+#192.168.0.78                                             newHostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
+#192.168.0.68 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
+#192.168.0.13 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
+192.168.0.61 ansible_user=ansible newHostname=sd1 mainEthDev=eth0 newEthIP=192.168.0.61 mainWifiDev=wlan0 newWlan0IP=192.168.0.71 newWlan1IP=192.168.0.81
 #192.168.0.13 newHostname=cam1
-192.168.0.13 ansible_user=admin ansible_ssh_pass="" newhostname=cam1 mainEthDev=eth0 newEthIP=192.168.0.121 mainWifiDev=wlan0 newWlan0IP=192.168.0.131 newWlan1IP=192.168.0.141
+#192.168.0.13 ansible_user=admin ansible_ssh_pass="" newHostname=cam1 mainEthDev=eth0 newEthIP=192.168.0.121 mainWifiDev=wlan0 newWlan0IP=192.168.0.131 newWlan1IP=192.168.0.141
+192.168.0.120 ansible_user=vagrant ansible_ssh_pass="vagrant" newHostname=kali1 mainEthDev=eth1 newEthIP=192.168.0.181 mainWifiDev=wlan0 newWlan0IP=192.168.0.182 newWlan1IP=192.168.0.183
 
 [base]
 vayo # 192.168.0.45
@@ -64,6 +67,9 @@ sd9 # 192.168.0.79
 #192.168.0.148
 #192.168.0.80
 cam1
+192.168.0.21
+#kali1 # 192.168.0.181
+
 
 [pi]
 sd0 # 192.168.0.70
@@ -113,6 +119,7 @@ ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
 
+
 [sqlite]
 sd3
 sd7
@@ -144,12 +151,13 @@ sd8 # 192.168.0.78
 sd9 # 192.168.0.79
 
 [watchdog_dev]
+ubuntu1
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
 
 [utils_prod]
 vayo # 192.168.0.45
-ubuntu1 # 192.168.0.51
+ubuntu1
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
 #192.168.0.54
@@ -166,6 +174,7 @@ sd8 # 192.168.0.78
 sd9 # 192.168.0.79
 
 [monitor_dev]
+ubuntu1
 ubuntu2 # 192.168.0.52
 
 [monitor_prod]
@@ -185,11 +194,13 @@ sd8
 
 [event_dev]
 #vayo # 192.168.0.45
+ubuntu1
 ubuntu2 # 192.168.0.52
 #192.168.0.54
 
 [frigo_dev]
 # https://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/ds18b20
+ubuntu1
 ubuntu2
 #vayo # 192.168.0.45
 #sd8 # 192.168.0.78
@@ -202,6 +213,7 @@ sd8 # 192.168.0.78
 sd9
 
 [dashboard_dev]
+ubuntu1
 ubuntu2
 
 [dashboard_prod]

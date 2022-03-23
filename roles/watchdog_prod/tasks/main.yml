@@ -75,7 +75,7 @@
         #("sd9",             "192.168.0.79"),
         ("voo_router",      "192.168.0.1"),
         ("webcamChalet",    "192.168.0.4"),
-        ("smartTV_LG_TN510S","192.168.0.5"),
+        #("smartTV_LG_TN510S","192.168.0.5"),
         # ("HP5520 printer",  "192.168.0.6"),
         ("alarmSystem",     "192.168.0.9"),
         ("linksysed_router","192.168.0.50")

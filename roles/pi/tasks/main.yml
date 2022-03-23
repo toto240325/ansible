@@ -102,9 +102,19 @@
   tags: cron_email_after_reboot
   cron:
     user: root
-    name: "email_after_reboot"
+    name: "cron_email_after_reboot"
     special_time: reboot
     #minute: "00"
     #hour: "03"
     job: 'sleep 60; echo "`hostname` rebooted 60 secs ago (`date`), sent from user `whoami`" | mail -s "`hostname` rebooted 60 secs ago" toto240325@gmail.com'
+    
+- name: cron job to send an email if too many under-voltages detected
+  tags: cron_email_under-voltage
+  cron:
+    user: root
+    name: "cron_email_under-voltage"
+    #special_time: reboot
+    minute: "05"
+    #hour: "03"
+    job: . /opt/utils/check_under-voltage.sh
     

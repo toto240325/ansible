@@ -119,7 +119,6 @@ ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
 
-
 [sqlite]
 sd3
 sd7
@@ -251,14 +250,26 @@ sd3
 
 [windows]
 mypc3 # 192.168.0.99 admin_group=administrateurs # ansible_connection=ssh ansible_shell_type=cmd ansible_user=toto
-hp2560 # 192.168.0.96 #admin_group=administrators ansible_user=toto ansible_password=xxxx
-lenovo # 192.168.0.97 admin_group=administrateurs
+#ansible mypc3 -m win_ping
+
+#hp2560 # 192.168.0.96 #admin_group=administrators ansible_user=toto ansible_password=xxxx
+#lenovo # 192.168.0.97 admin_group=administrateurs
 
 [windows:vars]
-ansible_user=admin
-ansible_password=Toto&Loki!29
+ansible_user=ansible
+ansible_password=Toto!
 ansible_connection=winrm
-ansible_winrm_server_cert_validation=ignore
-ansible_winrm_scheme=http
+ansible_transpoart=http
 ansible_port=5985
+admin_group=administrateurs
+#become_user=test5
+
+#ansible_connection=ssh
+#ansible_shell_type=powershell
+#ansible_shell_type=cmd
+#become_method=runas
+
+
+#ansible_winrm_server_cert_validation=ignore
+#ansible_winrm_scheme=http
 #ansible_winrm_kerberos_delegation=true

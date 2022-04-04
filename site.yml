@@ -343,13 +343,8 @@
 #   roles:
 #     - x_servers
 
-- hosts: windows
-  tags: windows
-  gather_facts: false
-  vars_files:
-  - ~/ansible/vault.yml
-  roles:
-    - windows
+# - hosts: windows
+# (check in file site_win.yml)
 
 - hosts: test
   tags: test

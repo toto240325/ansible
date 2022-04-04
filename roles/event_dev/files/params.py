@@ -3,5 +3,5 @@
 # from_email = "toto240325@gmail.com"
 # to_email = "toto240325@gmail.com"
 # monitor_server = "192.168.0.52"
-event_server = "http://192.168.0.73/event"
-# main_watchdog = "192.168.0.73"
+event_server = "http://192.168.0.83/event"
+# main_watchdog = "192.168.0.83"

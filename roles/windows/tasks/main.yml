@@ -1,34 +1,83 @@
 ---
+# https://docs.ansible.com/ansible/latest/user_guide/windows_usage.html#use-cases
+
+- name: Check my user name
+  ansible.windows.win_whoami:
+#   become: yes
+  
+# - name: Save the result of 'whoami' in 'whoami_out'
+#   ansible.windows.win_command: whoami
+#   register: whoami_out
+
+# - name: check value of whoami
+#   debug: var=whoami_out.stdout
+
+
+   
+# - name: Ensure user test1 is present 
+#   tags: win_create_test1
+#   ansible.windows.win_user:
+#     name: test5
+#     password: "{{ vault_toto_pw }}"
+#     # password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
+#     #password: "{{ 'password' | password_hash('sha512') }}"
+#     update_password: always
+#     #update_password: on_create
+#     state: present
+#     groups:
+#       - "Remote Desktop Users"
+#       - "Utilisateurs"
+    
+# - name: Create directory structure
+#   ansible.windows.win_file:
+#     path: d:\users\toto5
+#     state: directory
+
+# - name: Copy tomcat config
+#   win_copy:
+#     src: c:\users\test5\AppData\local\microsoft
+#     dest: d:\users\test5\
+#     remote_src: yes
+
+
+
 # - name: test
 #   debug: msg="test windows"
 
-- name: Save the result of 'whoami' in 'whoami_out'
-  ansible.windows.win_command: whoami
-  register: whoami_out
+# - win_chocolatey:
+#     name: procexp
+#     state: present
 
-- name: check value of whoami
-  debug: var=whoami_out.stdout
+# - name: Ensure 7-Zip is installed via Chocolatey
+#   win_chocolatey:
+#     name: 7zip
+#     state: present
 
-- name: Ensure user ansible is present
-  tags: win_create_ansible
-  ansible.windows.win_user:
-    name: ansible
-    password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
-    #password: "{{ 'password' | password_hash('sha512') }}"
-    update_password: on_create
-    state: present
-    groups:
-      - "{{ admin_group }}"
+# - name: Ensure user ansible is present in group {{ admin_group }}
+#   tags: win_create_ansible
+#   ansible.windows.win_user:
+#     name: ansible
+#     password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
+#     #password: "{{ 'password' | password_hash('sha512') }}"
+#     update_password: on_create
+#     state: present
+#     groups:
+#       - "{{ admin_group }}"
     
 
-- name: Run an executable and send data to the stdin for the executable
-  ansible.windows.win_command: powershell.exe -
-  args:
-    stdin: Write-Host test
-  register: ps_output
+# - name: Run an executable and send data to the stdin for the executable
+#   ansible.windows.win_command: powershell.exe -
+#   args:
+#     stdin: Write-Host test
+#   register: ps_output
 
-- debug: var=ps_output
+# - debug: var=ps_output["stdout"]
 
+
+
+
+#################################################################
+# all this doesn't seem to work
 
 # - name: Run command that only runs if folder exists and runs from a specific folder
 #   ansible.windows.win_command: dir
@@ -39,14 +88,24 @@
 #   debug: var=dir_output
 
 
-
 # - name: Run command that only runs if folder exists and runs from a specific folder
 #   ansible.windows.win_command: wbadmin -backupTarget:d:\projects\tests-backup\
 #   args:
 #     chdir: d:\projects\tests\
 #     creates: d:\projects\tests-backup\
 
-- name: Run an executable and send data to the stdin for the executable
-  ansible.windows.win_command: powershell.exe -
-  args:
-    stdin: Write-Host test
+###############################################
+#
+
+  # - name: reboot the machine
+  #   win_reboot:
+
+  # - name: wait for connection
+  #   wait_for_connection:
+
+  # - name: windows update
+  #   win_updates:
+  #     category_names: CriticalUpdates
+  #     reboot: yes
+  #     blacklist:
+  #       - KB4056892

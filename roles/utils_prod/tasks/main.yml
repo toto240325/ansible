@@ -11,7 +11,7 @@
   tags: deploy_utils_prod
   shell: "curl -L https://api.github.com/repos/toto240325/utils/tarball | tar xzvf - --one-top-level=/opt/utils --strip-components 1"
 
-- name: Install requirements for utils
+- name: Install requirements for utils prod
   tags: utils_req_prod
   pip: 
     requirements: /opt/utils/requirements.txt

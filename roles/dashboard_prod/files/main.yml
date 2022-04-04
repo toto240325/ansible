@@ -1,0 +1,297 @@
+---
+# - name: debug "nodename2"
+#   tags: debug21
+#   debug: var=ansible_facts["lsb"]["id"]
+
+# - name: test hash {{ 'mypw' | password_hash('sha512','myOwnSalt') }}
+#   tags: test_hash
+#   debug: var="{{ 'mypw' | password_hash('sha512','myOwnSalt') }}"
+   
+- name: install updates (Ubuntu)
+  apt:
+    update_cache: yes
+    upgrade: dist
+  #when: ansible_distribution == "Ubuntu"
+
+- name: Set timezone to Europe/Brussels
+  community.general.timezone:
+    name: Europe/Brussels
+
+- name: Add mappings to /etc/hosts
+  tags: etc_hosts
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      192.168.0.1 voo
+      192.168.0.4 webcamChalet
+      192.168.0.5 smartTV_LG_TN510S
+      192.168.0.6 hp5520
+      192.168.0.9 alarmSystem
+      192.168.0.40 ps4
+      192.168.0.45 vayoEth0 vayo
+      192.168.0.46 vayoWlan0
+      192.168.0.49 webcamJardin
+      192.168.0.50 linksysed
+      192.168.0.51 ubuntu1
+      192.168.0.52 ubuntu2
+      192.168.0.53 ubuntu3
+      192.168.0.54 ubuntu4
+      192.168.0.60 sd0Eth0
+      192.168.0.70 sd0Wlan0 sd0
+      192.168.0.80 sd0Wlan1
+      192.168.0.61 sd1Eth0
+      192.168.0.71 sd1Wlan0 sd1
+      192.168.0.81 sd1Wlan1
+      192.168.0.62 sd2Eth0
+      192.168.0.72 sd2Wlan0 sd2
+      192.168.0.82 sd2Wlan1
+      192.168.0.63 sd3Eth0
+      192.168.0.83 sd3Wlan0
+      192.168.0.83 sd3Wlan1 sd3
+      192.168.0.64 sd4Eth0
+      192.168.0.74 sd4Wlan0 sd4
+      192.168.0.84 sd4Wlan1
+      192.168.0.65 sd5Eth0
+      192.168.0.75 sd5Wlan0 sd5
+      192.168.0.85 sd5Wlan1
+      192.168.0.66 sd6Eth0
+      192.168.0.76 sd6Wlan0 sd6
+      192.168.0.86 sd6Wlan1
+      192.168.0.67 sd7Eth0
+      192.168.0.77 sd7Wlan0 sd7
+      192.168.0.87 sd7Wlan1
+      192.168.0.68 sd8Eth0
+      192.168.0.78 sd8Wlan0 sd8
+      192.168.0.88 sd8Wlan1
+      192.168.0.69 sd9Eth0
+      192.168.0.79 sd9Wlan0 sd9
+      192.168.0.89 sd9Wlan1
+      192.168.0.96 hp2560
+      192.168.0.97 lenovo
+      192.168.0.99 mypc3
+      192.168.0.148 nb2502
+      192.168.0.181 kali1
+    marker: "# {mark} ANSIBLE MANAGED BLOCK my hosts"
+
+# - name: make sure known hosts are in /etc/hosts
+#   tags: debug37
+#   lineinfile:
+#     dest: /etc/hosts
+#     regexp: "{{ item.regexp }}"
+#     line: "{{ item.line }}"
+#     state: "{{ item.state }}"
+#   loop:
+#     - { regexp: '^192.168.0.1 ', line: '192.168.0.1 voo', state: 'present' }
+#     - { regexp: '^192.168.0.4 ', line: '192.168.0.4 webcamChalet', state: 'present' }
+#     - { regexp: '^192.168.0.6 ', line: '192.168.0.6 hp5520', state: 'present' }
+#     - { regexp: '^192.168.0.9 ', line: '192.168.0.9 alarmSystem', state: 'present' }
+#     - { regexp: '^192.168.0.40', line: '192.168.0.40 ps4', state: 'present' }
+#     - { regexp: '^192.168.0.49', line: '192.168.0.49 webcamJardin', state: 'present' }
+#     - { regexp: '^192.168.0.50', line: '192.168.0.50 linksysed', state: 'present' }
+#     - { regexp: '^192.168.0.51', line: '192.168.0.51 ubuntu1', state: 'present' }
+#     - { regexp: '^192.168.0.52', line: '192.168.0.52 ubuntu2', state: 'present' }
+#     - { regexp: '^192.168.0.53', line: '192.168.0.53 ubuntu3', state: 'present' }
+#     - { regexp: '^192.168.0.54', line: '192.168.0.54 ubuntu4', state: 'present' }
+    
+#     - { regexp: '^192.168.0.61', line: '192.168.0.61 sd1Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.71', line: '192.168.0.71 sd1Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.81', line: '192.168.0.81 sd1Wlan1', state: 'present' }
+    
+#     - { regexp: '^192.168.0.62', line: '192.168.0.62 sd2Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.72', line: '192.168.0.72 sd2Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.82', line: '192.168.0.82 sd2Wlan1', state: 'present' }
+    
+#     - { regexp: '^192.168.0.63', line: '192.168.0.63 sd3Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.83', line: '192.168.0.83 sd3Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.83', line: '192.168.0.83 sd3Wlan1', state: 'present' }
+    
+#     - { regexp: '^192.168.0.64', line: '192.168.0.64 sd4Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.74', line: '192.168.0.74 sd4Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.84', line: '192.168.0.84 sd4Wlan1', state: 'present' }
+    
+#     - { regexp: '^192.168.0.65', line: '192.168.0.65 sd5Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.75', line: '192.168.0.75 sd5Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.85', line: '192.168.0.85 sd5Wlan1', state: 'present' }
+    
+#     - { regexp: '^192.168.0.66', line: '192.168.0.66 sd6Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.76', line: '192.168.0.76 sd6Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.86', line: '192.168.0.86 sd6Wlan1', state: 'present' }
+    
+#     - { regexp: '^192.168.0.67', line: '192.168.0.67 sd7Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.77', line: '192.168.0.77 sd7Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.87', line: '192.168.0.87 sd7Wlan1', state: 'present' }
+    
+#     - { regexp: '^192.168.0.68', line: '192.168.0.68 sd8Eth0', state: 'present' }
+#     - { regexp: '^192.168.0.78', line: '192.168.0.78 sd8Wlan0', state: 'present' }
+#     - { regexp: '^192.168.0.88', line: '192.168.0.88 sd8Wlan1', state: 'present' }
+    
+#     - { regexp: '^192.168.0.97', line: '192.168.0.97 lenovo', state: 'present' }
+#     - { regexp: '^192.168.0.99', line: '192.168.0.99 mypc3', state: 'present' }
+#     - { regexp: '^192.168.0.148', line: '192.168.0.148 nb2502', state: 'present' }
+#   when: yes
+
+- name: install basic packages
+  tags: basic_packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - ntp
+#    - chrony
+    - ansible
+    - ansible-lint
+    - sshpass            # this is need to manage windows machines
+    - curl
+    - vim
+    - zip
+    - unzip
+    - mailutils
+    - tmux
+    - p7zip-full
+    - git
+    - nmap
+    - htop
+    - python3-pip
+    - virtualenv
+    - sqlite3
+    - php-sqlite3
+  #when: ansible_distribution in ["Ubuntu","Debian"] and ansible_distribution_version == "20.04"
+  #when: no
+
+- name: check if /usr/bin/gh already exists
+  tags: gh
+  stat:
+    path: /usr/bin/gh
+  register: stat_result
+
+- name: install the gh github CLI utility
+  tags: gh
+  shell: |
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+    sudo apt update
+    sudo apt install gh
+  register: output
+  when: not stat_result.stat.exists
+
+
+
+- name: set the MAILTO cron variable
+  tags: debug67
+  community.general.cronvar:
+    user: root
+    name: MAILTO
+    value: toto240325@gmail.com
+
+- name: dummy weekly cron
+  tags: debugcron2
+  cron:
+    user: root
+    name: "dummy cron to check cron email is working"
+    job: "dummy job to check every Sunday at 11:30 that cron email still works when an error occurs during a cron job"
+    # sunday = 0
+    weekday: "0"
+    #day: "1"
+    hour: "11"
+    # minute: "*/5"
+    minute: "30"
+
+
+- name: install new packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - network-manager
+  when: yes
+  #when: ansible_distribution in ["Ubuntu","Debian"] # and ansible_distribution_version == "20.04"
+
+- name: sqlite3 by defaut
+  tags: sqlite3_default
+  #prerequisite:
+  #ansible-galaxy collection install community.general
+  community.general.alternatives:
+    name: sqlite
+    path: /usr/bin/sqlite3
+    link: /usr/local/bin/sqlite
+
+- name: python3 by defaut
+  #prerequisite:
+  #ansible-galaxy collection install community.general
+  community.general.alternatives:
+    name: python
+    path: /usr/bin/python3
+    link: /usr/local/bin/python
+
+- name: pip3 by defaut
+  #prerequisite:
+  #ansible-galaxy collection install community.general
+  community.general.alternatives:
+    name: pip
+    path: /usr/bin/pip3
+    link: /usr/local/bin/pip
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+- name: upgrade pip to latest version
+  tags: latest_pip
+  pip:
+    name: pip
+    executable: pip3
+    state: latest
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+- name: "install pip virtualenv"
+  pip:
+    name: virtualenv
+    state: latest
+    #virtualenv: /my_app/venv
+  when: ansible_facts["lsb"]["id"] != "Raspbian"
+
+- import_tasks: toto_user.yml
+  tags: toto
+
+- import_tasks: root_user.yml
+  tags: root
+
+- import_tasks: ansible_user.yml
+
+- import_tasks: pi_user.yml
+  tags: pi
+  #when: ansible_facts["nodename"] == "raspberry"
+  when: ansible_facts["lsb"]["id"] == "Raspbian"
+
+# - name: enable IPv6 with sysctl
+#   # check in /etc/sysctl.conf 
+#   tags: enable_ipv6
+#   sysctl: name={{ item }} value=1 state=absent reload=yes # sysctl_set=yes
+#   with_items:
+#     - net.ipv6.conf.all.disable_ipv6
+#     - net.ipv6.conf.default.disable_ipv6
+#     - net.ipv6.conf.lo.disable_ipv6
+
+# - name: Disable IPv6 with sysctl
+#   # check in /etc/sysctl.conf 
+#   tags: disable_ipv6
+#   sysctl: name={{ item }} value=1 state=present reload=yes # sysctl_set=yes
+#   with_items:
+#     - net.ipv6.conf.all.disable_ipv6
+#     - net.ipv6.conf.default.disable_ipv6
+#     - net.ipv6.conf.lo.disable_ipv6
+
+# - name: copy /etc/rc.local
+#   tags: disable_ipv6
+#   copy: src={{ item.src }} dest={{ item.dest }} mode={{ item.mode }} owner=root group=root
+#   with_items:
+#   - { src: 'rc.local',    dest: '/etc/',  mode: '0755' }
+
+- name: cron job to create an even when rebooting
+  tags: cron_create_event_on_reboot
+  cron:
+    user: root
+    name: "cron to create event on reboot"
+    special_time: reboot
+    #minute: "*/5"
+    #minute: "30"
+    job: 'sleep 60 && export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/utils/venv/bin/activate && python /opt/utils/event.py create "reboot" "this host is rebooting"  >> /opt/utils/reboot.log'
+  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+

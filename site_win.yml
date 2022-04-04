@@ -1,0 +1,20 @@
+---
+# ansible windows -m win_ping --ask-pass
+# ansible-playbook site_win.yml  #--tags=db_servers --skip-tags=always
+# ansible-vault edit ~/ansible/vault.yml --vault-password-file  ~/.ssh/vault-key
+#
+
+- hosts: windows
+  tags: windows
+  gather_facts: false
+  vars_files:
+  - ~/ansible/vault.yml
+  # tasks:
+  #   - win_ping:
+  #   - win_chocolatey:
+  #       name: procexp
+  #       state: present
+
+  roles:
+    - windows
+

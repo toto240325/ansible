@@ -94,7 +94,7 @@
     user: root
     name: "nightly reboot"
     #special_time: reboot
-    minute: "00"
+    minute: "02"
     hour: "03"
     job: "sudo reboot"
     

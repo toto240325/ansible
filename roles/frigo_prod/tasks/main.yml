@@ -106,7 +106,7 @@
     user: root
     name: "additional reboot frigo"
     #special_time: reboot
-    minute: "00"
+    minute: "02"
     hour: "09,15,21"
     job: "sudo reboot"
     

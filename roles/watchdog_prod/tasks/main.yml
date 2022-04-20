@@ -62,22 +62,24 @@
 - name: update the list of server that mustBeUp
   tags: update_mustBeUp
   # do this after having updated this list : 
-  # aps -t=update_mustBeUp
+  # aps -t=update_mustBeUp -l sd3,sd8,sd9,ubuntu2
   blockinfile:
     path: /opt/watchdog/params.py
     block: |
       mustBeUp = [
         #("sd4",             "192.168.0.94"),
         #("vayo",            "192.168.0.45"),
-        ("sd3",             "192.168.0.83"),
+        ("sd3-73",             "192.168.0.73"),
+        ("sd3-83",             "192.168.0.83"),
         #("sd5",             "192.168.0.75"),
         ("sd8",             "192.168.0.78"),
-        #("sd9",             "192.168.0.79"),
+        ("sd9-79",             "192.168.0.79"),
+        ("sd9-89",             "192.168.0.89"),
         ("voo_router",      "192.168.0.1"),
         ("webcamChalet",    "192.168.0.4"),
         #("smartTV_LG_TN510S","192.168.0.5"),
         # ("HP5520 printer",  "192.168.0.6"),
-        ("alarmSystem",     "192.168.0.9"),
+        ("alarmSystem",     "192.168.0.2"),
         ("linksysed_router","192.168.0.50")
       ]
     marker: "# {mark} ANSIBLE MANAGED BLOCK watchdog_mustBeUp"

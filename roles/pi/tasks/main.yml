@@ -114,7 +114,7 @@
     user: root
     name: "cron_email_under-voltage"
     #special_time: reboot
-    minute: "05"
+    minute: "55"
     #hour: "03"
-    job: . /opt/utils/check_under-voltage.sh
+    job: . /opt/utils/check_under-voltage.sh >> /home/toto/check_under-voltage.log
     

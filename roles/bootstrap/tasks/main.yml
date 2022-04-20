@@ -195,7 +195,7 @@
 
 
 - name: check if wlan1 exists
-  tags: debug_wlan1
+  tags: wlan1
   shell: "ip a | grep wlan1"
   register: wlan1_output
   failed_when: wlan1_output.rc == 2  # grep returns 0 if kw found, 1 if not found, 2 if other error
@@ -204,7 +204,7 @@
 #   tags: debug_wlan1
   
 - name: "Add a wifi connections to wlan1 with static IP configuration on VOO-953522"
-  tags: debug_wlan1
+  tags: wlan1
   community.general.nmcli:
     conn_name: "{{ item.conn_name }}"
     ifname: "{{ item.ifname }}"
@@ -226,7 +226,7 @@
 
 
 - name: "Add a wifi connections to wlan1 with static IP configuration on linksysed"
-  tags: debug_wlan1
+  tags: wlan1
   community.general.nmcli:
     conn_name: "{{ item.conn_name }}"
     ifname: "{{ item.ifname }}"

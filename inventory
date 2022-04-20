@@ -40,7 +40,7 @@
 #192.168.0.66 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd6 mainEthDev=eth0 newEthIP=192.168.0.66 mainWifiDev=wlan0 newWlan0IP=192.168.0.76 newWlan1IP=192.168.0.86
 #192.168.0.3 ansible_user=pi ansible_ssh_pass=pw newHostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
 #192.168.0.67 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd7 mainEthDev=eth0 newEthIP=192.168.0.67 mainWifiDev=wlan0 newWlan0IP=192.168.0.77 newWlan1IP=192.168.0.87
-#192.168.0.78                                             newHostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
+192.168.0.78                                             newHostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
 #192.168.0.68 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd8 mainEthDev=eth0 newEthIP=192.168.0.68 mainWifiDev=wlan0 newWlan0IP=192.168.0.78 newWlan1IP=192.168.0.88
 #192.168.0.13 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
 192.168.0.61 ansible_user=ansible newHostname=sd1 mainEthDev=eth0 newEthIP=192.168.0.61 mainWifiDev=wlan0 newWlan0IP=192.168.0.71 newWlan1IP=192.168.0.81

@@ -177,7 +177,7 @@
 
 
 - name: change ownership repos
-  tags: debug1
+  tags: change_owner_repos_toto
   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
   with_items:
   - { path: "/home/toto/utils" }
@@ -185,28 +185,28 @@
 #  register: output_chown
 
 
-- name: Install requirements for utils toto
-# consider doing this is this task fails with error "Unable to find pip in the virtualenv"
-# 1. first delete the failing venv
-# rm -fr /home/toto/utils/venv
-# 2. if not enough do this (this will allow virtualenv to recreate the virtualenv with pip included)
-# sudo rm -rfv /root/.local/share/virtualenv
-# rm -rfv /home/toto/.local/share/virtualenv
-# 
-# something else that worked when I had the same kind of problem on vayo :
-# remove all traces of virtualenv (whether installed by sudo apt install python3-virtualenv or by pip install virtualenv, 
-# and re-runn the ansible script : ap -l vayo)
-# https://stackoverflow.com/questions/63491221/modulenotfounderror-no-module-named-virtualenv-seed-embed-via-app-data-when-i
-# sudo apt remove --purge python3-virtualenv
+# - name: Install requirements for utils toto
+# # consider doing this is this task fails with error "Unable to find pip in the virtualenv"
+# # 1. first delete the failing venv
+# # rm -fr /home/toto/utils/venv
+# # 2. if not enough do this (this will allow virtualenv to recreate the virtualenv with pip included)
+# # sudo rm -rfv /root/.local/share/virtualenv
+# # rm -rfv /home/toto/.local/share/virtualenv
+# # 
+# # something else that worked when I had the same kind of problem on vayo :
+# # remove all traces of virtualenv (whether installed by sudo apt install python3-virtualenv or by pip install virtualenv, 
+# # and re-runn the ansible script : ap -l vayo)
+# # https://stackoverflow.com/questions/63491221/modulenotfounderror-no-module-named-virtualenv-seed-embed-via-app-data-when-i
+# # sudo apt remove --purge python3-virtualenv
 
 
-  tags: utils_req
-  pip: 
-    requirements: /home/toto/utils/requirements.txt
-    virtualenv: /home/toto/utils/venv
-    #virtualenv_python: python3.7
-    virtualenv_python: python3
-  #when: ansible_facts["lsb"]["id"] == "Raspbian"
+#   tags: utils_req
+#   pip: 
+#     requirements: /home/toto/utils/requirements.txt
+#     virtualenv: /home/toto/utils/venv
+#     #virtualenv_python: python3.7
+#     virtualenv_python: python3
+#   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 
 - name: change ownership utils directory to toto:toto
   tags: utils_ownership

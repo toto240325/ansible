@@ -263,34 +263,55 @@
 
 - hosts: watchdog_prod
   name: install watchdog_prod
-  tags: watchdog_prod     #, conda_watchdog
+  tags: watchdog_prod
   vars_files:
   - ~/ansible/vault.yml
   gather_facts: true
   become: true
   roles: 
-    # - evandam.conda
     - watchdog_prod
-  # tasks:
-  # - name: Create a conda environment - watchdog
-  #   tags: conda_watchdog
-  #   conda:
-  #     name: python
-  #     version: "3.7"
-  #     environment: /home/toto/.conda/envs/watchdog
-  #     state: present
-  #     executable: /opt/conda/bin/conda
-  #   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-  # - name: Install some packages in conda environment - watchdog
-  #   tags: conda_watchdog
-  #   conda:
-  #     name:
-  #       - numpy
-  #       - requests
-  #     environment: /home/toto/.conda/envs/watchdog
-  #     executable: /opt/conda/bin/conda
-  #   when: ansible_facts["lsb"]["id"] != "Raspbian"
+- hosts: pool_dev
+  name: install pool_dev
+  tags: pool_dev
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: true
+  become: true
+  roles: 
+    - pool_dev
+
+- hosts: pool_prod
+  name: install pool_prod
+  tags: pool_prod  
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: true
+  become: true
+  roles: 
+    - pool_prod
+
+
+- hosts: power_dev
+  name: install power_dev
+  tags: power_dev
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: true
+  become: true
+  roles: 
+    - power_dev
+
+- hosts: power_prod
+  name: install power_prod
+  tags: power_prod  
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: true
+  become: true
+  roles: 
+    - power_prod
+
 
 - hosts: utils_prod
   name: install utils_prod
@@ -328,13 +349,11 @@
         body: "System {{ ansible_hostname }} has been successfully provisioned.  Sent from {{ shelloutput.stdout }}"
       #delegate_to: localhost
 
-
 - hosts: vnc_servers
   tags: vnc_servers
   become: true
   roles: 
     - vnc_servers
-
 
 # - hosts: x_servers
 #   gather_facts: false

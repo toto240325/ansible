@@ -88,18 +88,6 @@
     state: present
   when: ansible_facts["hostname"] == vars_frigo
 
-- name: "cron job to launch frigo under root but only for the real frigo, i.e. for {{ vars_frigo }} (disable)"
-  tags: frigo_cron
-  cron:
-    user: root
-    name: "frigo"
-    special_time: reboot
-    #minute: "*/5"
-    #minute: "30"
-    job: "sleep 60 && export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/frigo/venv/bin/activate && python /opt/frigo/frigo.py  >> /opt/frigo/frigo.log"
-    state: absent  # <-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  when: ansible_facts["hostname"] != vars_frigo
-
 - name: cron job to reboot the frigo in addition to the usual pi reboot every night
   tags: cron_additional_reboot_frigo
   cron:

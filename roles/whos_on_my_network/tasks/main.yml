@@ -29,12 +29,12 @@
 #   pip:
 #     name: Flask
 #     state: latest
-#     virtualenv: /home/toto/venv/whos_on_my_network
+#     virtualenv: /home/toto/whos_on_my_network/venv/
 
 - name: "after-install of repo of whos_on_my_network (pip requirements)"
   pip:
     requirements: /home/toto/whos_on_my_network/requirements.txt
-    virtualenv: /home/toto/venv/whos_on_my_network
+    virtualenv: /home/toto/whos_on_my_network/venv
   when: repo_whos.changed
 
 - name: "ad hoc shell : cd webapp && npm i && npm run build"
@@ -60,7 +60,7 @@
     name: "cron whos_on_my_network watcher"
     special_time: reboot
     #minute: "*/10"
-    job: "sleep 90 && . /home/toto/venv/whos_on_my_network/bin/activate && . /home/toto/whos_on_my_network/run_whos_watcher >> /root/whos_on_my_network_watcher.log"
+    job: "sleep 90 && . /home/toto/whos_on_my_network/bin/activate/venv && . /home/toto/whos_on_my_network/run_whos_watcher >> /root/whos_on_my_network_watcher.log"
 
 - name: cron job to launch whos_on_my_network webserver under root
   cron:
@@ -68,6 +68,6 @@
     name: "cron whos_on_my_network_webserver"
     special_time: reboot
     #minute: "*/10"
-    job: "sleep 90 && . /home/toto/venv/whos_on_my_network/bin/activate && . /home/toto/whos_on_my_network/run_whos_webserver >> /root/whos_on_my_network_webserver.log"
+    job: "sleep 90 && . /home/toto/whos_on_my_network/venv/bin/activate && . /home/toto/whos_on_my_network/run_whos_webserver >> /root/whos_on_my_network_webserver.log"
 
 

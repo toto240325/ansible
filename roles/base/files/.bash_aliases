@@ -12,6 +12,7 @@ alias leaf='leafpad_fct'
 alias uhp='unset http_proxy && unset https_proxy'
 
 
+
 alias ls='ls --color=auto'
 #alias dir='dir --color=auto'
 #alias vdir='vdir --color=auto'
@@ -81,16 +82,20 @@ gitcapp()
   fi
 }
 
+disp() 
+{
+  export DISPLAY=localhost:$1.0
+  echo "DISPLAY:" $DISPLAY
+}
+
 export XAUTHORITY=~/.Xauthority
+
 
 alias ap="ansible-playbook site.yml"
 alias aps="ansible-playbook site.yml --skip-tags=always"
 alias cf="cp -vu ~/{.tmux.conf,.bash_aliases,.vimrc} ~/ansible/roles/base/files/"
 
-alias venv_watchdog=". /home/toto/venv/watchdog/bin/activate"
-alias venv_piloop=". /home/toto/venv/piloop/bin/activate"
-alias venv_frigo=". /home/toto/venv/frigo/bin/activate"
-alias venv_dashboard=". /home/toto/venv/dashboard/bin/activate"
+alias virtualenv="$(which virtualenv) -p $(which python3)"
 alias venv=". venv/bin/activate"
 alias venv2=". venv/Scripts/activate"
 

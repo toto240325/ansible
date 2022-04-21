@@ -10,6 +10,15 @@
     - virtualenv
     # to solve this error when sending postfix mail from raspbian : "SASL authentication failure: No worthy mechs found"
     - libsasl2-modules
+    - libhdf5-dev
+    - libhdf5-serial-dev
+    - libatlas-base-dev
+    - libjasper-dev 
+    - libswscale-dev
+    - libgtk-3-0
+    - libopenjp2-7-dev
+    - libavcodec-dev
+    - liblapack-dev
 
 - name: modify default pi password ("raspberry")
   user:
@@ -20,44 +29,45 @@
     state: present
     # apparently not supported : no_log: true
 
-- name: install repos for toto on pi
-  tags: repos_for_toto_on_pi
-  become: true
-  ansible.builtin.git: repo={{ item.repo }} version=develop dest={{ item.dest }} clone=yes update=no
-  with_items:
-  - { repo: 'https://github.com/toto240325/frigo.git',            dest: '/home/toto/frigo' }
-  - { repo: 'https://github.com/toto240325/utils.git',            dest: '/home/toto/utils' }
-  register: output_git
+# - name: install repos for toto on pi
+#   tags: repos_for_toto_on_pi
+#   become: true
+#   ansible.builtin.git: repo={{ item.repo }} version=develop dest={{ item.dest }} clone=yes update=no
+#   with_items:
+#   - { repo: 'https://github.com/toto240325/frigo.git',            dest: '/home/toto/frigo' }
+#   - { repo: 'https://github.com/toto240325/utils.git',            dest: '/home/toto/utils' }
+#   register: output_git
 
-- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
-  tags: mygit
-  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
-  with_items:
-  - "/home/toto/frigo"
-  - "/home/toto/utils"
+# - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+#   tags: mygit
+#   replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+#   with_items:
+#   - "/home/toto/frigo"
+#   - "/home/toto/utils"
 
-- name: change ownership
-  tags: debug1
-  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
-  with_items:
-  - { path: "/home/toto/frigo" }
-  - { path: "/home/toto/utils" }
-#  register: output_chown
+# - name: change ownership
+#   tags: debug1
+#   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+#   with_items:
+#   - { path: "/home/toto/frigo" }
+#   - { path: "/home/toto/utils" }
+# #  register: output_chown
 
-# - name: "install pip gpiozero"
-#   tags: gpiozero
-#   pip:
-#     name: gpiozero
-#     state: latest
-#     virtualenv: /home/toto/venv/piloop
-#   #when: ansible_facts["lsb"]["id"] != "Raspbian"
+# # - name: "install pip gpiozero"
+# #   tags: gpiozero
+# #   pip:
+# #     name: gpiozero
+# #     state: latest
+# #     virtualenv: /home/toto/venv/piloop
+# #   #when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: Install requirements
   tags: piloop_req
   pip: 
-    requirements: /home/toto/utils/piloop_requirements.txt
-    virtualenv: /home/toto/venv/piloop
+    requirements: /opt/utils/piloop_requirements.txt
+    virtualenv: /opt/utils/venv/
     #virtualenv_python: python3.7
+
 
 - name: set the MAILTO cron variable
   community.general.cronvar:
@@ -77,16 +87,20 @@
 #     state: latest
 #     virtualenv: /home/toto/venv/piloop
 
-- name: cron job to launch piloop under root
-  tags: cron_piloop
+
+
+- name: "cron job to launch piloop under root"
+  tags: piloop_cron
   cron:
     user: root
     name: "piloop at reboot"
     special_time: reboot
     #minute: "*/5"
     #minute: "30"
-    job: "sleep 60 && . /home/toto/venv/piloop/bin/activate && python /home/toto/utils/piloop.py  >> /home/toto/piloop.log"
-  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+    job: "sleep 60 && export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/utils/venv/bin/activate && python /opt/utils/piloop.py  >> /opt/utils/utils.log"
+    state: present
+  #when: ansible_facts["lsb"]["id"] != "Raspbian"
+  
 
 - name: cron job to reboot the pi every night
   tags: cron_nightly_reboot

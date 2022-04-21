@@ -1,0 +1,73 @@
+---
+- name: install new packages
+  tags: power_packages_prod
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - livemedia-utils  # openRTSP
+    - ffmpeg
+    - tesseract-ocr
+
+
+- name: Create/update /opt/power
+  tags: deploy_power_prod
+  file:
+    path: /opt/power
+    state: directory
+    owner: root
+    mode: '0755'
+
+- name: install latest version of power in /opt/power
+  tags: deploy_power_prod
+  shell: "curl -L https://api.github.com/repos/toto240325/power/tarball | tar xzvf - --one-top-level=/opt/power --strip-components 1"
+
+- name: install latest version of utils in /opt/utils (there is a dependency of power on utils)
+  tags: deploy_utils_prod_for_power
+  shell: "curl -L https://api.github.com/repos/toto240325/utils/tarball | tar xzvf - --one-top-level=/opt/utils --strip-components 1"
+
+- name: Install requirements for power
+  tags: power_req_prod
+  pip: 
+    requirements: /opt/power/requirements.txt
+    virtualenv: /opt/power/venv
+    #virtualenv_python: python3.7
+    virtualenv_python: python3
+
+- name: check if power params.py already exists (power prod)
+  tags: power_params_prod
+  stat:
+    path: /opt/power/params.py
+  register: stat_result
+
+- name: "Copy params.py for power prod"
+  tags: power_params_prod
+  template:
+    src: "files/params.py.j2"
+    dest: "/opt/power/params.py"
+  when: not stat_result.stat.exists
+
+- name: cron job to launch power under root
+  tags: power_cron
+  cron:
+    user: root
+    name: "power"
+    #special_time: reboot
+    minute: "*/5"
+    #minute: "30"
+    job: "export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/power/venv/bin/activate && python /opt/power/power.py  | tee -a /opt/power/power_full.log >> /opt/power/power.log"
+  #when: ansible_facts["lsb"]["id"] == "Raspbian"
+
+# - name: make sure the parameters (monitor_server, main_power) in prod have the right value
+#   tags: update_power_params_prod
+#   lineinfile:
+#     dest: "{{ item.dest }}"
+#     regexp: "{{ item.regexp }}"
+#     line: "{{ item.line }}"
+#     state: "{{ item.state }}"
+#     create: yes
+#   loop:
+#     # - { dest: '/opt/power/params.py', regexp: '^main_power', line: 'main_power = "{{ vars_main_power }}"', state: 'present' }
+#   # register: myoutput
+
+

@@ -1,0 +1,62 @@
+---
+
+- name: install new packages
+  tags: pool_packages_dev
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - livemedia-utils  # openRTSP
+    - ffmpeg
+    - tesseract-ocr
+
+- name: install repo pool for toto (dev)
+  tags: repopool_dev
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no force=no
+  with_items:
+  - { repo: 'https://github.com/toto240325/pool.git', dest: '/home/toto/pool' }
+  register: repo_pool_dev
+
+- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+  tags: repopool_dev
+  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+  with_items:
+  - "/home/toto/pool"
+
+- name: Install requirements for pool
+  tags: pool_req_dev
+  pip: 
+    requirements: /home/toto/pool/requirements.txt
+    virtualenv: /home/toto/pool/venv
+    #virtualenv_python: python3.7
+    virtualenv_python: python3
+
+- name: check if pool params.py already exists
+  tags: pool_params_dev
+  stat:
+    path: /home/toto/pool/params.py
+  register: stat_result
+
+- name: "Copy params.py"
+  tags: pool_params_dev
+  template:
+    src: "files/params.py.j2"
+    dest: "/home/toto/pool/params.py"
+  when: not stat_result.stat.exists
+
+- name: set ownership of log files (some log files are create by root in /home/toto)
+  tags: fix_ownership_logs
+  become: True
+  file: path="/home/toto/pool" owner=toto group=toto state=touch
+  with_items:
+  - pool.log
+  - pool.txt
+
+- name: change ownership
+  tags: repopool
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
+  with_items:
+  - { path: "/home/toto/pool" }
+  #register: output_chown
+  #when: repo_pool_dev.changed
+

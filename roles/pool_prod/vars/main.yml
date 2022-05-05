@@ -1,2 +1,3 @@
 # vars for pool_prod
 #vars_main_watchdog: "sd3"
+vars_event_server: eventServer

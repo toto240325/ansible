@@ -11,6 +11,14 @@
   tags: deploy_utils_prod
   shell: "curl -L https://api.github.com/repos/toto240325/utils/tarball | tar xzvf - --one-top-level=/opt/utils --strip-components 1"
 
+- name: install latest version of pip
+  tags: pip_latest_for_utils
+  pip:
+    virtualenv: /opt/utils/venv
+    virtualenv_python: python3
+    name: pip
+    state: latest
+
 - name: Install requirements for utils prod
   tags: utils_req_prod
   pip: 
@@ -33,17 +41,15 @@
   when: not stat_result.stat.exists
 
 
-# - name: make sure the parameters (monitor_server, main_utils) in prod have the right value
-#   tags: update_utils_params_prod
-#   lineinfile:
-#     dest: "{{ item.dest }}"
-#     regexp: "{{ item.regexp }}"
-#     line: "{{ item.line }}"
-#     state: "{{ item.state }}"
-#     create: yes
-#   loop:
-#     # - { dest: '/opt/utils/params.py', regexp: '^monitor_server', line: 'monitor_server = "{{ vars_monitor_server }}"', state: 'present' }
-#     # - { dest: '/opt/utils/params.py', regexp: '^main_utils', line: 'main_utils = "{{ vars_main_utils }}"', state: 'present' }
-#   # register: myoutput
-
+- name: make sure the parameters (main_watchdog, event_server) in prod have the right value
+  tags: update_utils_params_prod
+  lineinfile:
+    dest: "{{ item.dest }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: "{{ item.state }}"
+    create: yes
+  loop:
+    - { dest: '/opt/utils/params.py', regexp: '^event_server', line: 'event_server = "http://{{ vars_event_server }}/event"', state: 'present' }
+  # register: myoutput
 

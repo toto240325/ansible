@@ -42,6 +42,14 @@
     dest: "/home/toto/dashboard/params.py"
   when: not stat_result.stat.exists
 
+- name: install latest version of pip
+  tags: pip_latest_for_dashboard
+  pip:
+    virtualenv: /home/toto/dashboard/venv
+    virtualenv_python: python3
+    name: pip
+    state: latest
+
 - name: Install requirements for dashboard
   tags: dashboard_req
   pip: 

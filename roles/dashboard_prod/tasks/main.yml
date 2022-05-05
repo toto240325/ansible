@@ -55,6 +55,14 @@
     dest: "/opt/dashboard/params.py"
   when: not stat_result.stat.exists
 
+- name: install latest version of pip
+  tags: pip_latest_for_dashboard
+  pip:
+    virtualenv: /opt/dashboard/venv
+    virtualenv_python: python3
+    name: pip
+    state: latest
+
 - name: Install requirements for dashboard
   tags: dashboard_req
   pip: 

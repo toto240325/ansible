@@ -12,6 +12,14 @@
   with_items:
   - "/home/toto/watchdog"
 
+- name: install latest version of pip
+  tags: pip_latest_for_watchdog
+  pip:
+    virtualenv: /home/toto/watchdog/venv
+    virtualenv_python: python3
+    name: pip
+    state: latest
+
 - name: Install requirements for watchdog
   tags: watchdog_req_dev
   pip: 

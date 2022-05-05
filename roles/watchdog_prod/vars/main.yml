@@ -1,3 +1,4 @@
 # vars for watchdog_prod
 vars_monitor_server: "192.168.0.45"
 vars_main_watchdog: "sd3"
+vars_event_server: "eventServer"

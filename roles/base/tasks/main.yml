@@ -47,8 +47,8 @@
       192.168.0.72 sd2Wlan0 sd2
       192.168.0.82 sd2Wlan1
       192.168.0.63 sd3Eth0
-      192.168.0.73 sd3Wlan0
-      192.168.0.83 sd3Wlan1 sd3
+      192.168.0.73 sd3Wlan0 sd3
+      192.168.0.83 sd3Wlan1
       192.168.0.64 sd4Eth0
       192.168.0.74 sd4Wlan0
       192.168.0.84 sd4Wlan1 sd4
@@ -72,6 +72,8 @@
       192.168.0.99 mypc3
       192.168.0.148 nb2502
       192.168.0.181 kali1
+
+      192.168.0.73 eventServer
     marker: "# {mark} ANSIBLE MANAGED BLOCK my hosts"
 
 # - name: make sure known hosts are in /etc/hosts

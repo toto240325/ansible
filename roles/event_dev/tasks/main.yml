@@ -12,6 +12,14 @@
   with_items:
   - "/home/toto/event"
 
+- name: install latest version of pip
+  tags: pip_latest_for_event
+  pip:
+    virtualenv: /home/toto/event/venv
+    virtualenv_python: python3
+    name: pip
+    state: latest
+
 - name: Install requirements for event (for the python part)
   tags: event_req_dev
   pip: 

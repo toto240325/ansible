@@ -381,6 +381,25 @@
   roles: 
     - whos_on_my_network
 
+- hosts: dashboard_dev
+  name: install dashboard dev
+  tags: dashboard_dev
+  vars_files:
+  - ~/ansible/vault.yml
+  become: true
+  roles: 
+    #- evandam.conda
+    - dashboard_dev
+
+- hosts: dashboard_prod
+  name: install dashboard prod
+  tags: dashboard_prod
+  vars_files:
+  - ~/ansible/vault.yml
+  become: true
+  roles: 
+    - dashboard_prod
+
 - hosts: frigo_dev
   name: install frigo dev
   tags: frigo_dev
@@ -401,24 +420,6 @@
     #- evandam.conda
     - frigo_prod
 
-- hosts: dashboard_dev
-  name: install dashboard dev
-  tags: dashboard_dev
-  vars_files:
-  - ~/ansible/vault.yml
-  become: true
-  roles: 
-    #- evandam.conda
-    - dashboard_dev
-
-- hosts: dashboard_prod
-  name: install dashboard prod
-  tags: dashboard_prod
-  vars_files:
-  - ~/ansible/vault.yml
-  become: true
-  roles: 
-    - dashboard_prod
 
   # tasks:
   # - name: Update conda

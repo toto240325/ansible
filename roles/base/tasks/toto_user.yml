@@ -163,17 +163,18 @@
 # cd /home/toto/utils
 # git status
 
-- name: install repo utils for toto 
-  become: true
-  tags: repo_utils_toto
-  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes
-  with_items:
-  - { repo: 'https://github.com/toto240325/utils.git',              dest: '/home/toto/utils' }
-  - { repo: 'https://github.com/toto240325/ansible.git',           dest: '/home/toto/ansible' }
-  #- { repo: 'https://github.com/toto240325/whos_on_my_network.git', dest: '/home/toto/whos_on_my_network' }
-  # - { repo: 'https://github.com/toto240325/monitor.git',            dest: '/var/www/monitor' }
-  # - { repo: 'https://github.com/toto240325/watchdog.git',            dest: '/home/toto/watchdog' }
-  register: output_git
+
+# - name: install repo utils for toto 
+#   become: true
+#   tags: repo_utils_toto
+#   ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=yes
+#   with_items:
+#   - { repo: 'https://github.com/toto240325/utils.git',              dest: '/home/toto/utils' }
+#   - { repo: 'https://github.com/toto240325/ansible.git',           dest: '/home/toto/ansible' }
+#   #- { repo: 'https://github.com/toto240325/whos_on_my_network.git', dest: '/home/toto/whos_on_my_network' }
+#   # - { repo: 'https://github.com/toto240325/monitor.git',            dest: '/var/www/monitor' }
+#   # - { repo: 'https://github.com/toto240325/watchdog.git',            dest: '/home/toto/watchdog' }
+#   register: output_git
 
 
 - name: change ownership repos

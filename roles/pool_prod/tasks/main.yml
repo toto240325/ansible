@@ -26,6 +26,14 @@
   tags: deploy_utils_prod_for_pool
   shell: "curl -L https://api.github.com/repos/toto240325/utils/tarball | tar xzvf - --one-top-level=/opt/utils --strip-components 1"
 
+- name: install latest version of pip
+  tags: pip_latest_for_pool
+  pip:
+    virtualenv: /opt/pool/venv
+    virtualenv_python: python3
+    name: pip
+    state: latest
+
 - name: Install requirements for pool
   tags: pool_req_prod
   pip: 
@@ -58,16 +66,16 @@
     job: "export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/pool/venv/bin/activate && python /opt/pool/pool.py  | tee -a /opt/pool/pool_full.log >> /opt/pool/pool.log"
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 
-# - name: make sure the parameters (monitor_server, main_pool) in prod have the right value
-#   tags: update_pool_params_prod
-#   lineinfile:
-#     dest: "{{ item.dest }}"
-#     regexp: "{{ item.regexp }}"
-#     line: "{{ item.line }}"
-#     state: "{{ item.state }}"
-#     create: yes
-#   loop:
-#     # - { dest: '/opt/pool/params.py', regexp: '^main_pool', line: 'main_pool = "{{ vars_main_pool }}"', state: 'present' }
-#   # register: myoutput
 
+- name: make sure the parameters (main_watchdog, event_server) in prod have the right value
+  tags: update_pool_params_prod
+  lineinfile:
+    dest: "{{ item.dest }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: "{{ item.state }}"
+    create: yes
+  loop:
+    - { dest: '/opt/pool/params.py', regexp: '^event_server', line: 'event_server = "http://{{ vars_event_server }}/event"', state: 'present' }
+  # register: myoutput
 

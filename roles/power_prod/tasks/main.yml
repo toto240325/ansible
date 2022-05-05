@@ -26,6 +26,14 @@
   tags: deploy_utils_prod_for_power
   shell: "curl -L https://api.github.com/repos/toto240325/utils/tarball | tar xzvf - --one-top-level=/opt/utils --strip-components 1"
 
+- name: install latest version of pip
+  tags: pip_latest_for_power
+  pip:
+    virtualenv: /opt/power/venv
+    virtualenv_python: python3
+    name: pip
+    state: latest
+
 - name: Install requirements for power
   tags: power_req_prod
   pip: 
@@ -53,21 +61,21 @@
     user: root
     name: "power"
     #special_time: reboot
-    minute: "*/5"
+    minute: "*/1"
     #minute: "30"
     job: "export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/power/venv/bin/activate && python /opt/power/power.py  | tee -a /opt/power/power_full.log >> /opt/power/power.log"
   #when: ansible_facts["lsb"]["id"] == "Raspbian"
 
-# - name: make sure the parameters (monitor_server, main_power) in prod have the right value
-#   tags: update_power_params_prod
-#   lineinfile:
-#     dest: "{{ item.dest }}"
-#     regexp: "{{ item.regexp }}"
-#     line: "{{ item.line }}"
-#     state: "{{ item.state }}"
-#     create: yes
-#   loop:
-#     # - { dest: '/opt/power/params.py', regexp: '^main_power', line: 'main_power = "{{ vars_main_power }}"', state: 'present' }
-#   # register: myoutput
 
+- name: make sure the parameters (main_watchdog, event_server) in prod have the right value
+  tags: update_power_params_prod
+  lineinfile:
+    dest: "{{ item.dest }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: "{{ item.state }}"
+    create: yes
+  loop:
+    - { dest: '/opt/power/params.py', regexp: '^event_server', line: 'event_server = "http://{{ vars_event_server }}/event"', state: 'present' }
+  # register: myoutput
 

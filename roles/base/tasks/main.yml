@@ -19,19 +19,27 @@
 
 - name: Add mappings to /etc/hosts
   # aps -t=etc_hosts
+  # aps -t=etc_hosts -l sd3,sd4,sd8,ubuntu2
+  
   tags: etc_hosts
   blockinfile:
     path: /etc/hosts
     block: |
-      192.168.0.1 voo
+      192.168.0.1 voo-D92U19G
+
+      # webcam
       192.168.0.4 webcamChalet
+      192.168.0.15 webcamGarage
+      192.168.0.49 webcamJardin
+
+
       192.168.0.5 smartTV_LG_TN510S
       192.168.0.6 hp5520
       192.168.0.9 alarmSystem
       192.168.0.40 ps4
       192.168.0.45 vayoEth0 vayo
       192.168.0.46 vayoWlan0
-      192.168.0.49 webcamJardin
+
       192.168.0.50 linksysed
       192.168.0.51 ubuntu1
       192.168.0.52 ubuntu2

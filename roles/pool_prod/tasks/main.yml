@@ -62,6 +62,7 @@
     name: "pool"
     #special_time: reboot
     minute: "*/5"
+    hour: 12-18
     #minute: "30"
     job: "export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/pool/venv/bin/activate && python /opt/pool/pool.py  | tee -a /opt/pool/pool_full.log >> /opt/pool/pool.log"
   #when: ansible_facts["lsb"]["id"] == "Raspbian"

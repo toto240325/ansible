@@ -31,6 +31,7 @@
       192.168.0.4 webcamChalet
       192.168.0.15 webcamGarage
       192.168.0.49 webcamJardin
+      192.168.0.91 webcamGarage_2
 
 
       192.168.0.5 smartTV_LG_TN510S
@@ -148,7 +149,7 @@
     state: latest
   with_items:
     - ntp
-#    - chrony
+    - chrony
     - ansible
     - ansible-lint
     - sshpass            # this is need to manage windows machines

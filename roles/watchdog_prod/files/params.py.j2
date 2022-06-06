@@ -5,3 +5,8 @@ to_email = "{{ vault_toto_email }}@gmail.com"
 monitor_server = "{{ vars_monitor_server }}"
 event_server = "http://eventServer/event"
 main_watchdog = "{{ vars_main_watchdog }}"
+
+# pool (pH,Cl) must have been measured less than x minutes ago
+delay_pool_secs = 60*12
+delay_power_secs = 60*12
+

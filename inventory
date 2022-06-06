@@ -183,17 +183,17 @@ sd7 # 192.168.0.77
 sd8 # 192.168.0.78
 sd9 # 192.168.0.79
 
-[monitor_dev]
-ubuntu1
-ubuntu2 # 192.168.0.52
+#[monitor_dev]
+#ubuntu1
+#ubuntu2 # 192.168.0.52
 
-[monitor_prod]
-#vayo # 192.168.0.45
-#ubuntu1 # 192.168.0.51
-ubuntu2 # 192.168.0.52
-#ubuntu3 # 192.168.0.53
-sd3
-#192.168.0.54
+#[monitor_prod]
+##vayo # 192.168.0.45
+##ubuntu1 # 192.168.0.51
+#ubuntu2 # 192.168.0.52
+##ubuntu3 # 192.168.0.53
+#sd3
+##192.168.0.54
 
 [event_prod]
 #vayo # 192.168.0.45

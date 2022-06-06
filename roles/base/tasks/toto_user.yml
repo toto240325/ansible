@@ -177,13 +177,13 @@
 #   register: output_git
 
 
-- name: change ownership repos
-  tags: change_owner_repos_toto
-  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
-  with_items:
-  - { path: "/home/toto/utils" }
-  - { path: "/home/toto/ansible" }
-#  register: output_chown
+# - name: change ownership repos
+#   tags: change_owner_repos_toto
+#   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+#   with_items:
+#   - { path: "/home/toto/utils" }
+#   - { path: "/home/toto/ansible" }
+# #  register: output_chown
 
 
 # - name: Install requirements for utils toto
@@ -225,14 +225,14 @@
 #       regexp: "https://github.com/toto240325"
 #       replace: "git@github.com:toto240325"
 
-- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
-  tags: mygit
-  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
-  with_items:
-  - "/home/toto/utils"
-  - "/home/toto/ansible"
-  # - "/var/www/monitor"
-  # - "/home/toto/watchdog"
+# - name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+#   tags: mygit
+#   replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+#   with_items:
+#   - "/home/toto/utils"
+#   - "/home/toto/ansible"
+#   # - "/var/www/monitor"
+#   # - "/home/toto/watchdog"
 
 - name: make sure the github hosts are known
   tags: github_keys
@@ -259,48 +259,48 @@
 #   - watchdog.txt
 #   - misc.log
 
-- name: cron job to update git utils
-  tags: pull_repos
-  cron:
-    user: toto
-    name: "pull_utils"
-    special_time: reboot
-    #minute: "39"
-    #hour: "22"
-    job: "sleep 90 && cd ~/utils && date >> ~/misc.log && git pull https://github.com/toto240325/utils.git >> ~/misc.log 2>&1"
-  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+# - name: cron job to update git utils
+#   tags: pull_repos
+#   cron:
+#     user: toto
+#     name: "pull_utils"
+#     special_time: reboot
+#     #minute: "39"
+#     #hour: "22"
+#     job: "sleep 90 && cd ~/utils && date >> ~/misc.log && git pull https://github.com/toto240325/utils.git >> ~/misc.log 2>&1"
+#   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-- name: cron job to update git ansible
-  tags: pull_repos
-  cron:
-    user: toto
-    name: "pull_ansible"
-    special_time: reboot
-    #minute: "43"
-    #hour: "22"
-    job: "sleep 90 && cd ~/ansible && date >> ~/misc.log && git pull https://github.com/toto240325/ansible.git >> ~/misc.log 2>&1"
-  # when: ansible_facts["lsb"]["id"] != "Raspbian"
+# - name: cron job to update git ansible
+#   tags: pull_repos
+#   cron:
+#     user: toto
+#     name: "pull_ansible"
+#     special_time: reboot
+#     #minute: "43"
+#     #hour: "22"
+#     job: "sleep 90 && cd ~/ansible && date >> ~/misc.log && git pull https://github.com/toto240325/ansible.git >> ~/misc.log 2>&1"
+#   # when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-- name: force git pull utils
-  tags: force_pull
-  shell:
-    cmd: 'su -c "cd ~/utils && date >> ~/misc.log && git pull https://github.com/toto240325/utils.git >> ~/misc.log" toto'
+# - name: force git pull utils
+#   tags: force_pull
+#   shell:
+#     cmd: 'su -c "cd ~/utils && date >> ~/misc.log && git pull https://github.com/toto240325/utils.git >> ~/misc.log" toto'
   
-- name: force git pull ansible
-  tags: force_pull
-  shell:
-    cmd: 'su -c "cd ~/ansible && date >> ~/misc.log && git pull https://github.com/toto240325/ansible.git >> ~/misc.log" toto'
+# - name: force git pull ansible
+#   tags: force_pull
+#   shell:
+#     cmd: 'su -c "cd ~/ansible && date >> ~/misc.log && git pull https://github.com/toto240325/ansible.git >> ~/misc.log" toto'
   
-- name: change ownership
-  tags: debug1
-  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
-  with_items:
-  - { path: "/home/toto/utils" }
-  - { path: "/home/toto/ansible" }
-  #- { path: "/home/toto/whos_on_my_network" }
-  #- { path: "/home/toto/monitor" }
-  #- { path: "/var/www/monitor" }
-#  register: output_chown
+# - name: change ownership
+#   tags: debug1
+#   file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes
+#   with_items:
+#   - { path: "/home/toto/utils" }
+#   - { path: "/home/toto/ansible" }
+#   #- { path: "/home/toto/whos_on_my_network" }
+#   #- { path: "/home/toto/monitor" }
+#   #- { path: "/var/www/monitor" }
+# #  register: output_chown
 
 # - name: "install ansible requirements"
 #   tags: debug75
@@ -326,16 +326,16 @@
     value: toto240325@gmail.com
 
 
-- name: install cron job for toto (ansible-pull)
-  tags: debug12
-  cron:
-    user: toto
-    name: "ansible provision"
-    hour: "21"
-    minute: "00"
-    #job: "/home/toto/run_ansible_pull.sh >> ~/ansible-pull.log"
-    job: "/usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> ~/ansible-pull.log"
-    state: absent
+# - name: install cron job for toto (ansible-pull)
+#   tags: debug12
+#   cron:
+#     user: toto
+#     name: "ansible provision"
+#     hour: "21"
+#     minute: "00"
+#     #job: "/home/toto/run_ansible_pull.sh >> ~/ansible-pull.log"
+#     job: "/usr/bin/ansible-pull -o -U https://github.com/toto240325/ansible.git >> ~/ansible-pull.log"
+#     state: absent
 
 #- debug: var=output_chown
 #  tags: debug1

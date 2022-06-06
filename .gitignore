@@ -5,3 +5,4 @@ Miniconda3-py37_4.10.3-Linux-x86_64.sh
 *.obsolete
 obsolete/
 tmp_*.txt
+*-obsolete*

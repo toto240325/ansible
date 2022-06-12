@@ -116,5 +116,6 @@
     create: yes
   loop:
     - { dest: '/opt/frigo/params.py', regexp: '^event_server', line: 'event_server = "http://{{ vars_event_server }}/event"', state: 'present' }
+    - { dest: '/opt/frigo/params.py', regexp: '^mailer_pw', line: 'mailer_pw = "{{ vault_toto_mailer_pw }}"', state: 'present' }
   # register: myoutput
 

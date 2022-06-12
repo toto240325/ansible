@@ -55,6 +55,20 @@
     dest: "/opt/dashboard/params.py"
   when: not stat_result.stat.exists
 
+- name: make sure the parameters (main_watchdog, event_server) in prod have the right value
+  tags: update_dashboard_params_prod
+  lineinfile:
+    dest: "{{ item.dest }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: "{{ item.state }}"
+    create: yes
+  loop:
+    - { dest: '/opt/dashboard/params.py', regexp: '^event_server', line: 'event_server = "http://{{ vars_event_server }}/event"', state: 'present' }
+    - { dest: '/opt/dashboard/params.py', regexp: '^mailer_pw', line: 'mailer_pw = "{{ vault_toto_mailer_pw }}"', state: 'present' }
+  # register: myoutput
+
+
 - name: install latest version of pip
   tags: pip_latest_for_dashboard
   pip:

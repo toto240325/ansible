@@ -8,13 +8,13 @@
 #
 #- debug: var=myoutput
 
-- name: create toto user
-  tags: debug_create_toto
+- name: create toto user and/or set password
+  tags: toto_user
   user:
     name: toto
     #password: "{{ vault_toto_pw }}"
-    password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
-    #password: "{{ 'password' | password_hash('sha512') }}"
+    #password: "{{ vault_toto_pw | password_hash('sha512','myOwnSalt') }}"
+    password: "{{ 'password' | password_hash('sha512') }}"
     update_password: on_create
     shell: /bin/bash
     state: present
@@ -81,6 +81,7 @@
 
 
 - name: add sudoers file for toto
+  tags: toto_sudoers
   copy:
     src: sudoer_toto
     dest: /etc/sudoers.d/toto

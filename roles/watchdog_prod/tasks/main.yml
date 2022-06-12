@@ -164,6 +164,7 @@
     # - { dest: '/opt/watchdog/params.py', regexp: '^monitor_server', line: 'monitor_server = "{{ vars_monitor_server }}"', state: 'present' }
     - { dest: '/opt/watchdog/params.py', regexp: '^main_watchdog', line: 'main_watchdog = "{{ vars_main_watchdog }}"', state: 'present' }
     - { dest: '/opt/watchdog/params.py', regexp: '^event_server', line: 'event_server = "http://{{ vars_event_server }}/event"', state: 'present' }
-  # register: myoutput
+    - { dest: '/opt/watchdog/params.py', regexp: '^mailer_pw', line: 'mailer_pw = "{{ vault_toto_mailer_pw }}"', state: 'present' }
+# register: myoutput
 
 

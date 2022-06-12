@@ -165,6 +165,7 @@
     - { dest: '/opt/watchdog/params.py', regexp: '^main_watchdog', line: 'main_watchdog = "{{ vars_main_watchdog }}"', state: 'present' }
     - { dest: '/opt/watchdog/params.py', regexp: '^event_server', line: 'event_server = "http://{{ vars_event_server }}/event"', state: 'present' }
     - { dest: '/opt/watchdog/params.py', regexp: '^mailer_pw', line: 'mailer_pw = "{{ vault_toto_mailer_pw }}"', state: 'present' }
+    - { dest: '/opt/watchdog/params.py', regexp: '^delay_pool_secs', line: 'delay_pool_secs = "60*12"', state: 'present' }
+    - { dest: '/opt/watchdog/params.py', regexp: '^delay_power_secs', line: 'delay_power_secs = "60*12"', state: 'present' }
 # register: myoutput
-
 

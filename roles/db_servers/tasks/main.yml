@@ -56,13 +56,14 @@
     enabled: yes
 
 - name: "install pymysql"
+  tags: pymysql
   pip:
     name: pymysql
     state: latest
 
 - name: Set MySQL root Password
   tags: db_servers1
-  no_log: true
+  #no_log: true
   mysql_user:
 #    login_host: 'localhost'
     login_unix_socket: /var/run/mysqld/mysqld.sock

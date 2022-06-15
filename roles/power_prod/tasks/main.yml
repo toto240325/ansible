@@ -61,7 +61,7 @@
     user: root
     name: "power"
     #special_time: reboot
-    minute: "*/1"
+    minute: "*/2"
     #minute: "30"
     job: "export PYTHONPATH=/opt/utils:$PYTHONPATH && . /opt/power/venv/bin/activate && python /opt/power/power.py  | tee -a /opt/power/power_full.log >> /opt/power/power.log"
   #when: ansible_facts["lsb"]["id"] == "Raspbian"

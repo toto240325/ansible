@@ -232,13 +232,13 @@
     link: /usr/local/bin/pip
   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
-- name: upgrade pip to latest version
-  tags: latest_pip
-  pip:
-    name: pip
-    executable: pip3
-    state: latest
-  when: ansible_facts["lsb"]["id"] != "Raspbian"
+# - name: upgrade pip to latest version
+#   tags: latest_pip
+#   pip:
+#     name: pip
+#     executable: pip3
+#     state: latest
+#   when: ansible_facts["lsb"]["id"] != "Raspbian"
 
 - name: "install pip virtualenv"
   pip:

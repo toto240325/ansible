@@ -11,8 +11,6 @@ alias hp='. /home/toto/http_proxy.sh'
 alias leaf='leafpad_fct'
 alias uhp='unset http_proxy && unset https_proxy'
 
-
-
 alias ls='ls --color=auto'
 #alias dir='dir --color=auto'
 #alias vdir='vdir --color=auto'
@@ -53,20 +51,7 @@ alias sshgit='sed -i "s#https://github.com/#git@github.com:#" .git/config'
 alias release="bash ~/utils/release.sh"
 alias mygitdiff='git fetch origin ; git diff origin/master'
 
-# NB : to print the definition of a given bash function :
-# type mynmap
-
-mynmap() 
-{
-  sudo nmap -sn 192.168.0.* | awk ' /scan report/ {printf ("%15s %s\n",$5,$6) }'
-}
-
-mynmap2() 
-{
-  sudo nmap -sn 192.168.0.* | awk '/Nmap scan/{ip=$NF;name=$5; next}ip && /MAC/{printf "%s %-16s %s\n", $3, ip, name}' | bash ~/utils/map_mac_addr.sh
-}
-
-gitcapp()
+gitcapp() 
 {
   # check if ssh-agent has already been loaded with a key
   ssh-add -l > /dev/null 2>&1
@@ -82,11 +67,26 @@ gitcapp()
   fi
 }
 
+
+# NB : to print the definition of a given bash function :
+# type mynmap
+
+mynmap() 
+{
+  sudo nmap -sn 192.168.0.* | awk ' /scan report/ {printf ("%15s %s\n",$5,$6) }'
+}
+
+mynmap2() 
+{
+  sudo nmap -sn 192.168.0.* | awk '/Nmap scan/{ip=$NF;name=$5; next}ip && /MAC/{printf "%s %-16s %s\n", $3, ip, name}' | bash ~/utils/map_mac_addr.sh
+}
+
 disp() 
 {
   export DISPLAY=localhost:$1.0
   echo "DISPLAY:" $DISPLAY
 }
+
 
 export XAUTHORITY=~/.Xauthority
 

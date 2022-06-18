@@ -457,12 +457,12 @@
 ##  - debug:
 ##      var: ansible_distribution
 
-# - hosts: ansible_servers
-#   gather_facts: false
-#   tags: ansible_servers
-#   become: true
-#   roles:
-#     - ansible_servers
+- hosts: ansible_servers
+  gather_facts: false
+  tags: ansible_servers
+  become: true
+  roles:
+    - ansible_servers
 
 #- hosts: workstations
 #  tags: workstations

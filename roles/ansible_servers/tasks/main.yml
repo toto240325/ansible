@@ -1,4 +1,5 @@
-# ---
+---
+
 # - name: install packages specific to ansible
 #   package:
 #     name: "{{ item }}"
@@ -9,4 +10,72 @@
 #     - sshpass            # this is need to manage windows machines
 #   #when: ansible_distribution in ["Ubuntu","Debian"] and ansible_distribution_version == "20.04"
 #   #when: no
+
+
+# - name: install new packages
+#   tags: ansible_packages_dev
+#   package:
+#     name: "{{ item }}"
+#     state: latest
+#   with_items:
+#     - ffmpeg
+
+- name: install repo ansible for toto (dev)
+  tags: repoansible_dev
+  ansible.builtin.git: repo={{ item.repo }} dest={{ item.dest }} clone=yes update=no force=no
+  with_items:
+  - { repo: 'https://github.com/toto240325/ansible.git', dest: '/home/toto/ansible' }
+  register: repo_ansible_dev
+
+- name: make sure .git/config is set to git@github:toto240325/<prj>.git... instead of https://github.com/toto240325/<prj>.git to allow edit and push back to git
+  tags: repoansible_dev
+  replace: path="{{ item }}/.git/config" regexp="https://github.com/toto240325" replace="git@github.com:toto240325"
+  with_items:
+  - "/home/toto/ansible"
+
+# # this should not be necessary because pip is part of python as of python 3.4 ?
+# - name: install latest version of pip
+#   tags: pip_latest_for_ansible
+#   pip:
+#     virtualenv: /home/toto/ansible/venv
+#     virtualenv_python: python3
+#     name: pip
+#     state: latest
+
+# - name: Install requirements for ansible
+#   tags: ansible_req_dev
+#   pip: 
+#     requirements: /home/toto/ansible/requirements.txt
+#     virtualenv: /home/toto/ansible/venv
+#     #virtualenv_python: python3.7
+#     virtualenv_python: python3
+
+# - name: check if ansible params.py already exists
+#   tags: ansible_params_dev
+#   stat:
+#     path: /home/toto/ansible/params.py
+#   register: stat_result
+
+# - name: "Copy params.py"
+#   tags: ansible_params_dev
+#   template:
+#     src: "files/params.py.j2"
+#     dest: "/home/toto/ansible/params.py"
+#   when: not stat_result.stat.exists
+
+# - name: set ownership of log files (some log files are create by root in /home/toto)
+#   tags: fix_ownership_logs
+#   become: True
+#   file: path="/home/toto/ansible" owner=toto group=toto state=touch
+#   with_items:
+#   - ansible.log
+#   - ansible.txt
+
+- name: change ownership
+  tags: repoansible
+  file: path={{ item.path }} owner="toto" group="toto" state=directory recurse=yes mode="u=rwX,g=rX,o=rX"
+  with_items:
+  - { path: "/home/toto/ansible" }
+  #register: output_chown
+  #when: repo_ansible_dev.changed
 

@@ -34,6 +34,9 @@
 #192.168.0.45 newHostname=vayo mainEthDev=enp1s0 newEthIP=192.168.0.45 mainWifiDev=wlp2s0 newWlan0IP=192.168.0.46 newWlan1IP=192.168.0.47
 #192.168.0.52 ansible_user=toto newHostname=ubuntu2 mainEthDev=eth0 newEthIP=192.168.0.52 mainWifiDev=wlan0 newWlan0IP=192.168.0.199 newWlan1IP=198.168.0.199
 #192.168.0.53 ansible_user=toto newHostname=ubuntu3 mainEthDev=eth0 newEthIP=192.168.0.53 mainWifiDev=wlan0 newWlan0IP=192.168.0.199 newWlan1IP=198.168.0.199
+192.168.0.54 ansible_user=toto newHostname=ubuntu4 mainEthDev=eth0 newEthIP=192.168.0.54 mainWifiDev=wlan0 newWlan0IP=192.168.0.199 newWlan1IP=198.168.0.199
+192.168.0.55 ansible_user=vagrant ansible_ssh_pass=Toto! newHostname=ubuntu5 mainEthDev=eth0 newEthIP=192.168.0.55 mainWifiDev=wlan0 newWlan0IP=192.168.0.199 newWlan1IP=198.168.0.199
+
 #192.168.0.60 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd0 mainEthDev=eth0 newEthIP=192.168.0.60 mainWifiDev=wlan0 newWlan0IP=192.168.0.70 newWlan1IP=192.168.0.80
 #192.168.0.66 ansible_user=pi ansible_ssh_pass=raspberry newHostname=sd6 mainEthDev=eth0 newEthIP=192.168.0.66 mainWifiDev=wlan0 newWlan0IP=192.168.0.76 newWlan1IP=192.168.0.86
 #192.168.0.3 ansible_user=pi ansible_ssh_pass=pw newHostname=sd2 mainEthDev=eth0 newEthIP=192.168.0.62 mainWifiDev=wlan0 newWlan0IP=192.168.0.72 newWlan1IP=192.168.0.82
@@ -52,7 +55,9 @@
 ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
-#192.168.0.54
+ubuntu4 # 192.168.0.54
+ubuntu5 # 192.168.0.55
+
 sd0 # 192.168.0.70
 sd1 # 192.168.0.71
 sd2 # 192.168.0.72
@@ -91,7 +96,9 @@ sd9 # 192.168.0.79
 ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
-#192.168.0.54
+ubuntu4 # 192.168.0.54
+ubuntu5 # 192.168.0.55
+
 #192.168.0.148
 sd0 # 192.168.0.70
 sd1 # 192.168.0.71
@@ -109,6 +116,8 @@ sd9 # 192.168.0.79
 ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
+ubuntu4 # 192.168.0.54
+ubuntu5 # 192.168.0.55
 sd3
 sd8
 
@@ -117,6 +126,8 @@ sd8
 ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
+#ubuntu4 # 192.168.0.54
+ubuntu5 # 192.168.0.55
 
 [sqlite]
 sd3
@@ -135,6 +146,8 @@ sd8
 ubuntu1 # 192.168.0.51
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
+ubuntu4 # 192.168.0.54
+ubuntu5 # 192.168.0.55
 #192.168.0.54
 #192.168.0.148
 sd0 # 192.168.0.70
@@ -152,6 +165,8 @@ sd9 # 192.168.0.79
 ubuntu1
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
+ubuntu4 # 192.168.0.54
+ubuntu5 # 192.168.0.55
 
 [pool_prod]
 sd3 # 192.168.0.52
@@ -164,12 +179,16 @@ sd3 # 192.168.0.52
 
 [power_dev]
 ubuntu2 # 192.168.0.52
+ubuntu4 # 192.168.0.54
+ubuntu5 # 192.168.0.55
 
 [utils_prod]
 #vayo # 192.168.0.45
 ubuntu1
 ubuntu2 # 192.168.0.52
 ubuntu3 # 192.168.0.53
+ubuntu4 # 192.168.0.54
+ubuntu5 # 192.168.0.55
 #192.168.0.54
 #192.168.0.148
 sd0 # 192.168.0.70
@@ -206,12 +225,15 @@ sd8
 #vayo # 192.168.0.45
 ubuntu1
 ubuntu2 # 192.168.0.52
+ubuntu4 # 192.168.0.54
+ubuntu5 # 192.168.0.55
 #192.168.0.54
 
 [frigo_dev]
 # https://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/ds18b20
 #ubuntu1
 ubuntu2
+ubuntu4 # 192.168.0.54
 #vayo # 192.168.0.45
 #sd8 # 192.168.0.78
 
@@ -226,6 +248,7 @@ sd9
 [dashboard_dev]
 ubuntu1
 ubuntu2
+ubuntu4 # 192.168.0.54
 
 [dashboard_prod]
 sd3

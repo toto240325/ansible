@@ -198,6 +198,7 @@
 
 
 - name: install new packages
+  tags: nm
   package:
     name: "{{ item }}"
     state: latest

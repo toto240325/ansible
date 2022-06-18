@@ -150,6 +150,7 @@
   tags: check_mydatabase_exists
   when: mysql_output.stdout != "1"
 
+# aps -l ubuntu5 -t=check_mydatabase_exists,facts
 - name: Create mysql database
   tags: check_mydatabase_exists
   mysql_db:

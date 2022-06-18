@@ -1,7 +1,0 @@
-# mailer = "toto240325mailer@gmail.com"
-# mailer_pw = "Toto060502!nz"
-# from_email = "toto240325@gmail.com"
-# to_email = "toto240325@gmail.com"
-# monitor_server = "192.168.0.52"
-event_server = "http://eventServer/event"
-# main_watchdog = "192.168.0.83"

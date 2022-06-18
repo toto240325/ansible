@@ -179,16 +179,6 @@
   roles: 
     - laptops
 
-- hosts: postfix
-  vars_files:
-  - ~/ansible/vault.yml
-  gather_facts: true
-  tags: postfix
-  become: true
-  roles:
-    - geerlingguy.postfix
-    - postfix
-
 - hosts: web_servers
   gather_facts: false
   tags: web_servers
@@ -419,6 +409,16 @@
   roles: 
     #- evandam.conda
     - frigo_prod
+
+- hosts: postfix
+  vars_files:
+  - ~/ansible/vault.yml
+  gather_facts: true
+  tags: postfix
+  become: true
+  roles:
+    - geerlingguy.postfix
+    - postfix
 
 
   # tasks:

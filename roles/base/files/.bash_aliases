@@ -1,5 +1,5 @@
 # to update on all hosts :
-# ap -t=copy_basic_files_toto
+# aps -t=copy_basic_files_toto
 #
 alias h='history'
 #alias mysuspend='sudo dbus-send --system --print-reply  --dest="org.freedesktop.UPower"  /org/freedesktop/UPower org.freedesktop.UPower.Suspend'
@@ -10,6 +10,8 @@ alias addbackup='addbackup_fct'
 alias hp='. /home/toto/http_proxy.sh'
 alias leaf='leafpad_fct'
 alias uhp='unset http_proxy && unset https_proxy'
+
+
 
 alias ls='ls --color=auto'
 #alias dir='dir --color=auto'
@@ -45,48 +47,91 @@ alias gitca='git commit -a -m "."'
 alias gitpp='git pull; git push'
 alias gitcapp2='git commit -a -m "."; git pull; git push; git status'
 alias gitlog='git log --oneline --decorate --all --graph'
-alias sshagent="eval \`ssh-agent -s\`; ssh-add ~/.ssh/id_ed25519_toto"
+alias sshagent_old="eval \`ssh-agent -s\`; ssh-add ~/.ssh/id_ed25519_toto"
+alias sshagent_test='$(if [ x"`ssh-add -l`" = x"The agent has no identities." ] ; then echo sshagent; else echo echo identity loaded already; fi)'
+
+sshagent()
+{
+    # if the ssh-agent env variables are not yet set, check if we could recuperate a previous ssh-agent
+    if [ "$SSH_AUTH_SOCK" = "" ]; 
+    then
+        echo "SSH_AUTH_SOCK not yet set; trying to connect to running ssh-agent"
+        if [ -f ~/.ssh/.SSH_AUTH_SOCK ]; then
+            echo "found traces of a previous ssh-agent; trying to connect to it"
+            SSH_AUTH_SOCK=$(cat ~/.ssh/.SSH_AUTH_SOCK)
+            SSH_AGENT_PID=$(cat ~/.ssh/.SSH_AGENT_PID)
+            export SSH_AUTH_SOCK
+            export SSH_AGENT_PID
+        fi
+    fi
+
+    # check if ssh-agent has already been loaded with a key
+    ssh-add -l > /dev/null 2>&1
+    result=$?
+    
+    # echo $result
+    
+    # if ssh-agent has already been loaded, continueIf in a git repo - call git mv. otherwise- call mv
+    if [ $result -ne 0 ];
+    then
+        eval "$(ssh-agent -s)"
+        ssh-add ~/.ssh/id_ed25519_toto
+        echo $SSH_AUTH_SOCK > ~/.ssh/.SSH_AUTH_SOCK
+        echo $SSH_AGENT_PID > ~/.ssh/.SSH_AGENT_PID
+        
+    else
+        echo Already loaded
+    fi
+}
+
+connect-to-last-sshagent()
+{
+    a="/tmp/$(ls -lt /tmp | grep ssh- | grep toto | head -n 1 | cut -d " " -f13)/agent*"  
+    # echo $a
+    # /tmp/ssh-OuT4icVD3Dli/agent.99940
+    b=$(sudo fuser $a)
+
+
+
 alias lsys="less /var/log/syslog"
 alias sshgit='sed -i "s#https://github.com/#git@github.com:#" .git/config'
 alias release="bash ~/utils/release.sh"
 alias mygitdiff='git fetch origin ; git diff origin/master'
 
-gitcapp() 
-{
-  # check if ssh-agent has already been loaded with a key
-  ssh-add -l > /dev/null 2>&1
-  result=$?
-  # echo $result
-
-  # if ssh-agent has already been loaded, continueIf in a git repo - call git mv. otherwise- call mv
-  if [ $result -eq 0 ]; 
-  then
-      gitcapp2
-  else 
-      echo "please run sshagent before"  
-  fi
-}
-
-
 # NB : to print the definition of a given bash function :
 # type mynmap
 
-mynmap() 
+mynmap()
 {
-  sudo nmap -sn 192.168.0.* | awk ' /scan report/ {printf ("%15s %s\n",$5,$6) }'
+    sudo nmap -sn 192.168.0.* | awk ' /scan report/ {printf ("%15s %s\n",$5,$6) }'
 }
 
-mynmap2() 
+mynmap2()
 {
-  sudo nmap -sn 192.168.0.* | awk '/Nmap scan/{ip=$NF;name=$5; next}ip && /MAC/{printf "%s %-16s %s\n", $3, ip, name}' | bash ~/utils/map_mac_addr.sh
+    sudo nmap -sn 192.168.0.* | awk '/Nmap scan/{ip=$NF;name=$5; next}ip && /MAC/{printf "%s %-16s %s\n", $3, ip, name}' | bash ~/utils/map_mac_addr.sh
 }
 
-disp() 
+gitcapp()
 {
-  export DISPLAY=localhost:$1.0
-  echo "DISPLAY:" $DISPLAY
+    # check if ssh-agent has already been loaded with a key
+    ssh-add -l > /dev/null 2>&1
+    result=$?
+    # echo $result
+    
+    # if ssh-agent has already been loaded, continueIf in a git repo - call git mv. otherwise- call mv
+    if [ $result -eq 0 ];
+    then
+        gitcapp2
+    else
+        echo "please run sshagent before"
+    fi
 }
 
+disp()
+{
+    export DISPLAY=localhost:$1.0
+    echo "DISPLAY:" $DISPLAY
+}
 
 export XAUTHORITY=~/.Xauthority
 
@@ -100,6 +145,6 @@ alias venv=". venv/bin/activate"
 alias venv2=". venv/Scripts/activate"
 
 if [ -f ~/.my_aliases ]; then
-  . ~/.my_aliases
+    . ~/.my_aliases
 fi
 
